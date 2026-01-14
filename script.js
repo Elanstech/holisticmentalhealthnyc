@@ -1,8 +1,8 @@
 /**
  * ================================================
  * HOLISTIC MENTAL HEALTH SERVICES
- * Complete JavaScript with ES6+ Architecture
- * Premium, Modern & Fully Integrated - FIXED VERSION
+ * Complete Website JavaScript - Full Integration
+ * Modern ES6+ Architecture with All Features
  * ================================================
  */
 
@@ -11,7 +11,6 @@
 // =========================
 class EnhancedProgressNavigation {
     constructor() {
-        // DOM Elements
         this.header = document.getElementById('progressHeader');
         this.pageProgressFill = document.querySelector('.page-progress-fill');
         this.progressLineFill = document.querySelector('.progress-line-fill');
@@ -21,7 +20,6 @@ class EnhancedProgressNavigation {
         this.mobileSectionLabel = document.querySelector('.mobile-section-label');
         this.mobileSectionCount = document.querySelector('.mobile-section-count');
         
-        // State
         this.sections = [];
         this.currentSection = null;
         this.offsetThreshold = 100;
@@ -42,7 +40,6 @@ class EnhancedProgressNavigation {
     }
 
     setupSections() {
-        // Build sections array from navigation dots
         this.navDots.forEach(dot => {
             const target = dot.getAttribute('data-target');
             const element = document.getElementById(target);
@@ -62,7 +59,6 @@ class EnhancedProgressNavigation {
     }
 
     addMobileProgressStyles() {
-        // Add custom styles for mobile progress without accessing external stylesheets
         if (!document.getElementById('mobile-progress-dynamic')) {
             const style = document.createElement('style');
             style.id = 'mobile-progress-dynamic';
@@ -90,7 +86,6 @@ class EnhancedProgressNavigation {
             const scrolled = window.pageYOffset;
             const progress = Math.min((scrolled / documentHeight) * 100, 100);
             
-            // Update page progress bar
             if (this.pageProgressFill) {
                 this.pageProgressFill.style.width = `${progress}%`;
             }
@@ -117,7 +112,6 @@ class EnhancedProgressNavigation {
             let activeSection = null;
             let activeSectionIndex = 0;
 
-            // Find active section
             for (let i = this.sections.length - 1; i >= 0; i--) {
                 const section = this.sections[i];
                 const sectionTop = section.element.offsetTop;
@@ -153,12 +147,10 @@ class EnhancedProgressNavigation {
         const totalSections = this.sections.length;
         const progress = totalSections > 1 ? (activeIndex / (totalSections - 1)) * 100 : 0;
         
-        // Update desktop progress line fill
         if (this.progressLineFill) {
             this.progressLineFill.style.width = `${progress}%`;
         }
         
-        // Update mobile progress line using CSS variable (FIXED - no stylesheet access)
         if (this.mobileProgressLine) {
             const mobileProgressStyle = document.getElementById('mobile-progress-dynamic');
             if (mobileProgressStyle) {
@@ -178,7 +170,6 @@ class EnhancedProgressNavigation {
             }
         }
 
-        // Update desktop navigation dots
         this.sections.forEach((section, index) => {
             const isActive = section.id === activeSection.id;
             const isCompleted = index < activeIndex;
@@ -194,12 +185,10 @@ class EnhancedProgressNavigation {
             }
         });
 
-        // Update mobile section label
         if (this.mobileSectionLabel) {
             this.mobileSectionLabel.textContent = activeSection.label;
         }
         
-        // Update mobile section counter
         if (this.mobileSectionCount) {
             this.mobileSectionCount.textContent = `${activeIndex + 1} / ${totalSections}`;
         }
@@ -219,7 +208,6 @@ class EnhancedProgressNavigation {
             });
         };
 
-        // Desktop dots
         this.navDots.forEach(dot => {
             dot.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -228,7 +216,6 @@ class EnhancedProgressNavigation {
             });
         });
 
-        // Mobile dots
         this.mobileDots.forEach(dot => {
             dot.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -274,14 +261,12 @@ class EnhancedProgressNavigation {
 // =========================
 class LocationsModal {
     constructor() {
-        // DOM Elements
         this.modal = document.getElementById('locationsModal');
         this.openBtn = document.getElementById('locationsBtn');
         this.closeBtn = document.getElementById('modalClose');
         this.overlay = this.modal ? this.modal.querySelector('.modal-overlay') : null;
         this.locationCards = this.modal ? this.modal.querySelectorAll('.location-card') : [];
         
-        // State
         this.isOpen = false;
         this.scrollPosition = 0;
         
@@ -297,10 +282,8 @@ class LocationsModal {
     }
 
     setupEventListeners() {
-        // Open modal
         this.openBtn.addEventListener('click', () => this.open());
 
-        // Close modal
         if (this.closeBtn) {
             this.closeBtn.addEventListener('click', () => this.close());
         }
@@ -309,7 +292,6 @@ class LocationsModal {
             this.overlay.addEventListener('click', () => this.close());
         }
 
-        // Prevent clicks inside modal from closing
         const modalContent = this.modal.querySelector('.modal-content');
         if (modalContent) {
             modalContent.addEventListener('click', (e) => {
@@ -327,7 +309,6 @@ class LocationsModal {
     }
 
     setupCardAnimations() {
-        // Stagger animation for location cards
         this.locationCards.forEach((card, index) => {
             card.style.opacity = '0';
             card.style.transform = 'translateY(20px)';
@@ -339,17 +320,14 @@ class LocationsModal {
     open() {
         this.isOpen = true;
         
-        // Save scroll position and prevent body scroll
         this.scrollPosition = window.pageYOffset;
         document.body.style.overflow = 'hidden';
         document.body.style.position = 'fixed';
         document.body.style.top = `-${this.scrollPosition}px`;
         document.body.style.width = '100%';
         
-        // Open modal
         this.modal.classList.add('active');
         
-        // Animate cards
         setTimeout(() => {
             this.locationCards.forEach(card => {
                 card.style.opacity = '1';
@@ -357,7 +335,6 @@ class LocationsModal {
             });
         }, 200);
         
-        // Focus management
         if (this.closeBtn) {
             this.closeBtn.focus();
         }
@@ -366,17 +343,14 @@ class LocationsModal {
     close() {
         this.isOpen = false;
         
-        // Animate cards out
         this.locationCards.forEach((card, index) => {
             card.style.opacity = '0';
             card.style.transform = 'translateY(20px)';
         });
         
-        // Close modal after animation
         setTimeout(() => {
             this.modal.classList.remove('active');
             
-            // Restore body scroll
             document.body.style.overflow = '';
             document.body.style.position = '';
             document.body.style.top = '';
@@ -451,7 +425,6 @@ class ActionIconsEnhancer {
     }
 
     setupHoverFeedback() {
-        // Add subtle haptic feedback for mobile
         this.actionIcons.forEach(icon => {
             icon.addEventListener('touchstart', () => {
                 if (navigator.vibrate) {
@@ -518,7 +491,7 @@ class HeroVideo {
 }
 
 // =========================
-// STATISTICS COUNTER CLASS
+// STATISTICS COUNTER CLASS (Universal)
 // =========================
 class StatisticsCounter {
     constructor() {
@@ -570,6 +543,461 @@ class StatisticsCounter {
         };
 
         updateNumber();
+    }
+}
+
+// =========================
+// ABOUT SECTION - FOUNDER IMAGE PARALLAX
+// =========================
+class FounderImageParallax {
+    constructor() {
+        this.founderImage = document.querySelector('.founder-image-wrapper');
+        this.founderSection = document.querySelector('.founder-spotlight');
+        
+        if (this.founderImage && this.founderSection) {
+            this.init();
+        }
+    }
+
+    init() {
+        this.setupParallaxEffect();
+    }
+
+    setupParallaxEffect() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    window.addEventListener('scroll', this.handleScroll.bind(this), { passive: true });
+                } else {
+                    window.removeEventListener('scroll', this.handleScroll.bind(this));
+                }
+            });
+        }, { threshold: 0.1 });
+
+        observer.observe(this.founderSection);
+    }
+
+    handleScroll() {
+        const rect = this.founderSection.getBoundingClientRect();
+        const scrollProgress = 1 - (rect.top / window.innerHeight);
+        
+        if (scrollProgress > 0 && scrollProgress < 1) {
+            const translateY = scrollProgress * 30;
+            this.founderImage.style.transform = `translateY(${translateY}px)`;
+        }
+    }
+}
+
+// =========================
+// ABOUT SECTION - CREDENTIAL TAGS ANIMATION
+// =========================
+class CredentialTagsAnimation {
+    constructor() {
+        this.credentialTags = document.querySelectorAll('.credential-tag');
+        
+        if (this.credentialTags.length > 0) {
+            this.init();
+        }
+    }
+
+    init() {
+        this.setupStaggeredAnimation();
+    }
+
+    setupStaggeredAnimation() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    this.credentialTags.forEach((tag, index) => {
+                        setTimeout(() => {
+                            tag.style.opacity = '0';
+                            tag.style.transform = 'translateY(20px)';
+                            
+                            setTimeout(() => {
+                                tag.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+                                tag.style.opacity = '1';
+                                tag.style.transform = 'translateY(0)';
+                            }, 50);
+                        }, index * 100);
+                    });
+                    
+                    observer.disconnect();
+                }
+            });
+        }, { threshold: 0.5 });
+
+        if (this.credentialTags.length > 0) {
+            observer.observe(this.credentialTags[0].parentElement);
+        }
+    }
+}
+
+// =========================
+// ABOUT SECTION - VALUE CARDS EFFECT
+// =========================
+class ValueCardsEffect {
+    constructor() {
+        this.valueCards = document.querySelectorAll('.value-card');
+        
+        if (this.valueCards.length > 0) {
+            this.init();
+        }
+    }
+
+    init() {
+        this.setupHoverEffects();
+    }
+
+    setupHoverEffects() {
+        this.valueCards.forEach(card => {
+            card.addEventListener('mouseenter', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const glow = document.createElement('div');
+                glow.style.cssText = `
+                    position: absolute;
+                    top: ${y}px;
+                    left: ${x}px;
+                    width: 200px;
+                    height: 200px;
+                    background: radial-gradient(circle, rgba(93, 187, 195, 0.15) 0%, transparent 70%);
+                    border-radius: 50%;
+                    pointer-events: none;
+                    transform: translate(-50%, -50%);
+                    transition: opacity 0.6s ease;
+                `;
+                glow.classList.add('card-glow');
+                
+                card.style.position = 'relative';
+                card.appendChild(glow);
+                
+                setTimeout(() => {
+                    glow.style.opacity = '0';
+                    setTimeout(() => glow.remove(), 600);
+                }, 100);
+            });
+        });
+    }
+}
+
+// =========================
+// SERVICES CAROUSEL CLASS
+// =========================
+class ServicesCarousel {
+    constructor() {
+        this.carousel = document.getElementById('servicesCarousel');
+        this.cards = document.querySelectorAll('.service-carousel-card');
+        this.prevBtn = document.getElementById('servicesPrev');
+        this.nextBtn = document.getElementById('servicesNext');
+        this.indicatorsContainer = document.getElementById('servicesIndicators');
+        
+        this.currentIndex = 0;
+        this.totalCards = this.cards.length;
+        this.cardsPerView = this.getCardsPerView();
+        this.autoplayInterval = null;
+        this.autoplayDelay = 5000;
+        
+        if (this.carousel && this.cards.length > 0) {
+            this.init();
+        }
+    }
+
+    init() {
+        this.createIndicators();
+        this.setupEventListeners();
+        this.updateCarousel();
+        this.startAutoplay();
+        this.setupResponsive();
+    }
+
+    getCardsPerView() {
+        const width = window.innerWidth;
+        if (width <= 768) return 1;
+        if (width <= 1200) return 2;
+        return 3;
+    }
+
+    createIndicators() {
+        const totalIndicators = Math.ceil(this.totalCards / this.cardsPerView);
+        
+        for (let i = 0; i < totalIndicators; i++) {
+            const indicator = document.createElement('div');
+            indicator.classList.add('carousel-indicator');
+            if (i === 0) indicator.classList.add('active');
+            
+            indicator.addEventListener('click', () => {
+                this.goToSlide(i);
+                this.resetAutoplay();
+            });
+            
+            this.indicatorsContainer.appendChild(indicator);
+        }
+        
+        this.indicators = Array.from(this.indicatorsContainer.children);
+    }
+
+    setupEventListeners() {
+        this.prevBtn.addEventListener('click', () => {
+            this.prevSlide();
+            this.resetAutoplay();
+        });
+
+        this.nextBtn.addEventListener('click', () => {
+            this.nextSlide();
+            this.resetAutoplay();
+        });
+
+        let startX = 0;
+        let endX = 0;
+
+        this.carousel.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+        }, { passive: true });
+
+        this.carousel.addEventListener('touchend', (e) => {
+            endX = e.changedTouches[0].clientX;
+            const diff = startX - endX;
+
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) {
+                    this.nextSlide();
+                } else {
+                    this.prevSlide();
+                }
+                this.resetAutoplay();
+            }
+        }, { passive: true });
+
+        this.carousel.addEventListener('mouseenter', () => {
+            this.stopAutoplay();
+        });
+
+        this.carousel.addEventListener('mouseleave', () => {
+            this.startAutoplay();
+        });
+    }
+
+    goToSlide(index) {
+        const maxIndex = Math.ceil(this.totalCards / this.cardsPerView) - 1;
+        this.currentIndex = Math.max(0, Math.min(index, maxIndex));
+        this.updateCarousel();
+    }
+
+    nextSlide() {
+        const maxIndex = Math.ceil(this.totalCards / this.cardsPerView) - 1;
+        this.currentIndex = (this.currentIndex + 1) % (maxIndex + 1);
+        this.updateCarousel();
+    }
+
+    prevSlide() {
+        const maxIndex = Math.ceil(this.totalCards / this.cardsPerView) - 1;
+        this.currentIndex = (this.currentIndex - 1 + maxIndex + 1) % (maxIndex + 1);
+        this.updateCarousel();
+    }
+
+    updateCarousel() {
+        const cardWidth = this.cards[0].offsetWidth;
+        const gap = 32;
+        const offset = -(this.currentIndex * this.cardsPerView * (cardWidth + gap));
+        
+        this.carousel.style.transform = `translateX(${offset}px)`;
+        
+        this.cards.forEach((card, index) => {
+            const startIndex = this.currentIndex * this.cardsPerView;
+            const endIndex = startIndex + this.cardsPerView;
+            
+            if (index >= startIndex && index < endIndex) {
+                card.classList.add('active');
+            } else {
+                card.classList.remove('active');
+            }
+        });
+
+        this.indicators.forEach((indicator, index) => {
+            indicator.classList.toggle('active', index === this.currentIndex);
+        });
+    }
+
+    setupResponsive() {
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                const newCardsPerView = this.getCardsPerView();
+                if (newCardsPerView !== this.cardsPerView) {
+                    this.cardsPerView = newCardsPerView;
+                    this.indicatorsContainer.innerHTML = '';
+                    this.createIndicators();
+                    this.currentIndex = 0;
+                    this.updateCarousel();
+                }
+            }, 250);
+        });
+    }
+
+    startAutoplay() {
+        this.autoplayInterval = setInterval(() => {
+            this.nextSlide();
+        }, this.autoplayDelay);
+    }
+
+    stopAutoplay() {
+        clearInterval(this.autoplayInterval);
+    }
+
+    resetAutoplay() {
+        this.stopAutoplay();
+        this.startAutoplay();
+    }
+}
+
+// =========================
+// SERVICE MODAL SYSTEM
+// =========================
+class ServiceModalSystem {
+    constructor() {
+        this.modal = document.getElementById('serviceModal');
+        this.modalContentWrapper = document.getElementById('modalContentWrapper');
+        this.modalCloseBtn = document.getElementById('modalCloseBtn');
+        this.modalOverlay = this.modal ? this.modal.querySelector('.modal-overlay') : null;
+        this.learnMoreButtons = document.querySelectorAll('.service-learn-more');
+        this.modalTemplates = document.querySelectorAll('.modal-template');
+        
+        this.isOpen = false;
+        this.scrollPosition = 0;
+        
+        if (this.modal) {
+            this.init();
+        }
+    }
+
+    init() {
+        this.setupEventListeners();
+        this.setupKeyboardNavigation();
+    }
+
+    setupEventListeners() {
+        this.learnMoreButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const modalId = button.getAttribute('data-modal');
+                this.openModal(modalId);
+            });
+        });
+
+        if (this.modalCloseBtn) {
+            this.modalCloseBtn.addEventListener('click', () => this.closeModal());
+        }
+
+        if (this.modalOverlay) {
+            this.modalOverlay.addEventListener('click', () => this.closeModal());
+        }
+
+        const modalContainer = this.modal.querySelector('.modal-container');
+        if (modalContainer) {
+            modalContainer.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+        }
+    }
+
+    setupKeyboardNavigation() {
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.isOpen) {
+                this.closeModal();
+            }
+        });
+    }
+
+    openModal(modalId) {
+        const template = document.getElementById(`modal-${modalId}`);
+        
+        if (!template) {
+            console.error(`Modal template not found: modal-${modalId}`);
+            return;
+        }
+
+        const content = template.cloneNode(true);
+        content.style.display = 'block';
+        this.modalContentWrapper.innerHTML = '';
+        this.modalContentWrapper.appendChild(content);
+
+        this.animateContentIn();
+
+        this.scrollPosition = window.pageYOffset;
+        document.body.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${this.scrollPosition}px`;
+        document.body.style.width = '100%';
+
+        this.modal.classList.add('active');
+        this.isOpen = true;
+
+        setTimeout(() => {
+            if (this.modalCloseBtn) {
+                this.modalCloseBtn.focus();
+            }
+        }, 100);
+
+        const ctaBtn = content.querySelector('.modal-cta-btn');
+        if (ctaBtn) {
+            ctaBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.closeModal();
+                setTimeout(() => {
+                    const contactSection = document.getElementById('contact');
+                    if (contactSection) {
+                        contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }, 400);
+            });
+        }
+    }
+
+    closeModal() {
+        this.isOpen = false;
+
+        this.animateContentOut();
+
+        setTimeout(() => {
+            this.modal.classList.remove('active');
+            
+            document.body.style.overflow = '';
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.width = '';
+            window.scrollTo(0, this.scrollPosition);
+            
+            this.modalContentWrapper.innerHTML = '';
+        }, 300);
+    }
+
+    animateContentIn() {
+        const sections = this.modalContentWrapper.querySelectorAll('.modal-section, .modal-conditions, .modal-pricing');
+        
+        sections.forEach((section, index) => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            
+            setTimeout(() => {
+                section.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                section.style.opacity = '1';
+                section.style.transform = 'translateY(0)';
+            }, 100 + (index * 80));
+        });
+    }
+
+    animateContentOut() {
+        const sections = this.modalContentWrapper.querySelectorAll('.modal-section, .modal-conditions, .modal-pricing');
+        
+        sections.forEach((section, index) => {
+            setTimeout(() => {
+                section.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(20px)';
+            }, index * 30);
+        });
     }
 }
 
@@ -949,7 +1377,7 @@ class SmoothScrollEnhancer {
 }
 
 // =========================
-// PERFORMANCE MONITOR (Optional)
+// PERFORMANCE MONITOR
 // =========================
 class PerformanceMonitor {
     constructor() {
@@ -963,18 +1391,15 @@ class PerformanceMonitor {
     }
 
     init() {
-        // Monitor page load time
         window.addEventListener('load', () => {
             if (performance && performance.timing) {
                 const perfData = performance.timing;
                 this.metrics.loadTime = perfData.loadEventEnd - perfData.navigationStart;
                 
-                // Get resource count
                 if (performance.getEntriesByType) {
                     this.metrics.resourceCount = performance.getEntriesByType('resource').length;
                 }
                 
-                // Get memory usage (if available)
                 if (performance.memory) {
                     this.metrics.memoryUsage = (performance.memory.usedJSHeapSize / 1048576).toFixed(2);
                 }
@@ -1023,12 +1448,17 @@ class HolisticMentalHealthApp {
                 });
             }
 
-            // Initialize all modules with error handling
+            // Initialize all modules
             this.modules.progressNav = new EnhancedProgressNavigation();
             this.modules.locationsModal = new LocationsModal();
             this.modules.actionIcons = new ActionIconsEnhancer();
             this.modules.heroVideo = new HeroVideo();
             this.modules.statsCounter = new StatisticsCounter();
+            this.modules.founderParallax = new FounderImageParallax();
+            this.modules.credentialTags = new CredentialTagsAnimation();
+            this.modules.valueCards = new ValueCardsEffect();
+            this.modules.servicesCarousel = new ServicesCarousel();
+            this.modules.serviceModals = new ServiceModalSystem();
             this.modules.testimonialsSlider = new TestimonialsSlider();
             this.modules.formHandler = new FormHandler();
             this.modules.scrollToTop = new ScrollToTop();
@@ -1103,17 +1533,24 @@ class HolisticMentalHealthApp {
 
     logSuccess() {
         console.log('%c✨ Holistic Mental Health Services', 'color: #5DBBC3; font-size: 24px; font-weight: bold;');
-        console.log('%c🚀 All systems initialized successfully!', 'color: #7B88C4; font-size: 16px;');
+        console.log('%c🚀 All Systems Initialized Successfully!', 'color: #7B88C4; font-size: 16px;');
         console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #D1D5DB;');
         console.log('%c✓ Enhanced Progress Navigation', 'color: #10B981;');
         console.log('%c✓ Locations Modal System', 'color: #10B981;');
         console.log('%c✓ Action Icons & Interactions', 'color: #10B981;');
         console.log('%c✓ Hero Video Controller', 'color: #10B981;');
         console.log('%c✓ Statistics Counter', 'color: #10B981;');
+        console.log('%c✓ About Section Animations', 'color: #10B981;');
+        console.log('%c✓ Services Carousel', 'color: #10B981;');
+        console.log('%c✓ Service Modal System', 'color: #10B981;');
         console.log('%c✓ Testimonials Slider', 'color: #10B981;');
         console.log('%c✓ Form Validation & Handling', 'color: #10B981;');
-        console.log('%c✓ Smooth Scroll & Animations', 'color: #10B981;');
+        console.log('%c✓ Scroll To Top', 'color: #10B981;');
+        console.log('%c✓ Circle Animation', 'color: #10B981;');
+        console.log('%c✓ Smooth Scroll Enhancements', 'color: #10B981;');
         console.log('%c✓ Performance Monitoring', 'color: #10B981;');
+        console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #D1D5DB;');
+        console.log('%c💡 Access modules via: window.holisticApp', 'color: #6B7280;');
     }
 }
 
