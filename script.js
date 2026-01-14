@@ -454,6 +454,472 @@ if (!('scrollBehavior' in document.documentElement.style)) {
     document.head.appendChild(script);
 }
 
+/**
+ * ================================================
+ * MODERN HERO SECTION CONTROLLER
+ * ES6 Class for Video Background & Interactions
+ * ================================================
+ */
+
+class HeroController {
+    constructor() {
+        // DOM Elements
+        this.hero = document.querySelector('.hero-section');
+        this.video = document.querySelector('.hero-video');
+        this.logoImage = document.querySelector('.hero-logo-image');
+        this.infoCards = document.querySelectorAll('.info-card');
+        this.scrollIndicator = document.querySelector('.scroll-indicator-hero');
+        
+        // State
+        this.isVideoLoaded = false;
+        this.isInView = true;
+        
+        this.init();
+    }
+
+    init() {
+        this.setupVideoControls();
+        this.setupParallaxEffect();
+        this.setupMouseTracking();
+        this.setupScrollIndicator();
+        this.setupIntersectionObserver();
+        this.addVideoFallback();
+    }
+
+    /**
+     * Setup video autoplay and controls
+     */
+    setupVideoControls() {
+        if (!this.video) return;
+
+        // Ensure video plays
+        this.video.addEventListener('loadeddata', () => {
+            this.isVideoLoaded = true;
+            this.video.play().catch(error => {
+                console.log('Video autoplay prevented:', error);
+                this.addPlayButton();
+            });
+        });
+
+        // Pause video when out of view for performance
+        this.setupVideoOptimization();
+    }
+
+    /**
+     * Pause video when hero is out of viewport
+     */
+    setupVideoOptimization() {
+        if (!this.video) return;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    this.video.play();
+                } else {
+                    this.video.pause();
+                }
+            });
+        }, { threshold: 0.25 });
+
+        observer.observe(this.hero);
+    }
+
+    /**
+     * Add manual play button if autoplay fails
+     */
+    addPlayButton() {
+        if (document.querySelector('.video-play-btn')) return;
+
+        const playButton = document.createElement('button');
+        playButton.className = 'video-play-btn';
+        playButton.innerHTML = '<i class="fas fa-play"></i>';
+        playButton.setAttribute('aria-label', 'Play background video');
+        
+        playButton.style.cssText = `
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        `;
+
+        playButton.addEventListener('click', () => {
+            this.video.play();
+            playButton.remove();
+        });
+
+        playButton.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.1)';
+            this.style.background = 'rgba(255, 255, 255, 0.3)';
+        });
+
+        playButton.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+            this.style.background = 'rgba(255, 255, 255, 0.2)';
+        });
+
+        this.hero.appendChild(playButton);
+    }
+
+    /**
+     * Add video fallback image
+     */
+    addVideoFallback() {
+        if (!this.video) return;
+
+        this.video.addEventListener('error', () => {
+            console.log('Video failed to load, using fallback');
+            const videoWrapper = this.video.parentElement;
+            videoWrapper.style.background = 'linear-gradient(135deg, #5DBBC3 0%, #7B88C4 100%)';
+            this.video.style.display = 'none';
+        });
+    }
+
+    /**
+     * Parallax effect on scroll
+     */
+    setupParallaxEffect() {
+        let ticking = false;
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    this.updateParallax();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+    }
+
+    updateParallax() {
+        const scrolled = window.pageYOffset;
+        const heroHeight = this.hero.offsetHeight;
+        
+        if (scrolled > heroHeight) return;
+
+        // Parallax video
+        if (this.video) {
+            this.video.style.transform = `translate(-50%, -50%) scale(1.1) translateY(${scrolled * 0.5}px)`;
+        }
+
+        // Fade out hero content
+        const opacity = 1 - (scrolled / heroHeight) * 1.5;
+        const heroContent = document.querySelector('.hero-content');
+        const heroVisual = document.querySelector('.hero-visual');
+        
+        if (heroContent) {
+            heroContent.style.opacity = Math.max(0, opacity);
+            heroContent.style.transform = `translateY(${scrolled * 0.3}px)`;
+        }
+        
+        if (heroVisual) {
+            heroVisual.style.opacity = Math.max(0, opacity);
+            heroVisual.style.transform = `translateY(${scrolled * 0.2}px)`;
+        }
+    }
+
+    /**
+     * Mouse tracking for logo tilt effect
+     */
+    setupMouseTracking() {
+        if (!this.logoImage) return;
+
+        this.hero.addEventListener('mousemove', (e) => {
+            const rect = this.hero.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = (y - centerY) / 50;
+            const rotateY = (centerX - x) / 50;
+            
+            this.logoImage.style.transform = `
+                perspective(1000px)
+                rotateX(${rotateX}deg)
+                rotateY(${rotateY}deg)
+                scale(1.05)
+            `;
+        });
+
+        this.hero.addEventListener('mouseleave', () => {
+            this.logoImage.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+        });
+    }
+
+    /**
+     * Setup scroll indicator functionality
+     */
+    setupScrollIndicator() {
+        if (!this.scrollIndicator) return;
+
+        this.scrollIndicator.addEventListener('click', () => {
+            const aboutSection = document.getElementById('about');
+            if (aboutSection) {
+                aboutSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+
+        // Hide scroll indicator when scrolling
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 100) {
+                this.scrollIndicator.style.opacity = '0';
+                this.scrollIndicator.style.pointerEvents = 'none';
+            } else {
+                this.scrollIndicator.style.opacity = '1';
+                this.scrollIndicator.style.pointerEvents = 'auto';
+            }
+        }, { passive: true });
+    }
+
+    /**
+     * Track when hero is in view
+     */
+    setupIntersectionObserver() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                this.isInView = entry.isIntersecting;
+            });
+        }, { threshold: 0.1 });
+
+        observer.observe(this.hero);
+    }
+}
+
+/**
+ * ================================================
+ * FLOATING ELEMENTS ANIMATOR
+ * Animate info cards with mouse interaction
+ * ================================================
+ */
+
+class FloatingElementsAnimator {
+    constructor() {
+        this.cards = document.querySelectorAll('.info-card');
+        this.hero = document.querySelector('.hero-section');
+        
+        if (this.cards.length > 0) {
+            this.init();
+        }
+    }
+
+    init() {
+        this.setupMouseInteraction();
+        this.setupCardHover();
+    }
+
+    setupMouseInteraction() {
+        this.hero.addEventListener('mousemove', (e) => {
+            const rect = this.hero.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width;
+            const y = (e.clientY - rect.top) / rect.height;
+
+            this.cards.forEach((card, index) => {
+                const speed = (index + 1) * 5;
+                const moveX = (x - 0.5) * speed;
+                const moveY = (y - 0.5) * speed;
+                
+                card.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            });
+        });
+
+        this.hero.addEventListener('mouseleave', () => {
+            this.cards.forEach(card => {
+                card.style.transform = 'translate(0, 0)';
+            });
+        });
+    }
+
+    setupCardHover() {
+        this.cards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.1)';
+                this.style.background = 'rgba(255, 255, 255, 0.25)';
+            });
+
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+                this.style.background = 'rgba(255, 255, 255, 0.15)';
+            });
+        });
+    }
+}
+
+/**
+ * ================================================
+ * STATS COUNTER ANIMATION
+ * Animate numbers when hero comes into view
+ * ================================================
+ */
+
+class StatsAnimator {
+    constructor() {
+        this.statNumbers = document.querySelectorAll('.stat-number');
+        this.hasAnimated = false;
+        
+        if (this.statNumbers.length > 0) {
+            this.init();
+        }
+    }
+
+    init() {
+        this.setupObserver();
+    }
+
+    setupObserver() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !this.hasAnimated) {
+                    this.animateStats();
+                    this.hasAnimated = true;
+                }
+            });
+        }, { threshold: 0.5 });
+
+        this.statNumbers.forEach(stat => observer.observe(stat));
+    }
+
+    animateStats() {
+        this.statNumbers.forEach(stat => {
+            const text = stat.textContent;
+            const hasPlus = text.includes('+');
+            const hasPercent = text.includes('%');
+            const target = parseInt(text.replace(/\D/g, ''));
+            
+            this.countUp(stat, target, 2000, hasPlus, hasPercent);
+        });
+    }
+
+    countUp(element, target, duration, hasPlus, hasPercent) {
+        const start = 0;
+        const increment = target / (duration / 16);
+        let current = start;
+
+        const timer = setInterval(() => {
+            current += increment;
+            
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+
+            let displayValue = Math.floor(current);
+            if (hasPlus) displayValue += '+';
+            if (hasPercent) displayValue += '%';
+            
+            element.textContent = displayValue;
+        }, 16);
+    }
+}
+
+/**
+ * ================================================
+ * CTA BUTTON RIPPLE EFFECT
+ * Add ripple animation on button click
+ * ================================================
+ */
+
+class ButtonRippleEffect {
+    constructor() {
+        this.buttons = document.querySelectorAll('.btn-hero');
+        
+        if (this.buttons.length > 0) {
+            this.init();
+        }
+    }
+
+    init() {
+        this.buttons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                this.createRipple(e, button);
+            });
+        });
+    }
+
+    createRipple(event, button) {
+        const ripple = document.createElement('span');
+        const rect = button.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = event.clientX - rect.left - size / 2;
+        const y = event.clientY - rect.top - size / 2;
+
+        ripple.style.cssText = `
+            position: absolute;
+            width: ${size}px;
+            height: ${size}px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            top: ${y}px;
+            left: ${x}px;
+            transform: scale(0);
+            animation: ripple 0.6s ease-out;
+            pointer-events: none;
+        `;
+
+        // Add ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        if (!document.querySelector('[data-ripple-style]')) {
+            style.setAttribute('data-ripple-style', '');
+            document.head.appendChild(style);
+        }
+
+        button.appendChild(ripple);
+        
+        setTimeout(() => ripple.remove(), 600);
+    }
+}
+
+// Wait for DOM to be ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHeroSystems);
+} else {
+    initHeroSystems();
+}
+
+function initHeroSystems() {
+    // Initialize all hero components
+    new HeroController();
+    new FloatingElementsAnimator();
+    new StatsAnimator();
+    new ButtonRippleEffect();
+    
+    console.log('%c🎬 Hero Section Initialized', 'color: #5DBBC3; font-size: 14px; font-weight: bold;');
+}
+
+// Refresh hero on window resize
+let resizeTimer;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+        const heroController = document.querySelector('.hero-section');
+        if (heroController) {
+            // Recalculate positions
+            const event = new Event('scroll');
+            window.dispatchEvent(event);
+        }
+    }, 250);
+});
+
 // =========================
 // STATISTICS COUNTER CLASS
 // =========================
