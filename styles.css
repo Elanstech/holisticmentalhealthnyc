@@ -1949,6 +1949,10 @@ img {
    Modern, Sleek Design with Animations
    =================================== */
 
+/* ===================================
+   SERVICES CAROUSEL SECTION
+   =================================== */
+
 .services-carousel-section {
     padding: 120px 0;
     background: linear-gradient(180deg, #F9FAFB 0%, #FFFFFF 100%);
@@ -1969,13 +1973,13 @@ img {
 }
 
 /* Section Header */
-.services-carousel-section .section-header {
+.section-header {
     text-align: center;
     max-width: 700px;
     margin: 0 auto 80px;
 }
 
-.services-carousel-section .section-label {
+.section-label {
     display: inline-block;
     padding: 8px 20px;
     background: linear-gradient(135deg, rgba(93, 187, 195, 0.1) 0%, rgba(123, 136, 196, 0.1) 100%);
@@ -1988,7 +1992,7 @@ img {
     margin-bottom: 20px;
 }
 
-.services-carousel-section .section-header h2 {
+.section-header h2 {
     font-size: 48px;
     font-weight: 700;
     color: #1F2937;
@@ -1996,27 +2000,28 @@ img {
     line-height: 1.2;
 }
 
-.services-carousel-section .section-header p {
+.section-header p {
     font-size: 18px;
     color: #6B7280;
     line-height: 1.7;
 }
 
+/* Carousel Wrapper */
 .services-carousel-wrapper {
     position: relative;
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 80px;
+    overflow: hidden;
 }
 
 .services-carousel {
     display: flex;
     gap: 32px;
-    overflow: hidden;
-    scroll-behavior: smooth;
-    position: relative;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Service Card */
 .service-carousel-card {
     flex: 0 0 calc(33.333% - 22px);
     min-width: calc(33.333% - 22px);
@@ -2025,18 +2030,10 @@ img {
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    opacity: 0.7;
-    transform: scale(0.95);
-}
-
-.service-carousel-card.active {
-    opacity: 1;
-    transform: scale(1);
-    box-shadow: 0 12px 40px rgba(93, 187, 195, 0.2);
 }
 
 .service-carousel-card:hover {
-    transform: translateY(-8px) scale(1.02);
+    transform: translateY(-8px);
     box-shadow: 0 16px 50px rgba(93, 187, 195, 0.25);
 }
 
@@ -2164,6 +2161,7 @@ img {
     transform: translateX(4px);
 }
 
+/* Carousel Controls */
 .carousel-control {
     position: absolute;
     top: 50%;
@@ -2172,7 +2170,6 @@ img {
     height: 56px;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(93, 187, 195, 0.2);
     border-radius: 50%;
     display: flex;
@@ -2202,6 +2199,7 @@ img {
     right: 0;
 }
 
+/* Carousel Indicators */
 .carousel-indicators {
     display: flex;
     justify-content: center;
@@ -2227,6 +2225,10 @@ img {
 .carousel-indicator:hover {
     background: rgba(93, 187, 195, 0.4);
 }
+
+/* ===================================
+   SERVICE MODAL
+   =================================== */
 
 .service-modal {
     position: fixed;
@@ -2256,7 +2258,6 @@ img {
     height: 100%;
     background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
 }
 
 .modal-container {
@@ -2311,7 +2312,6 @@ img {
     padding: 0;
 }
 
-/* Custom Scrollbar */
 .modal-content-wrapper::-webkit-scrollbar {
     width: 8px;
 }
@@ -2446,12 +2446,13 @@ img {
     font-weight: 600;
 }
 
-/* Modal Conditions/Tags */
+/* Modal Conditions */
 .modal-conditions {
-    margin-bottom: 40px;
+    margin-bottom: 0;
     padding: 32px;
     background: linear-gradient(135deg, rgba(93, 187, 195, 0.03) 0%, rgba(123, 136, 196, 0.03) 100%);
     border-radius: 16px;
+    border-bottom: none;
 }
 
 .modal-conditions h3 {
@@ -2495,113 +2496,6 @@ img {
     box-shadow: 0 4px 12px rgba(93, 187, 195, 0.3);
 }
 
-/* Modal Pricing */
-.modal-pricing {
-    background: linear-gradient(135deg, rgba(93, 187, 195, 0.05) 0%, rgba(123, 136, 196, 0.05) 100%);
-    padding: 32px;
-    border-radius: 16px;
-    margin-bottom: 40px;
-}
-
-.modal-pricing h3 {
-    font-size: 24px;
-    font-weight: 700;
-    color: #1F2937;
-    margin-bottom: 24px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.modal-pricing h3 i {
-    font-size: 28px;
-    color: var(--color-teal);
-}
-
-.pricing-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 24px;
-    margin-bottom: 24px;
-}
-
-.pricing-item {
-    background: #FFFFFF;
-    padding: 32px 24px;
-    border-radius: 16px;
-    text-align: center;
-    border: 2px solid rgba(93, 187, 195, 0.15);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-}
-
-.pricing-item.highlight {
-    border-color: var(--color-teal);
-    box-shadow: 0 8px 24px rgba(93, 187, 195, 0.2);
-}
-
-.pricing-item:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(93, 187, 195, 0.25);
-}
-
-.price-tag {
-    display: inline-block;
-    padding: 6px 16px;
-    background: linear-gradient(135deg, rgba(93, 187, 195, 0.1) 0%, rgba(123, 136, 196, 0.1) 100%);
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--color-teal);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 16px;
-}
-
-.pricing-item.highlight .price-tag {
-    background: var(--gradient-primary);
-    color: #FFFFFF;
-}
-
-.price {
-    display: block;
-    font-size: 48px;
-    font-weight: 800;
-    color: #1F2937;
-    line-height: 1;
-    margin-bottom: 8px;
-}
-
-.price-label {
-    display: block;
-    font-size: 14px;
-    color: #6B7280;
-    margin-bottom: 12px;
-}
-
-.savings {
-    display: inline-block;
-    padding: 6px 14px;
-    background: #10B981;
-    color: #FFFFFF;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-.insurance-note {
-    font-size: 14px;
-    color: #6B7280;
-    text-align: center;
-    line-height: 1.6;
-    margin: 0;
-}
-
-.insurance-note i {
-    color: var(--color-teal);
-    margin-right: 6px;
-}
-
 /* Modal Footer */
 .modal-footer {
     padding: 32px 40px;
@@ -2641,6 +2535,10 @@ img {
     color: #6B7280;
 }
 
+/* ===================================
+   RESPONSIVE DESIGN
+   =================================== */
+
 @media (max-width: 1200px) {
     .service-carousel-card {
         flex: 0 0 calc(50% - 16px);
@@ -2657,11 +2555,11 @@ img {
         padding: 80px 0;
     }
 
-    .services-carousel-section .section-header {
+    .section-header {
         margin-bottom: 60px;
     }
 
-    .services-carousel-section .section-header h2 {
+    .section-header h2 {
         font-size: 36px;
     }
 
@@ -2712,10 +2610,6 @@ img {
         font-size: 20px;
     }
 
-    .pricing-grid {
-        grid-template-columns: 1fr;
-    }
-
     .modal-footer {
         padding: 24px;
     }
@@ -2753,8 +2647,7 @@ img {
         font-size: 16px;
     }
 
-    .modal-conditions,
-    .modal-pricing {
+    .modal-conditions {
         padding: 20px;
     }
 
@@ -2762,7 +2655,6 @@ img {
         grid-template-columns: 1fr;
     }
 }
-
 
 /* ==================
    APPROACH SECTION
