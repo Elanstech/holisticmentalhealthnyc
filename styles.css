@@ -613,6 +613,16 @@ img {
     object-fit: cover;
 }
 
+.hero-video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(31, 41, 55, 0.7) 0%, rgba(17, 24, 39, 0.8) 100%);
+    z-index: 1;
+}
+
 /* Hero Content */
 .hero-content {
     max-width: var(--container-width);
@@ -656,7 +666,11 @@ img {
     flex-wrap: wrap;
 }
 
-/* Hero Image - Logo without white box */
+/* ===================================
+   LIQUID GLASS EFFECT FOR LOGO
+   =================================== */
+
+/* Hero Image Container */
 .hero-image {
     position: relative;
     display: flex;
@@ -665,14 +679,217 @@ img {
     animation: float 6s ease-in-out infinite;
 }
 
-.hero-logo {
-    width: 100%;
-    max-width: 350px;
-    filter: drop-shadow(0 20px 60px rgba(0, 0, 0, 0.4));
-    transition: var(--transition-smooth);
+/* Liquid Glass Container */
+.liquid-glass-container {
+    position: absolute;
+    width: 450px;
+    height: 450px;
+    z-index: 0;
 }
 
-/* Scroll Indicator */
+/* Main Liquid Glass Panel */
+.liquid-glass-panel {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(30px) saturate(180%);
+    -webkit-backdrop-filter: blur(30px) saturate(180%);
+    border-radius: 40% 60% 60% 40% / 50% 50% 50% 50%;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 8px 32px rgba(93, 187, 195, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+    animation: morphGlass 12s ease-in-out infinite;
+    overflow: hidden;
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+}
+
+/* Glass Inner Glow */
+.glass-inner {
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    width: 80%;
+    height: 80%;
+    background: radial-gradient(
+        circle at 30% 30%,
+        rgba(255, 255, 255, 0.25) 0%,
+        transparent 60%
+    );
+    border-radius: inherit;
+    animation: glowPulse 4s ease-in-out infinite;
+}
+
+/* Glass Shine/Reflection */
+.glass-shine {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.4) 0%,
+        transparent 30%,
+        transparent 70%,
+        rgba(255, 255, 255, 0.2) 100%
+    );
+    transform: rotate(45deg);
+    animation: shineMove 8s ease-in-out infinite;
+}
+
+/* Animated Liquid Blobs */
+.glass-blob {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle at 30% 30%,
+        rgba(255, 255, 255, 0.3),
+        rgba(93, 187, 195, 0.2)
+    );
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 
+        0 4px 20px rgba(93, 187, 195, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+}
+
+.blob-1 {
+    width: 180px;
+    height: 180px;
+    top: -20%;
+    right: -15%;
+    animation: blobFloat1 15s ease-in-out infinite;
+}
+
+.blob-2 {
+    width: 140px;
+    height: 140px;
+    bottom: -10%;
+    left: -10%;
+    animation: blobFloat2 12s ease-in-out infinite reverse;
+}
+
+.blob-3 {
+    width: 100px;
+    height: 100px;
+    top: 50%;
+    left: -20%;
+    animation: blobFloat3 10s ease-in-out infinite;
+}
+
+/* Logo Positioning */
+.hero-logo {
+    position: relative;
+    width: 100%;
+    max-width: 350px;
+    z-index: 10;
+    filter: drop-shadow(0 20px 60px rgba(0, 0, 0, 0.4));
+    transition: var(--transition-smooth);
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+}
+
+/* ===================================
+   LIQUID GLASS ANIMATIONS
+   =================================== */
+
+@keyframes morphGlass {
+    0%, 100% {
+        border-radius: 40% 60% 60% 40% / 50% 50% 50% 50%;
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    25% {
+        border-radius: 60% 40% 50% 50% / 40% 60% 40% 60%;
+        transform: translate(-50%, -50%) rotate(5deg);
+    }
+    50% {
+        border-radius: 50% 50% 40% 60% / 60% 40% 60% 40%;
+        transform: translate(-50%, -50%) rotate(-5deg);
+    }
+    75% {
+        border-radius: 45% 55% 55% 45% / 55% 45% 55% 45%;
+        transform: translate(-50%, -50%) rotate(3deg);
+    }
+}
+
+@keyframes glowPulse {
+    0%, 100% {
+        opacity: 0.6;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+}
+
+@keyframes shineMove {
+    0%, 100% {
+        transform: rotate(45deg) translate(0, 0);
+        opacity: 0.3;
+    }
+    50% {
+        transform: rotate(45deg) translate(20%, 20%);
+        opacity: 0.6;
+    }
+}
+
+@keyframes blobFloat1 {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+    }
+    33% {
+        transform: translate(30px, -30px) scale(1.1);
+    }
+    66% {
+        transform: translate(-20px, 20px) scale(0.9);
+    }
+}
+
+@keyframes blobFloat2 {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+    }
+    33% {
+        transform: translate(-25px, 25px) scale(1.15);
+    }
+    66% {
+        transform: translate(25px, -15px) scale(0.95);
+    }
+}
+
+@keyframes blobFloat3 {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+    }
+    50% {
+        transform: translate(20px, -20px) scale(1.2);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* ===================================
+   SCROLL INDICATOR
+   =================================== */
+
 .scroll-indicator {
     position: absolute;
     bottom: 40px;
@@ -703,16 +920,6 @@ img {
     animation: scroll 2s ease-in-out infinite;
 }
 
-/* Animations */
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-20px);
-    }
-}
-
 @keyframes scroll {
     0% {
         transform: translateX(-50%) translateY(0);
@@ -727,7 +934,10 @@ img {
     }
 }
 
-/* Responsive Design */
+/* ===================================
+   RESPONSIVE DESIGN FOR HERO
+   =================================== */
+
 @media (max-width: 1024px) {
     .hero-content {
         grid-template-columns: 1fr;
@@ -736,6 +946,15 @@ img {
 
     .hero-text h1 {
         font-size: 40px;
+    }
+
+    .liquid-glass-container {
+        width: 400px;
+        height: 400px;
+    }
+    
+    .hero-logo {
+        max-width: 300px;
     }
 }
 
@@ -761,6 +980,26 @@ img {
         justify-content: center;
     }
 
+    .liquid-glass-container {
+        width: 350px;
+        height: 350px;
+    }
+    
+    .blob-1 {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .blob-2 {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .blob-3 {
+        width: 80px;
+        height: 80px;
+    }
+    
     .hero-logo {
         max-width: 250px;
     }
@@ -771,6 +1010,17 @@ img {
         font-size: 32px;
     }
 
+    .liquid-glass-container {
+        width: 280px;
+        height: 280px;
+    }
+    
+    .blob-1,
+    .blob-2,
+    .blob-3 {
+        opacity: 0.7;
+    }
+    
     .hero-logo {
         max-width: 200px;
     }
