@@ -8,84 +8,450 @@
 // =========================
 // NAVIGATION CLASS
 // =========================
-class Navigation {
+
+class ProgressNavigation {
     constructor() {
-        this.nav = document.getElementById('mainNav');
-        this.navToggle = document.getElementById('navToggle');
-        this.navMenu = document.getElementById('navMenu');
-        this.navLinks = document.querySelectorAll('.nav-link');
+        // DOM Elements
+        this.header = document.getElementById('progressHeader');
+        this.progressFill = document.querySelector('.page-progress-fill');
+        this.progressConnector = document.querySelector('.progress-connector');
+        this.navPoints = document.querySelectorAll('.nav-point');
+        this.mobilePoints = document.querySelectorAll('.mobile-point');
+        this.sectionLabel = document.querySelector('.active-section-name');
+        
+        // State
+        this.sections = [];
+        this.currentSection = null;
+        this.isScrolling = false;
+        this.scrollTimeout = null;
+        
+        // Configuration
+        this.offsetThreshold = 150;
         
         this.init();
     }
 
     init() {
-        this.setupScrollEffect();
-        this.setupMobileMenu();
-        this.setupSmoothScroll();
+        this.setupSections();
+        this.setupScrollProgress();
+        this.setupActiveSectionDetection();
+        this.setupSmoothScrolling();
+        this.setupHeaderScroll();
+        this.updateActiveSection();
     }
 
-    setupScrollEffect() {
+    /**
+     * Map all sections from navigation points
+     */
+    setupSections() {
+        this.navPoints.forEach(point => {
+            const target = point.getAttribute('data-target');
+            const element = document.getElementById(target);
+            
+            if (element) {
+                this.sections.push({
+                    id: target,
+                    element: element,
+                    navPoint: point,
+                    mobilePoint: document.querySelector(`.mobile-point[data-target="${target}"]`),
+                    label: point.querySelector('.point-label').textContent
+                });
+            }
+        });
+    }
+
+    /**
+     * Update page scroll progress bar
+     */
+    setupScrollProgress() {
+        const updateProgress = () => {
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight - windowHeight;
+            const scrolled = window.pageYOffset;
+            const progress = Math.min((scrolled / documentHeight) * 100, 100);
+            
+            if (this.progressFill) {
+                this.progressFill.style.width = `${progress}%`;
+            }
+        };
+
+        // Initial update
+        updateProgress();
+
+        // Update on scroll (throttled)
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    updateProgress();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+    }
+
+    /**
+     * Detect active section and update navigation
+     */
+    setupActiveSectionDetection() {
+        const detectActive = () => {
+            const scrollPosition = window.pageYOffset + this.offsetThreshold;
+            
+            let activeSection = null;
+            let activeSectionIndex = 0;
+
+            // Find the current active section
+            for (let i = this.sections.length - 1; i >= 0; i--) {
+                const section = this.sections[i];
+                const sectionTop = section.element.offsetTop;
+                
+                if (scrollPosition >= sectionTop) {
+                    activeSection = section;
+                    activeSectionIndex = i;
+                    break;
+                }
+            }
+
+            // Update if section changed
+            if (activeSection && activeSection.id !== this.currentSection) {
+                this.currentSection = activeSection.id;
+                this.updateNavigationState(activeSection, activeSectionIndex);
+            }
+        };
+
+        // Initial detection
+        detectActive();
+
+        // Detect on scroll
+        let scrollTicking = false;
+        window.addEventListener('scroll', () => {
+            if (!scrollTicking) {
+                window.requestAnimationFrame(() => {
+                    detectActive();
+                    scrollTicking = false;
+                });
+                scrollTicking = true;
+            }
+        }, { passive: true });
+    }
+
+    /**
+     * Update navigation active and completed states
+     */
+    updateNavigationState(activeSection, activeIndex) {
+        // Calculate progress connector width
+        const totalSections = this.sections.length;
+        const progress = (activeIndex / (totalSections - 1)) * 100;
+        
+        if (this.progressConnector) {
+            this.progressConnector.style.setProperty('--progress-width', `${progress}%`);
+            const connectorAfter = this.progressConnector.querySelector('::after') || this.progressConnector;
+            if (connectorAfter) {
+                connectorAfter.style.width = `${progress}%`;
+            }
+        }
+
+        // Update all sections
+        this.sections.forEach((section, index) => {
+            const isActive = section.id === activeSection.id;
+            const isCompleted = index < activeIndex;
+
+            // Desktop navigation
+            if (section.navPoint) {
+                section.navPoint.classList.toggle('active', isActive);
+                section.navPoint.classList.toggle('completed', isCompleted);
+            }
+
+            // Mobile navigation
+            if (section.mobilePoint) {
+                section.mobilePoint.classList.toggle('active', isActive);
+                section.mobilePoint.classList.toggle('completed', isCompleted);
+            }
+        });
+
+        // Update mobile section label
+        if (this.sectionLabel) {
+            this.sectionLabel.textContent = activeSection.label;
+        }
+    }
+
+    /**
+     * Setup smooth scrolling to sections
+     */
+    setupSmoothScrolling() {
+        const scrollToSection = (target) => {
+            const element = document.getElementById(target);
+            
+            if (!element) return;
+
+            const offsetPosition = element.offsetTop - 75; // Header height offset
+            
+            this.isScrolling = true;
+            
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+
+            // Reset scrolling flag after animation
+            clearTimeout(this.scrollTimeout);
+            this.scrollTimeout = setTimeout(() => {
+                this.isScrolling = false;
+            }, 1000);
+        };
+
+        // Desktop navigation points
+        this.navPoints.forEach(point => {
+            point.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = point.getAttribute('data-target');
+                scrollToSection(target);
+            });
+        });
+
+        // Mobile navigation points
+        this.mobilePoints.forEach(point => {
+            point.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = point.getAttribute('data-target');
+                scrollToSection(target);
+            });
+        });
+    }
+
+    /**
+     * Add scroll effect to header
+     */
+    setupHeaderScroll() {
         let lastScroll = 0;
         
         window.addEventListener('scroll', () => {
             const currentScroll = window.pageYOffset;
             
-            if (currentScroll > 100) {
-                this.nav.classList.add('scrolled');
+            if (currentScroll > 50) {
+                this.header.classList.add('header-scrolled');
             } else {
-                this.nav.classList.remove('scrolled');
+                this.header.classList.remove('header-scrolled');
             }
-            
+
             lastScroll = currentScroll;
-        });
+        }, { passive: true });
     }
 
-    setupMobileMenu() {
-        this.navToggle.addEventListener('click', () => {
-            this.navToggle.classList.toggle('active');
-            this.navMenu.classList.toggle('active');
-            document.body.style.overflow = this.navMenu.classList.contains('active') ? 'hidden' : '';
-        });
+    /**
+     * Force update active section (useful after page load)
+     */
+    updateActiveSection() {
+        setTimeout(() => {
+            const event = new Event('scroll');
+            window.dispatchEvent(event);
+        }, 100);
+    }
 
-        // Close menu when clicking on a link
-        this.navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                this.navToggle.classList.remove('active');
-                this.navMenu.classList.remove('active');
-                document.body.style.overflow = '';
-            });
+    /**
+     * Refresh section positions (call after dynamic content)
+     */
+    refreshPositions() {
+        this.sections.forEach(section => {
+            section.offset = section.element.offsetTop;
         });
+        this.updateActiveSection();
+    }
+}
 
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!this.nav.contains(e.target)) {
-                this.navToggle.classList.remove('active');
-                this.navMenu.classList.remove('active');
-                document.body.style.overflow = '';
+class SmoothScrollEnhancer {
+    constructor() {
+        this.init();
+    }
+
+    init() {
+        this.enhanceNavLinks();
+        this.addKeyboardNavigation();
+    }
+
+    /**
+     * Enhance all anchor links on the page
+     */
+    enhanceNavLinks() {
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            if (anchor.classList.contains('nav-point') || 
+                anchor.classList.contains('mobile-point')) {
+                return; // Already handled by ProgressNavigation
             }
-        });
-    }
 
-    setupSmoothScroll() {
-        this.navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                const href = link.getAttribute('href');
-                
-                if (href.startsWith('#')) {
+            anchor.addEventListener('click', (e) => {
+                const href = anchor.getAttribute('href');
+                if (href === '#') return;
+
+                const target = document.querySelector(href);
+                if (target) {
                     e.preventDefault();
-                    const target = document.querySelector(href);
                     
-                    if (target) {
-                        const offsetTop = target.offsetTop - 80;
-                        window.scrollTo({
-                            top: offsetTop,
-                            behavior: 'smooth'
-                        });
-                    }
+                    const offsetTop = target.offsetTop - 75;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
                 }
             });
         });
     }
+
+    /**
+     * Add keyboard navigation support
+     */
+    addKeyboardNavigation() {
+        const navPoints = document.querySelectorAll('.nav-point');
+        
+        navPoints.forEach((point, index) => {
+            point.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    point.click();
+                }
+                
+                // Arrow key navigation
+                if (e.key === 'ArrowRight' && navPoints[index + 1]) {
+                    e.preventDefault();
+                    navPoints[index + 1].focus();
+                } else if (e.key === 'ArrowLeft' && navPoints[index - 1]) {
+                    e.preventDefault();
+                    navPoints[index - 1].focus();
+                }
+            });
+        });
+    }
+}
+
+class SectionObserver {
+    constructor(progressNav) {
+        this.progressNav = progressNav;
+        this.observerOptions = {
+            root: null,
+            rootMargin: '-20% 0px -70% 0px',
+            threshold: 0
+        };
+        
+        this.init();
+    }
+
+    init() {
+        if (!('IntersectionObserver' in window)) {
+            console.log('IntersectionObserver not supported, using fallback');
+            return;
+        }
+
+        this.setupObserver();
+    }
+
+    setupObserver() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const sectionId = entry.target.id;
+                    const section = this.progressNav.sections.find(s => s.id === sectionId);
+                    
+                    if (section) {
+                        const index = this.progressNav.sections.indexOf(section);
+                        this.progressNav.updateNavigationState(section, index);
+                        this.progressNav.currentSection = sectionId;
+                    }
+                }
+            });
+        }, this.observerOptions);
+
+        // Observe all sections
+        this.progressNav.sections.forEach(section => {
+            observer.observe(section.element);
+        });
+    }
+}
+
+class LogoAnimator {
+    constructor() {
+        this.logo = document.querySelector('.header-logo');
+        this.logoImage = document.querySelector('.logo-image');
+        this.lastScroll = 0;
+        
+        if (this.logo && this.logoImage) {
+            this.init();
+        }
+    }
+
+    init() {
+        let ticking = false;
+        
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    this.animateLogo();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+    }
+
+    animateLogo() {
+        const currentScroll = window.pageYOffset;
+        const scrollDifference = Math.abs(currentScroll - this.lastScroll);
+        
+        if (scrollDifference > 5) {
+            // Subtle rotation based on scroll direction
+            const rotation = currentScroll > this.lastScroll ? 2 : -2;
+            this.logoImage.style.transform = `rotate(${rotation}deg)`;
+            
+            setTimeout(() => {
+                this.logoImage.style.transform = 'rotate(0deg)';
+            }, 200);
+        }
+        
+        this.lastScroll = currentScroll;
+    }
+}
+
+// Wait for DOM to be ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initProgressNavigation);
+} else {
+    initProgressNavigation();
+}
+
+function initProgressNavigation() {
+    // Initialize main navigation system
+    const progressNav = new ProgressNavigation();
+    
+    // Initialize enhancements
+    new SmoothScrollEnhancer();
+    new SectionObserver(progressNav);
+    new LogoAnimator();
+    
+    // Make progressNav globally accessible for debugging
+    window.progressNav = progressNav;
+    
+    // Refresh positions after images load
+    window.addEventListener('load', () => {
+        progressNav.refreshPositions();
+    });
+    
+    // Refresh on window resize
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            progressNav.refreshPositions();
+        }, 250);
+    });
+    
+    console.log('%c✨ Progress Navigation Initialized', 'color: #5DBBC3; font-size: 14px; font-weight: bold;');
+}
+
+// Smooth scroll polyfill for older browsers
+if (!('scrollBehavior' in document.documentElement.style)) {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/smoothscroll-polyfill@0.4.4/dist/smoothscroll.min.js';
+    document.head.appendChild(script);
 }
 
 // =========================
@@ -651,7 +1017,7 @@ class App {
         }
 
         // Initialize all modules
-        new Navigation();
+        new ProgressNavigation();
         new StatisticsCounter();
         new TestimonialsSlider();
         new FormHandler();
