@@ -22,105 +22,73 @@
 </head>
 <body>
 
-    <!-- Modern One-Page Navigation with Progress Bar -->
-<nav class="nav" id="mainNav">
-    <!-- Scroll Progress Bar -->
-    <div class="scroll-progress" id="scrollProgress"></div>
-    
-    <div class="nav-container">
-        <!-- Desktop Navigation -->
-        <ul class="nav-menu" id="navMenu">
-            <li><a href="#home" class="nav-link" data-section="home">Home</a></li>
-            <li><a href="#about" class="nav-link" data-section="about">About</a></li>
-            <li><a href="#services" class="nav-link" data-section="services">Services</a></li>
-            <li><a href="#approach" class="nav-link" data-section="approach">Approach</a></li>
-            <li><a href="#team" class="nav-link" data-section="team">Team</a></li>
-            <li><a href="#testimonials" class="nav-link" data-section="testimonials">Testimonials</a></li>
-            <li><a href="#contact" class="nav-link nav-link-cta" data-section="contact">
-                <span>Contact</span>
-                <i class="fas fa-arrow-right"></i>
-            </a></li>
-        </ul>
+<!-- Progress Tracker Navigation Header -->
+<header class="progress-nav-header" id="progressHeader">
+    <div class="header-container">
+        <!-- Logo Section -->
+        <a href="#home" class="header-logo">
+            <img src="logo.png" alt="Holistic Mental Health" class="logo-image">
+            <span class="logo-title">Holistic Mental Health</span>
+        </a>
 
-        <!-- Mobile Menu Toggle -->
-        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
-            <span class="hamburger-line"></span>
-            <span class="hamburger-line"></span>
-            <span class="hamburger-line"></span>
-        </button>
+        <!-- Desktop Progress Navigation -->
+        <nav class="desktop-progress-nav" aria-label="Main navigation">
+            <div class="progress-container">
+                <!-- Connecting Line -->
+                <div class="progress-connector"></div>
+                
+                <!-- Navigation Dots -->
+                <a href="#home" class="nav-point" data-target="home">
+                    <span class="point-label">Home</span>
+                    <span class="point-dot"></span>
+                </a>
+                <a href="#about" class="nav-point" data-target="about">
+                    <span class="point-label">About</span>
+                    <span class="point-dot"></span>
+                </a>
+                <a href="#services" class="nav-point" data-target="services">
+                    <span class="point-label">Services</span>
+                    <span class="point-dot"></span>
+                </a>
+                <a href="#approach" class="nav-point" data-target="approach">
+                    <span class="point-label">Approach</span>
+                    <span class="point-dot"></span>
+                </a>
+                <a href="#team" class="nav-point" data-target="team">
+                    <span class="point-label">Team</span>
+                    <span class="point-dot"></span>
+                </a>
+                <a href="#testimonials" class="nav-point" data-target="testimonials">
+                    <span class="point-label">Testimonials</span>
+                    <span class="point-dot"></span>
+                </a>
+                <a href="#contact" class="nav-point" data-target="contact">
+                    <span class="point-label">Contact</span>
+                    <span class="point-dot"></span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- Mobile Progress Navigation -->
+        <nav class="mobile-progress-nav" aria-label="Mobile navigation">
+            <span class="active-section-name">Home</span>
+            <div class="mobile-progress-dots">
+                <a href="#home" class="mobile-point" data-target="home" aria-label="Home section"></a>
+                <a href="#about" class="mobile-point" data-target="about" aria-label="About section"></a>
+                <a href="#services" class="mobile-point" data-target="services" aria-label="Services section"></a>
+                <a href="#approach" class="mobile-point" data-target="approach" aria-label="Approach section"></a>
+                <a href="#team" class="mobile-point" data-target="team" aria-label="Team section"></a>
+                <a href="#testimonials" class="mobile-point" data-target="testimonials" aria-label="Testimonials section"></a>
+                <a href="#contact" class="mobile-point" data-target="contact" aria-label="Contact section"></a>
+            </div>
+        </nav>
     </div>
 
-    <!-- Mobile Menu Overlay -->
-    <div class="mobile-menu-overlay" id="mobileMenuOverlay">
-        <div class="mobile-menu-content">
-            <div class="mobile-menu-header">
-                <h3>Navigation</h3>
-                <button class="mobile-close" id="mobileClose">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <ul class="mobile-menu-list">
-                <li style="--delay: 0.1s">
-                    <a href="#home" class="mobile-link" data-section="home">
-                        <span class="mobile-link-number">01</span>
-                        <span class="mobile-link-text">Home</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
-                </li>
-                <li style="--delay: 0.2s">
-                    <a href="#about" class="mobile-link" data-section="about">
-                        <span class="mobile-link-number">02</span>
-                        <span class="mobile-link-text">About</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
-                </li>
-                <li style="--delay: 0.3s">
-                    <a href="#services" class="mobile-link" data-section="services">
-                        <span class="mobile-link-number">03</span>
-                        <span class="mobile-link-text">Services</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
-                </li>
-                <li style="--delay: 0.4s">
-                    <a href="#approach" class="mobile-link" data-section="approach">
-                        <span class="mobile-link-number">04</span>
-                        <span class="mobile-link-text">Approach</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
-                </li>
-                <li style="--delay: 0.5s">
-                    <a href="#team" class="mobile-link" data-section="team">
-                        <span class="mobile-link-number">05</span>
-                        <span class="mobile-link-text">Team</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
-                </li>
-                <li style="--delay: 0.6s">
-                    <a href="#testimonials" class="mobile-link" data-section="testimonials">
-                        <span class="mobile-link-number">06</span>
-                        <span class="mobile-link-text">Testimonials</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
-                </li>
-                <li style="--delay: 0.7s">
-                    <a href="#contact" class="mobile-link mobile-link-cta" data-section="contact">
-                        <span class="mobile-link-number">07</span>
-                        <span class="mobile-link-text">Contact</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
-                </li>
-            </ul>
-            <div class="mobile-menu-footer">
-                <p>Holistic Mental Health Services</p>
-                <div class="mobile-social">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-            </div>
-        </div>
+    <!-- Page Scroll Progress Bar -->
+    <div class="page-progress-bar">
+        <div class="page-progress-fill"></div>
     </div>
-</nav>
+</header>
     
     <!-- Hero Section -->
     <section class="hero" id="home">
