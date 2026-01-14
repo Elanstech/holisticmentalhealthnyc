@@ -1015,7 +1015,8 @@ img {
 }
 
 /* ===================================
-   HERO SECTION WITH VIDEO BACKGROUND
+   HERO SECTION WITH VIDEO BACKGROUND & LIQUID GLASS LOGO
+   Mobile Optimized - Bubbles Hidden on Mobile
    =================================== */
 
 .hero {
@@ -1396,6 +1397,10 @@ img {
     }
 }
 
+/* ===================================
+   MOBILE - REMOVE BUBBLES & SMALLER LOGO
+   =================================== */
+
 @media (max-width: 768px) {
     .hero {
         padding: 100px 20px 60px;
@@ -1418,28 +1423,22 @@ img {
         justify-content: center;
     }
 
+    /* Hide liquid glass bubbles on mobile */
+    .glass-blob {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+    }
+
+    /* Smaller liquid glass container on mobile */
     .liquid-glass-container {
-        width: 350px;
-        height: 350px;
+        width: 280px;
+        height: 280px;
     }
     
-    .blob-1 {
-        width: 150px;
-        height: 150px;
-    }
-    
-    .blob-2 {
-        width: 120px;
-        height: 120px;
-    }
-    
-    .blob-3 {
-        width: 80px;
-        height: 80px;
-    }
-    
+    /* Smaller logo on mobile */
     .hero-logo {
-        max-width: 250px;
+        max-width: 200px;
     }
 }
 
@@ -1448,19 +1447,14 @@ img {
         font-size: 32px;
     }
 
+    /* Even smaller on very small screens */
     .liquid-glass-container {
-        width: 280px;
-        height: 280px;
-    }
-    
-    .blob-1,
-    .blob-2,
-    .blob-3 {
-        opacity: 0.7;
+        width: 240px;
+        height: 240px;
     }
     
     .hero-logo {
-        max-width: 200px;
+        max-width: 180px;
     }
 }
 
