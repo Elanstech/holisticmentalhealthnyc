@@ -420,18 +420,18 @@
     </div>
 </section>
     
-<!-- Services Carousel Section - Complete with All Modals -->
+<!-- Services Carousel Section -->
 <section class="services-carousel-section" id="services">
     <div class="container">
         <!-- Section Header -->
-        <div class="section-header" data-aos="fade-up">
+        <div class="section-header">
             <span class="section-label">Our Services</span>
             <h2>Comprehensive Mental Health Care</h2>
             <p>Specialized therapy services tailored to your unique journey</p>
         </div>
 
         <!-- Services Carousel -->
-        <div class="services-carousel-wrapper" data-aos="fade-up" data-aos-delay="200">
+        <div class="services-carousel-wrapper">
             <div class="services-carousel" id="servicesCarousel">
                 
                 <!-- Service Card 1 - Individual Therapy -->
@@ -588,7 +588,7 @@
     </div>
 </section>
 
-<!-- Service Modals Container -->
+<!-- Service Modal -->
 <div class="service-modal" id="serviceModal">
     <div class="modal-overlay"></div>
     <div class="modal-container">
@@ -600,9 +600,10 @@
     </div>
 </div>
 
-<!-- Modal Content Templates -->
+<!-- Modal Content Templates (Hidden) -->
 <div class="modal-templates" style="display: none;">
 
+    <!-- Individual Therapy Modal -->
     <div id="modal-individual" class="modal-template">
         <div class="modal-header">
             <div class="modal-icon">
@@ -629,11 +630,11 @@
                 <h3><i class="fas fa-heart"></i> Before Treatment</h3>
                 <p>Preparing for therapy helps maximize the benefits of your sessions:</p>
                 <ul>
-                    <li><strong>Free Consultation:</strong> 15-minute phone call to discuss your needs and answer questions</li>
-                    <li><strong>Intake Assessment:</strong> Comprehensive evaluation during your first session to understand your background and goals</li>
-                    <li><strong>Goal Setting:</strong> Collaboratively identify specific areas you'd like to address in therapy</li>
-                    <li><strong>Insurance Verification:</strong> We'll help verify your insurance coverage and discuss payment options</li>
-                    <li><strong>Paperwork:</strong> Complete intake forms and consent documents before your first session</li>
+                    <li><strong>Free Consultation:</strong> 15-minute phone call to discuss your needs</li>
+                    <li><strong>Intake Assessment:</strong> Comprehensive evaluation during first session</li>
+                    <li><strong>Goal Setting:</strong> Collaboratively identify specific areas to address</li>
+                    <li><strong>Insurance Verification:</strong> We'll help verify coverage and discuss payment</li>
+                    <li><strong>Paperwork:</strong> Complete intake forms before your first session</li>
                 </ul>
             </div>
 
@@ -641,12 +642,11 @@
                 <h3><i class="fas fa-star"></i> During Treatment</h3>
                 <p>What happens in your therapy sessions:</p>
                 <ul>
-                    <li><strong>Safe Environment:</strong> Non-judgmental space to share openly and authentically</li>
-                    <li><strong>Practical Tools:</strong> Learn coping strategies and skills you can use daily</li>
-                    <li><strong>Emotional Processing:</strong> Work through difficult emotions and past experiences</li>
-                    <li><strong>Pattern Recognition:</strong> Develop insights into recurring thoughts and behaviors</li>
-                    <li><strong>Skill Building:</strong> Build resilience, emotional regulation, and self-awareness</li>
-                    <li><strong>Homework Assignments:</strong> Practice new skills between sessions</li>
+                    <li><strong>Safe Environment:</strong> Non-judgmental space to share openly</li>
+                    <li><strong>Practical Tools:</strong> Learn coping strategies for daily use</li>
+                    <li><strong>Emotional Processing:</strong> Work through difficult emotions</li>
+                    <li><strong>Pattern Recognition:</strong> Develop insights into recurring thoughts</li>
+                    <li><strong>Skill Building:</strong> Build resilience and emotional regulation</li>
                 </ul>
             </div>
 
@@ -654,12 +654,11 @@
                 <h3><i class="fas fa-trophy"></i> After Treatment</h3>
                 <p>Long-term benefits and continued growth:</p>
                 <ul>
-                    <li><strong>Improved Wellbeing:</strong> Greater emotional stability and life satisfaction</li>
-                    <li><strong>Coping Skills:</strong> Effective tools to manage stress and challenges</li>
-                    <li><strong>Self-Awareness:</strong> Deeper understanding of yourself and your patterns</li>
-                    <li><strong>Better Relationships:</strong> Enhanced communication and connection with others</li>
-                    <li><strong>Maintenance Plan:</strong> Strategies to maintain progress and prevent relapse</li>
-                    <li><strong>Follow-Up Support:</strong> Optional check-in sessions as needed</li>
+                    <li><strong>Improved Wellbeing:</strong> Greater emotional stability</li>
+                    <li><strong>Coping Skills:</strong> Effective tools to manage challenges</li>
+                    <li><strong>Self-Awareness:</strong> Deeper understanding of yourself</li>
+                    <li><strong>Better Relationships:</strong> Enhanced communication with others</li>
+                    <li><strong>Maintenance Plan:</strong> Strategies to maintain progress</li>
                 </ul>
             </div>
 
@@ -676,24 +675,6 @@
                     <div class="condition-tag">Identity Issues</div>
                 </div>
             </div>
-
-            <div class="modal-pricing">
-                <h3><i class="fas fa-dollar-sign"></i> Investment in Your Wellbeing</h3>
-                <div class="pricing-grid">
-                    <div class="pricing-item">
-                        <div class="price-tag">Standard Session</div>
-                        <span class="price">$150</span>
-                        <span class="price-label">Per 50-Minute Session</span>
-                    </div>
-                    <div class="pricing-item highlight">
-                        <div class="price-tag">Best Value</div>
-                        <span class="price">$500</span>
-                        <span class="price-label">4-Session Package</span>
-                        <span class="savings">Save $100</span>
-                    </div>
-                </div>
-                <p class="insurance-note"><i class="fas fa-shield-alt"></i> Most major insurance plans accepted. Sliding scale fees available based on need.</p>
-            </div>
         </div>
 
         <div class="modal-footer">
@@ -701,10 +682,11 @@
                 <i class="fas fa-calendar-check"></i>
                 Schedule Free Consultation
             </a>
-            <p class="footer-note">Start your healing journey today - no commitment required</p>
+            <p class="footer-note">Start your healing journey today</p>
         </div>
     </div>
 
+    <!-- Couples Counseling Modal -->
     <div id="modal-couples" class="modal-template">
         <div class="modal-header">
             <div class="modal-icon">
@@ -717,52 +699,32 @@
         <div class="modal-body">
             <div class="modal-section">
                 <h3><i class="fas fa-clipboard-list"></i> What to Expect</h3>
-                <p>Couples counseling helps partners improve communication, resolve conflicts, and build a stronger, healthier relationship. We create a neutral, supportive environment where both partners feel heard and valued.</p>
+                <p>Couples counseling helps partners improve communication, resolve conflicts, and build a stronger, healthier relationship.</p>
                 <ul>
                     <li><strong>Session Length:</strong> 60 minutes</li>
                     <li><strong>Frequency:</strong> Weekly sessions recommended</li>
                     <li><strong>Approach:</strong> Evidence-based couples therapy</li>
                     <li><strong>Methods:</strong> Gottman Method, EFT, Communication Training</li>
-                    <li><strong>Format:</strong> Both partners present for all sessions</li>
                 </ul>
             </div>
 
             <div class="modal-section">
                 <h3><i class="fas fa-heart"></i> Before Treatment</h3>
-                <p>Preparing for couples counseling:</p>
                 <ul>
-                    <li><strong>Joint Consultation:</strong> Both partners meet with therapist to discuss concerns and goals</li>
-                    <li><strong>Relationship Assessment:</strong> Comprehensive evaluation of relationship dynamics and patterns</li>
-                    <li><strong>Commitment Agreement:</strong> Both partners commit to the therapeutic process</li>
-                    <li><strong>Individual Sessions:</strong> Optional brief individual meetings to discuss private concerns</li>
-                    <li><strong>Goal Alignment:</strong> Define shared objectives and desired outcomes</li>
-                    <li><strong>Ground Rules:</strong> Establish guidelines for respectful communication</li>
+                    <li><strong>Joint Consultation:</strong> Both partners meet with therapist</li>
+                    <li><strong>Relationship Assessment:</strong> Comprehensive evaluation of dynamics</li>
+                    <li><strong>Commitment Agreement:</strong> Both partners commit to the process</li>
+                    <li><strong>Goal Alignment:</strong> Define shared objectives</li>
                 </ul>
             </div>
 
             <div class="modal-section">
                 <h3><i class="fas fa-star"></i> During Treatment</h3>
-                <p>What happens in couples therapy:</p>
                 <ul>
-                    <li><strong>Communication Skills:</strong> Learn effective listening and expression techniques</li>
-                    <li><strong>Conflict Resolution:</strong> Address disagreements in constructive, healthy ways</li>
-                    <li><strong>Trust Building:</strong> Rebuild or strengthen trust and emotional safety</li>
-                    <li><strong>Intimacy Enhancement:</strong> Deepen emotional and physical connection</li>
-                    <li><strong>Pattern Recognition:</strong> Identify and change negative interaction cycles</li>
-                    <li><strong>Homework Exercises:</strong> Practice new skills and strengthen bond between sessions</li>
-                </ul>
-            </div>
-
-            <div class="modal-section">
-                <h3><i class="fas fa-trophy"></i> After Treatment</h3>
-                <p>Long-term relationship benefits:</p>
-                <ul>
-                    <li><strong>Improved Communication:</strong> Better understanding and expression of needs and feelings</li>
-                    <li><strong>Stronger Bond:</strong> Deeper emotional intimacy and connection</li>
-                    <li><strong>Conflict Management:</strong> Effective tools to navigate disagreements</li>
-                    <li><strong>Renewed Commitment:</strong> Strengthened partnership and shared vision</li>
-                    <li><strong>Maintenance Strategies:</strong> Ongoing practices to keep relationship healthy</li>
-                    <li><strong>Check-In Sessions:</strong> Optional periodic sessions to maintain progress</li>
+                    <li><strong>Communication Skills:</strong> Learn effective listening techniques</li>
+                    <li><strong>Conflict Resolution:</strong> Address disagreements constructively</li>
+                    <li><strong>Trust Building:</strong> Rebuild emotional safety</li>
+                    <li><strong>Intimacy Enhancement:</strong> Deepen emotional connection</li>
                 </ul>
             </div>
 
@@ -775,27 +737,7 @@
                     <div class="condition-tag">Intimacy Concerns</div>
                     <div class="condition-tag">Financial Conflicts</div>
                     <div class="condition-tag">Parenting Disagreements</div>
-                    <div class="condition-tag">Life Transitions</div>
-                    <div class="condition-tag">Premarital Counseling</div>
                 </div>
-            </div>
-
-            <div class="modal-pricing">
-                <h3><i class="fas fa-dollar-sign"></i> Investment in Your Relationship</h3>
-                <div class="pricing-grid">
-                    <div class="pricing-item">
-                        <div class="price-tag">Standard Session</div>
-                        <span class="price">$200</span>
-                        <span class="price-label">Per 60-Minute Session</span>
-                    </div>
-                    <div class="pricing-item highlight">
-                        <div class="price-tag">Package Deal</div>
-                        <span class="price">$700</span>
-                        <span class="price-label">4-Session Package</span>
-                        <span class="savings">Save $100</span>
-                    </div>
-                </div>
-                <p class="insurance-note"><i class="fas fa-shield-alt"></i> Most major insurance plans accepted for couples counseling.</p>
             </div>
         </div>
 
@@ -808,6 +750,7 @@
         </div>
     </div>
 
+    <!-- Family Therapy Modal -->
     <div id="modal-family" class="modal-template">
         <div class="modal-header">
             <div class="modal-icon">
@@ -820,52 +763,21 @@
         <div class="modal-body">
             <div class="modal-section">
                 <h3><i class="fas fa-clipboard-list"></i> What to Expect</h3>
-                <p>Family therapy addresses dynamics and relationships within the family system. We work together to improve communication, resolve conflicts, and create a healthier, more supportive family environment.</p>
+                <p>Family therapy addresses dynamics and relationships within the family system to create a healthier, more supportive environment.</p>
                 <ul>
                     <li><strong>Session Length:</strong> 60-90 minutes</li>
                     <li><strong>Frequency:</strong> Weekly or bi-weekly</li>
                     <li><strong>Approach:</strong> Family systems therapy</li>
-                    <li><strong>Methods:</strong> Structural, strategic, and narrative therapy</li>
-                    <li><strong>Participants:</strong> All family members or specific combinations</li>
-                </ul>
-            </div>
-
-            <div class="modal-section">
-                <h3><i class="fas fa-heart"></i> Before Treatment</h3>
-                <p>Preparing your family for therapy:</p>
-                <ul>
-                    <li><strong>Family Consultation:</strong> Initial meeting with all participating family members</li>
-                    <li><strong>Family Assessment:</strong> Understanding family dynamics, roles, and patterns</li>
-                    <li><strong>Individual Check-Ins:</strong> Brief one-on-one sessions with each member if needed</li>
-                    <li><strong>Age-Appropriate Approach:</strong> Tailored communication for children and teens</li>
-                    <li><strong>Treatment Goals:</strong> Collaborative goal-setting involving all members</li>
-                    <li><strong>Participation Agreement:</strong> Commitment from all family members</li>
                 </ul>
             </div>
 
             <div class="modal-section">
                 <h3><i class="fas fa-star"></i> During Treatment</h3>
-                <p>What happens in family therapy sessions:</p>
                 <ul>
-                    <li><strong>Family Communication:</strong> Improve how family members talk and listen to each other</li>
-                    <li><strong>Conflict Resolution:</strong> Address family tensions in healthy, productive ways</li>
-                    <li><strong>Role Clarification:</strong> Understand and adjust family roles and boundaries</li>
-                    <li><strong>Parenting Support:</strong> Strengthen parenting skills and co-parenting strategies</li>
-                    <li><strong>Sibling Dynamics:</strong> Address and improve sibling relationships</li>
-                    <li><strong>Life Transitions:</strong> Navigate major family changes together</li>
-                </ul>
-            </div>
-
-            <div class="modal-section">
-                <h3><i class="fas fa-trophy"></i> After Treatment</h3>
-                <p>Long-term family benefits:</p>
-                <ul>
-                    <li><strong>Enhanced Communication:</strong> Open, honest dialogue among all family members</li>
-                    <li><strong>Healthier Dynamics:</strong> More balanced, supportive family relationships</li>
-                    <li><strong>Better Problem-Solving:</strong> Effective skills to navigate future challenges</li>
-                    <li><strong>Stronger Bonds:</strong> Deeper emotional connections within the family</li>
-                    <li><strong>Family Rituals:</strong> Established practices to maintain family wellness</li>
-                    <li><strong>Ongoing Support:</strong> Resources and strategies for continued growth</li>
+                    <li><strong>Family Communication:</strong> Improve how members talk and listen</li>
+                    <li><strong>Conflict Resolution:</strong> Address tensions in healthy ways</li>
+                    <li><strong>Role Clarification:</strong> Understand family roles and boundaries</li>
+                    <li><strong>Parenting Support:</strong> Strengthen parenting skills</li>
                 </ul>
             </div>
 
@@ -878,27 +790,7 @@
                     <div class="condition-tag">Teen Behavioral Problems</div>
                     <div class="condition-tag">Divorce Adjustment</div>
                     <div class="condition-tag">Communication Breakdown</div>
-                    <div class="condition-tag">Grief & Loss</div>
-                    <div class="condition-tag">Life Transitions</div>
                 </div>
-            </div>
-
-            <div class="modal-pricing">
-                <h3><i class="fas fa-dollar-sign"></i> Investment in Your Family</h3>
-                <div class="pricing-grid">
-                    <div class="pricing-item">
-                        <div class="price-tag">Standard Session</div>
-                        <span class="price">$225</span>
-                        <span class="price-label">Per 60-90 Minute Session</span>
-                    </div>
-                    <div class="pricing-item highlight">
-                        <div class="price-tag">Family Package</div>
-                        <span class="price">$800</span>
-                        <span class="price-label">4-Session Package</span>
-                        <span class="savings">Save $100</span>
-                    </div>
-                </div>
-                <p class="insurance-note"><i class="fas fa-shield-alt"></i> Most major insurance plans accepted. Family rates available.</p>
             </div>
         </div>
 
@@ -907,10 +799,11 @@
                 <i class="fas fa-calendar-check"></i>
                 Schedule Family Consultation
             </a>
-            <p class="footer-note">Bring your family together in harmony</p>
+            <p class="footer-note">Bring your family together</p>
         </div>
     </div>
 
+    <!-- Mindfulness Therapy Modal -->
     <div id="modal-mindfulness" class="modal-template">
         <div class="modal-header">
             <div class="modal-icon">
@@ -923,52 +816,21 @@
         <div class="modal-body">
             <div class="modal-section">
                 <h3><i class="fas fa-clipboard-list"></i> What to Expect</h3>
-                <p>Mindfulness-based therapy integrates meditation and awareness practices with traditional therapy to reduce stress, manage anxiety, improve emotional regulation, and enhance overall wellbeing.</p>
+                <p>Mindfulness-based therapy integrates meditation and awareness practices with traditional therapy to reduce stress and enhance wellbeing.</p>
                 <ul>
                     <li><strong>Session Length:</strong> 50-60 minutes</li>
-                    <li><strong>Frequency:</strong> Weekly sessions</li>
                     <li><strong>Approach:</strong> MBSR, MBCT, DBT mindfulness</li>
                     <li><strong>Methods:</strong> Meditation, breathing exercises, body scans</li>
-                    <li><strong>Practice:</strong> Daily homework and mindfulness exercises</li>
-                </ul>
-            </div>
-
-            <div class="modal-section">
-                <h3><i class="fas fa-heart"></i> Before Treatment</h3>
-                <p>Preparing for mindfulness therapy:</p>
-                <ul>
-                    <li><strong>Initial Assessment:</strong> Discuss your stress levels, anxiety, and mental health goals</li>
-                    <li><strong>Mindfulness Introduction:</strong> Learn the basics of mindfulness and its benefits</li>
-                    <li><strong>Expectation Setting:</strong> Understand that mindfulness is a skill developed over time</li>
-                    <li><strong>Comfortable Space:</strong> Identify a quiet place at home for daily practice</li>
-                    <li><strong>Open Mind:</strong> Approach with curiosity and without judgment</li>
-                    <li><strong>Commitment to Practice:</strong> Willingness to practice daily between sessions</li>
                 </ul>
             </div>
 
             <div class="modal-section">
                 <h3><i class="fas fa-star"></i> During Treatment</h3>
-                <p>What happens in mindfulness therapy:</p>
                 <ul>
-                    <li><strong>Guided Meditation:</strong> Learn various meditation techniques in sessions</li>
-                    <li><strong>Breath Work:</strong> Practice breathing exercises for stress relief</li>
+                    <li><strong>Guided Meditation:</strong> Learn various meditation techniques</li>
+                    <li><strong>Breath Work:</strong> Practice breathing exercises</li>
                     <li><strong>Body Awareness:</strong> Develop connection to physical sensations</li>
                     <li><strong>Present-Moment Focus:</strong> Train your mind to stay in the now</li>
-                    <li><strong>Thought Observation:</strong> Learn to observe thoughts without judgment</li>
-                    <li><strong>Daily Integration:</strong> Apply mindfulness to everyday activities</li>
-                </ul>
-            </div>
-
-            <div class="modal-section">
-                <h3><i class="fas fa-trophy"></i> After Treatment</h3>
-                <p>Long-term mindfulness benefits:</p>
-                <ul>
-                    <li><strong>Stress Reduction:</strong> Significantly lower stress and anxiety levels</li>
-                    <li><strong>Emotional Balance:</strong> Greater emotional regulation and stability</li>
-                    <li><strong>Improved Focus:</strong> Enhanced concentration and mental clarity</li>
-                    <li><strong>Better Sleep:</strong> Improved sleep quality and relaxation</li>
-                    <li><strong>Self-Awareness:</strong> Deeper understanding of thoughts and emotions</li>
-                    <li><strong>Lifelong Practice:</strong> Tools you can use forever</li>
                 </ul>
             </div>
 
@@ -981,27 +843,7 @@
                     <div class="condition-tag">Chronic Pain</div>
                     <div class="condition-tag">Sleep Disorders</div>
                     <div class="condition-tag">Burnout</div>
-                    <div class="condition-tag">PTSD</div>
-                    <div class="condition-tag">Emotional Dysregulation</div>
                 </div>
-            </div>
-
-            <div class="modal-pricing">
-                <h3><i class="fas fa-dollar-sign"></i> Investment in Inner Peace</h3>
-                <div class="pricing-grid">
-                    <div class="pricing-item">
-                        <div class="price-tag">Individual Session</div>
-                        <span class="price">$150</span>
-                        <span class="price-label">Per 50-Minute Session</span>
-                    </div>
-                    <div class="pricing-item highlight">
-                        <div class="price-tag">8-Week Program</div>
-                        <span class="price">$1,000</span>
-                        <span class="price-label">Complete MBSR Course</span>
-                        <span class="savings">Save $200</span>
-                    </div>
-                </div>
-                <p class="insurance-note"><i class="fas fa-shield-alt"></i> Insurance accepted. Group mindfulness classes also available.</p>
             </div>
         </div>
 
@@ -1014,6 +856,7 @@
         </div>
     </div>
 
+    <!-- CBT Modal -->
     <div id="modal-cbt" class="modal-template">
         <div class="modal-header">
             <div class="modal-icon">
@@ -1026,52 +869,21 @@
         <div class="modal-body">
             <div class="modal-section">
                 <h3><i class="fas fa-clipboard-list"></i> What to Expect</h3>
-                <p>Cognitive Behavioral Therapy (CBT) is a structured, goal-oriented approach that helps you identify and change negative thought patterns and behaviors. It's one of the most researched and effective forms of therapy.</p>
+                <p>CBT is a structured, goal-oriented approach that helps you identify and change negative thought patterns and behaviors.</p>
                 <ul>
                     <li><strong>Session Length:</strong> 50 minutes</li>
-                    <li><strong>Frequency:</strong> Weekly sessions</li>
                     <li><strong>Duration:</strong> Typically 12-20 sessions</li>
                     <li><strong>Approach:</strong> Structured, goal-focused treatment</li>
-                    <li><strong>Methods:</strong> Cognitive restructuring, behavioral experiments</li>
-                </ul>
-            </div>
-
-            <div class="modal-section">
-                <h3><i class="fas fa-heart"></i> Before Treatment</h3>
-                <p>Preparing for CBT:</p>
-                <ul>
-                    <li><strong>Initial Evaluation:</strong> Comprehensive assessment of current challenges and symptoms</li>
-                    <li><strong>Goal Definition:</strong> Clearly define specific, measurable treatment goals</li>
-                    <li><strong>Baseline Measures:</strong> Track mood, thoughts, and behaviors for comparison</li>
-                    <li><strong>Psychoeducation:</strong> Learn about the CBT model and how thoughts affect feelings</li>
-                    <li><strong>Commitment to Homework:</strong> CBT requires practicing skills between sessions</li>
-                    <li><strong>Active Participation:</strong> CBT is collaborative and requires engagement</li>
                 </ul>
             </div>
 
             <div class="modal-section">
                 <h3><i class="fas fa-star"></i> During Treatment</h3>
-                <p>What happens in CBT sessions:</p>
                 <ul>
                     <li><strong>Thought Identification:</strong> Recognize automatic negative thoughts</li>
-                    <li><strong>Cognitive Restructuring:</strong> Challenge and change distorted thinking patterns</li>
-                    <li><strong>Behavioral Activation:</strong> Increase positive activities and reduce avoidance</li>
-                    <li><strong>Exposure Therapy:</strong> Gradually face fears in a safe, controlled way</li>
+                    <li><strong>Cognitive Restructuring:</strong> Challenge distorted thinking</li>
+                    <li><strong>Behavioral Activation:</strong> Increase positive activities</li>
                     <li><strong>Skill Practice:</strong> Learn and practice coping strategies</li>
-                    <li><strong>Progress Tracking:</strong> Monitor symptoms and celebrate improvements</li>
-                </ul>
-            </div>
-
-            <div class="modal-section">
-                <h3><i class="fas fa-trophy"></i> After Treatment</h3>
-                <p>Long-term CBT benefits:</p>
-                <ul>
-                    <li><strong>Reduced Symptoms:</strong> Significant decrease in anxiety, depression, or other symptoms</li>
-                    <li><strong>Cognitive Skills:</strong> Ability to identify and challenge negative thoughts</li>
-                    <li><strong>Behavioral Tools:</strong> Effective strategies to change unhelpful behaviors</li>
-                    <li><strong>Relapse Prevention:</strong> Skills to prevent symptom return</li>
-                    <li><strong>Self-Therapy:</strong> Ability to be your own therapist</li>
-                    <li><strong>Lasting Change:</strong> Research shows CBT effects are long-lasting</li>
                 </ul>
             </div>
 
@@ -1084,27 +896,7 @@
                     <div class="condition-tag">Phobias</div>
                     <div class="condition-tag">Panic Disorder</div>
                     <div class="condition-tag">Social Anxiety</div>
-                    <div class="condition-tag">Eating Disorders</div>
-                    <div class="condition-tag">Insomnia</div>
                 </div>
-            </div>
-
-            <div class="modal-pricing">
-                <h3><i class="fas fa-dollar-sign"></i> Investment in Mental Health</h3>
-                <div class="pricing-grid">
-                    <div class="pricing-item">
-                        <div class="price-tag">Standard Session</div>
-                        <span class="price">$150</span>
-                        <span class="price-label">Per 50-Minute Session</span>
-                    </div>
-                    <div class="pricing-item highlight">
-                        <div class="price-tag">12-Session Program</div>
-                        <span class="price">$1,500</span>
-                        <span class="price-label">Complete CBT Course</span>
-                        <span class="savings">Save $300</span>
-                    </div>
-                </div>
-                <p class="insurance-note"><i class="fas fa-shield-alt"></i> Most insurance plans cover CBT. High success rates.</p>
             </div>
         </div>
 
@@ -1117,6 +909,7 @@
         </div>
     </div>
 
+    <!-- Group Therapy Modal -->
     <div id="modal-group" class="modal-template">
         <div class="modal-header">
             <div class="modal-icon">
@@ -1129,52 +922,21 @@
         <div class="modal-body">
             <div class="modal-section">
                 <h3><i class="fas fa-clipboard-list"></i> What to Expect</h3>
-                <p>Group therapy brings together people with similar challenges in a supportive, confidential environment. Led by a trained therapist, groups provide unique benefits through shared experiences and peer support.</p>
+                <p>Group therapy brings together people with similar challenges in a supportive, confidential environment led by a trained therapist.</p>
                 <ul>
                     <li><strong>Session Length:</strong> 90 minutes</li>
-                    <li><strong>Frequency:</strong> Weekly sessions</li>
                     <li><strong>Group Size:</strong> 6-10 participants</li>
                     <li><strong>Format:</strong> Structured topics and open discussion</li>
-                    <li><strong>Duration:</strong> Ongoing or time-limited (8-12 weeks)</li>
-                </ul>
-            </div>
-
-            <div class="modal-section">
-                <h3><i class="fas fa-heart"></i> Before Treatment</h3>
-                <p>Preparing for group therapy:</p>
-                <ul>
-                    <li><strong>Individual Screening:</strong> One-on-one meeting to assess fit for group</li>
-                    <li><strong>Group Selection:</strong> Match you with appropriate group based on needs</li>
-                    <li><strong>Confidentiality Agreement:</strong> All members commit to confidentiality</li>
-                    <li><strong>Group Guidelines:</strong> Learn expectations and group norms</li>
-                    <li><strong>Anxiety Normalization:</strong> It's normal to feel nervous at first</li>
-                    <li><strong>Optional Individual Therapy:</strong> Can combine with one-on-one sessions</li>
                 </ul>
             </div>
 
             <div class="modal-section">
                 <h3><i class="fas fa-star"></i> During Treatment</h3>
-                <p>What happens in group therapy:</p>
                 <ul>
-                    <li><strong>Peer Support:</strong> Connect with others who understand your struggles</li>
-                    <li><strong>Shared Experiences:</strong> Learn you're not alone in your challenges</li>
+                    <li><strong>Peer Support:</strong> Connect with others who understand</li>
+                    <li><strong>Shared Experiences:</strong> Learn you're not alone</li>
                     <li><strong>Multiple Perspectives:</strong> Gain insights from diverse viewpoints</li>
-                    <li><strong>Skill Practice:</strong> Practice new behaviors in a safe environment</li>
-                    <li><strong>Feedback:</strong> Receive and give constructive support</li>
-                    <li><strong>Social Skills:</strong> Improve interpersonal communication</li>
-                </ul>
-            </div>
-
-            <div class="modal-section">
-                <h3><i class="fas fa-trophy"></i> After Treatment</h3>
-                <p>Long-term group therapy benefits:</p>
-                <ul>
-                    <li><strong>Reduced Isolation:</strong> Feel more connected and less alone</li>
-                    <li><strong>Social Confidence:</strong> Improved comfort in social situations</li>
-                    <li><strong>Support Network:</strong> Lasting connections with group members</li>
-                    <li><strong>New Perspectives:</strong> Broader understanding of your challenges</li>
-                    <li><strong>Accountability:</strong> Ongoing motivation from peer support</li>
-                    <li><strong>Cost-Effective:</strong> More affordable than individual therapy</li>
+                    <li><strong>Skill Practice:</strong> Practice new behaviors in safe environment</li>
                 </ul>
             </div>
 
@@ -1187,27 +949,7 @@
                     <div class="condition-tag">Addiction Recovery</div>
                     <div class="condition-tag">Women's Issues</div>
                     <div class="condition-tag">Men's Support</div>
-                    <div class="condition-tag">LGBTQ+ Support</div>
-                    <div class="condition-tag">Skills Training</div>
                 </div>
-            </div>
-
-            <div class="modal-pricing">
-                <h3><i class="fas fa-dollar-sign"></i> Affordable Group Rates</h3>
-                <div class="pricing-grid">
-                    <div class="pricing-item">
-                        <div class="price-tag">Per Session</div>
-                        <span class="price">$75</span>
-                        <span class="price-label">Per 90-Minute Session</span>
-                    </div>
-                    <div class="pricing-item highlight">
-                        <div class="price-tag">8-Week Series</div>
-                        <span class="price">$500</span>
-                        <span class="price-label">Complete Program</span>
-                        <span class="savings">Save $100</span>
-                    </div>
-                </div>
-                <p class="insurance-note"><i class="fas fa-shield-alt"></i> Insurance accepted. Most affordable therapy option.</p>
             </div>
         </div>
 
@@ -1221,7 +963,7 @@
     </div>
 </div>
     
-    <!-- Approach Section -->
+ <!-- Approach Section -->
     <section class="approach" id="approach">
         <div class="container">
             <div class="section-header" data-aos="fade-up">
