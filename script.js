@@ -8,24 +8,22 @@
 // =========================
 // PROGRESS NAVIGATION MANAGER
 // =========================
-class ProgressNavigation {
+class EnhancedProgressNavigation {
     constructor() {
         // DOM Elements
         this.header = document.getElementById('progressHeader');
-        this.progressFill = document.querySelector('.page-progress-fill');
-        this.progressConnector = document.querySelector('.progress-connector');
-        this.navPoints = document.querySelectorAll('.nav-point');
-        this.mobilePoints = document.querySelectorAll('.mobile-point');
-        this.sectionLabel = document.querySelector('.active-section-name');
+        this.pageProgressFill = document.querySelector('.page-progress-fill');
+        this.progressLineFill = document.querySelector('.progress-line-fill');
+        this.mobileProgressLine = document.querySelector('.mobile-progress-line');
+        this.navDots = document.querySelectorAll('.nav-dot');
+        this.mobileDots = document.querySelectorAll('.mobile-dot');
+        this.mobileSectionLabel = document.querySelector('.mobile-section-label');
+        this.mobileSectionCount = document.querySelector('.mobile-section-count');
         
         // State
         this.sections = [];
         this.currentSection = null;
-        this.isScrolling = false;
-        this.scrollTimeout = null;
-        
-        // Configuration
-        this.offsetThreshold = 150;
+        this.offsetThreshold = 100;
         
         if (this.header) {
             this.init();
@@ -42,17 +40,20 @@ class ProgressNavigation {
     }
 
     setupSections() {
-        this.navPoints.forEach(point => {
-            const target = point.getAttribute('data-target');
+        // Build sections array from navigation dots
+        this.navDots.forEach(dot => {
+            const target = dot.getAttribute('data-target');
             const element = document.getElementById(target);
             
             if (element) {
                 this.sections.push({
                     id: target,
                     element: element,
-                    navPoint: point,
-                    mobilePoint: document.querySelector(`.mobile-point[data-target="${target}"]`),
-                    label: point.querySelector('.point-label').textContent
+                    navDot: dot,
+                    mobileDot: document.querySelector(`.mobile-dot[data-target="${target}"]`),
+                    label: dot.querySelector('.dot-label') ? 
+                           dot.querySelector('.dot-label').textContent : 
+                           target.charAt(0).toUpperCase() + target.slice(1)
                 });
             }
         });
@@ -65,8 +66,9 @@ class ProgressNavigation {
             const scrolled = window.pageYOffset;
             const progress = Math.min((scrolled / documentHeight) * 100, 100);
             
-            if (this.progressFill) {
-                this.progressFill.style.width = `${progress}%`;
+            // Update page progress bar
+            if (this.pageProgressFill) {
+                this.pageProgressFill.style.width = `${progress}%`;
             }
         };
 
@@ -91,6 +93,7 @@ class ProgressNavigation {
             let activeSection = null;
             let activeSectionIndex = 0;
 
+            // Find active section
             for (let i = this.sections.length - 1; i >= 0; i--) {
                 const section = this.sections[i];
                 const sectionTop = section.element.offsetTop;
@@ -126,28 +129,52 @@ class ProgressNavigation {
         const totalSections = this.sections.length;
         const progress = (activeIndex / (totalSections - 1)) * 100;
         
-        if (this.progressConnector) {
-            const connectorAfter = window.getComputedStyle(this.progressConnector, '::after');
-            this.progressConnector.style.setProperty('--progress-width', `${progress}%`);
+        // Update desktop progress line fill
+        if (this.progressLineFill) {
+            this.progressLineFill.style.width = `${progress}%`;
+        }
+        
+        // Update mobile progress line
+        if (this.mobileProgressLine) {
+            this.mobileProgressLine.style.setProperty('--mobile-progress', `${progress}%`);
+            // Use CSS to update the ::after pseudo-element
+            const styleSheet = document.styleSheets[0];
+            const rule = `.mobile-progress-line::after { width: ${progress}%; }`;
+            
+            // Find and update or insert the rule
+            for (let i = 0; i < styleSheet.cssRules.length; i++) {
+                if (styleSheet.cssRules[i].selectorText === '.mobile-progress-line::after') {
+                    styleSheet.deleteRule(i);
+                    break;
+                }
+            }
+            styleSheet.insertRule(rule, styleSheet.cssRules.length);
         }
 
+        // Update desktop navigation dots
         this.sections.forEach((section, index) => {
             const isActive = section.id === activeSection.id;
             const isCompleted = index < activeIndex;
 
-            if (section.navPoint) {
-                section.navPoint.classList.toggle('active', isActive);
-                section.navPoint.classList.toggle('completed', isCompleted);
+            if (section.navDot) {
+                section.navDot.classList.toggle('active', isActive);
+                section.navDot.classList.toggle('completed', isCompleted);
             }
 
-            if (section.mobilePoint) {
-                section.mobilePoint.classList.toggle('active', isActive);
-                section.mobilePoint.classList.toggle('completed', isCompleted);
+            if (section.mobileDot) {
+                section.mobileDot.classList.toggle('active', isActive);
+                section.mobileDot.classList.toggle('completed', isCompleted);
             }
         });
 
-        if (this.sectionLabel) {
-            this.sectionLabel.textContent = activeSection.label;
+        // Update mobile section label
+        if (this.mobileSectionLabel) {
+            this.mobileSectionLabel.textContent = activeSection.label;
+        }
+        
+        // Update mobile section counter
+        if (this.mobileSectionCount) {
+            this.mobileSectionCount.textContent = `${activeIndex + 1} / ${totalSections}`;
         }
     }
 
@@ -157,33 +184,28 @@ class ProgressNavigation {
             
             if (!element) return;
 
-            const offsetPosition = element.offsetTop - 75;
-            
-            this.isScrolling = true;
+            const offsetPosition = element.offsetTop - 80;
             
             window.scrollTo({
                 top: offsetPosition,
                 behavior: 'smooth'
             });
-
-            clearTimeout(this.scrollTimeout);
-            this.scrollTimeout = setTimeout(() => {
-                this.isScrolling = false;
-            }, 1000);
         };
 
-        this.navPoints.forEach(point => {
-            point.addEventListener('click', (e) => {
+        // Desktop dots
+        this.navDots.forEach(dot => {
+            dot.addEventListener('click', (e) => {
                 e.preventDefault();
-                const target = point.getAttribute('data-target');
+                const target = dot.getAttribute('data-target');
                 scrollToSection(target);
             });
         });
 
-        this.mobilePoints.forEach(point => {
-            point.addEventListener('click', (e) => {
+        // Mobile dots
+        this.mobileDots.forEach(dot => {
+            dot.addEventListener('click', (e) => {
                 e.preventDefault();
-                const target = point.getAttribute('data-target');
+                const target = dot.getAttribute('data-target');
                 scrollToSection(target);
             });
         });
@@ -219,6 +241,265 @@ class ProgressNavigation {
         this.updateActiveSection();
     }
 }
+
+// =========================
+// LOCATIONS MODAL CLASS
+// =========================
+class LocationsModal {
+    constructor() {
+        // DOM Elements
+        this.modal = document.getElementById('locationsModal');
+        this.openBtn = document.getElementById('locationsBtn');
+        this.closeBtn = document.getElementById('modalClose');
+        this.overlay = this.modal ? this.modal.querySelector('.modal-overlay') : null;
+        this.locationCards = this.modal ? this.modal.querySelectorAll('.location-card') : [];
+        
+        // State
+        this.isOpen = false;
+        this.scrollPosition = 0;
+        
+        if (this.modal && this.openBtn) {
+            this.init();
+        }
+    }
+
+    init() {
+        this.setupEventListeners();
+        this.setupKeyboardNavigation();
+        this.setupCardAnimations();
+    }
+
+    setupEventListeners() {
+        // Open modal
+        this.openBtn.addEventListener('click', () => this.open());
+
+        // Close modal
+        if (this.closeBtn) {
+            this.closeBtn.addEventListener('click', () => this.close());
+        }
+
+        if (this.overlay) {
+            this.overlay.addEventListener('click', () => this.close());
+        }
+
+        // Prevent clicks inside modal from closing
+        const modalContent = this.modal.querySelector('.modal-content');
+        if (modalContent) {
+            modalContent.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+        }
+    }
+
+    setupKeyboardNavigation() {
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.isOpen) {
+                this.close();
+            }
+        });
+    }
+
+    setupCardAnimations() {
+        // Stagger animation for location cards
+        this.locationCards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+            card.style.transitionDelay = `${index * 0.1}s`;
+        });
+    }
+
+    open() {
+        this.isOpen = true;
+        
+        // Save scroll position and prevent body scroll
+        this.scrollPosition = window.pageYOffset;
+        document.body.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${this.scrollPosition}px`;
+        document.body.style.width = '100%';
+        
+        // Open modal
+        this.modal.classList.add('active');
+        
+        // Animate cards
+        setTimeout(() => {
+            this.locationCards.forEach(card => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            });
+        }, 200);
+        
+        // Focus management
+        if (this.closeBtn) {
+            this.closeBtn.focus();
+        }
+    }
+
+    close() {
+        this.isOpen = false;
+        
+        // Animate cards out
+        this.locationCards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+        });
+        
+        // Close modal after animation
+        setTimeout(() => {
+            this.modal.classList.remove('active');
+            
+            // Restore body scroll
+            document.body.style.overflow = '';
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.width = '';
+            window.scrollTo(0, this.scrollPosition);
+        }, 300);
+    }
+
+    // Public method to programmatically open modal
+    openModal() {
+        this.open();
+    }
+
+    // Public method to programmatically close modal
+    closeModal() {
+        this.close();
+    }
+}
+
+// =========================
+// ACTION ICONS ENHANCEMENT
+// =========================
+class ActionIconsEnhancer {
+    constructor() {
+        this.actionIcons = document.querySelectorAll('.action-icon');
+        
+        if (this.actionIcons.length > 0) {
+            this.init();
+        }
+    }
+
+    init() {
+        this.setupRippleEffect();
+        this.setupHoverSound();
+    }
+
+    setupRippleEffect() {
+        this.actionIcons.forEach(icon => {
+            icon.addEventListener('click', (e) => {
+                const rect = icon.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const ripple = document.createElement('span');
+                ripple.style.cssText = `
+                    position: absolute;
+                    width: 2px;
+                    height: 2px;
+                    background: rgba(255, 255, 255, 0.8);
+                    border-radius: 50%;
+                    left: ${x}px;
+                    top: ${y}px;
+                    pointer-events: none;
+                    transform: scale(0);
+                    animation: ripple 0.6s ease-out;
+                `;
+                
+                icon.style.position = 'relative';
+                icon.appendChild(ripple);
+                
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+        
+        // Add ripple animation
+        this.addRippleAnimation();
+    }
+
+    addRippleAnimation() {
+        if (!document.getElementById('ripple-animation')) {
+            const style = document.createElement('style');
+            style.id = 'ripple-animation';
+            style.textContent = `
+                @keyframes ripple {
+                    to {
+                        transform: scale(30);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    }
+
+    setupHoverSound() {
+        // Optional: Add subtle haptic feedback for mobile
+        this.actionIcons.forEach(icon => {
+            icon.addEventListener('touchstart', () => {
+                if (navigator.vibrate) {
+                    navigator.vibrate(10);
+                }
+            });
+        });
+    }
+}
+
+// =========================
+// INITIALIZE ENHANCED HEADER SYSTEM
+// =========================
+class EnhancedHeaderSystem {
+    constructor() {
+        this.init();
+    }
+
+    init() {
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => this.initializeModules());
+        } else {
+            this.initializeModules();
+        }
+    }
+
+    initializeModules() {
+        // Initialize enhanced progress navigation
+        const progressNav = new EnhancedProgressNavigation();
+        
+        // Initialize locations modal
+        const locationsModal = new LocationsModal();
+        
+        // Initialize action icons enhancements
+        new ActionIconsEnhancer();
+
+        // Make instances globally accessible
+        window.enhancedProgressNav = progressNav;
+        window.locationsModal = locationsModal;
+
+        // Refresh positions after images load
+        window.addEventListener('load', () => {
+            if (progressNav) {
+                progressNav.refreshPositions();
+            }
+        });
+        
+        // Refresh on window resize
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (progressNav) {
+                    progressNav.refreshPositions();
+                }
+            }, 250);
+        });
+        
+        console.log('%c✨ Enhanced Header System Initialized', 'color: #5DBBC3; font-size: 16px; font-weight: bold;');
+    }
+}
+
+// Initialize the enhanced header system
+new EnhancedHeaderSystem();
 
 // =========================
 // HERO VIDEO CONTROLLER
@@ -733,7 +1014,7 @@ class App {
         }
 
         // Initialize all modules
-        const progressNav = new ProgressNavigation();
+        const EnhancedHeaderSystem = new EnhancedHeaderSystem();
         new HeroVideo();
         new StatisticsCounter();
         new TestimonialsSlider();
