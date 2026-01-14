@@ -720,9 +720,9 @@ class ServicesCarousel {
     }
 
     createIndicators() {
-        const totalIndicators = Math.ceil(this.totalCards / this.cardsPerView);
+        const totalSlides = Math.ceil(this.totalCards / this.cardsPerView);
         
-        for (let i = 0; i < totalIndicators; i++) {
+        for (let i = 0; i < totalSlides; i++) {
             const indicator = document.createElement('div');
             indicator.classList.add('carousel-indicator');
             if (i === 0) indicator.classList.add('active');
@@ -787,13 +787,13 @@ class ServicesCarousel {
 
     nextSlide() {
         const maxIndex = Math.ceil(this.totalCards / this.cardsPerView) - 1;
-        this.currentIndex = (this.currentIndex + 1) % (maxIndex + 1);
+        this.currentIndex = (this.currentIndex + 1) > maxIndex ? 0 : this.currentIndex + 1;
         this.updateCarousel();
     }
 
     prevSlide() {
         const maxIndex = Math.ceil(this.totalCards / this.cardsPerView) - 1;
-        this.currentIndex = (this.currentIndex - 1 + maxIndex + 1) % (maxIndex + 1);
+        this.currentIndex = (this.currentIndex - 1) < 0 ? maxIndex : this.currentIndex - 1;
         this.updateCarousel();
     }
 
@@ -803,17 +803,6 @@ class ServicesCarousel {
         const offset = -(this.currentIndex * this.cardsPerView * (cardWidth + gap));
         
         this.carousel.style.transform = `translateX(${offset}px)`;
-        
-        this.cards.forEach((card, index) => {
-            const startIndex = this.currentIndex * this.cardsPerView;
-            const endIndex = startIndex + this.cardsPerView;
-            
-            if (index >= startIndex && index < endIndex) {
-                card.classList.add('active');
-            } else {
-                card.classList.remove('active');
-            }
-        });
 
         this.indicators.forEach((indicator, index) => {
             indicator.classList.toggle('active', index === this.currentIndex);
@@ -974,7 +963,7 @@ class ServiceModalSystem {
     }
 
     animateContentIn() {
-        const sections = this.modalContentWrapper.querySelectorAll('.modal-section, .modal-conditions, .modal-pricing');
+        const sections = this.modalContentWrapper.querySelectorAll('.modal-section, .modal-conditions');
         
         sections.forEach((section, index) => {
             section.style.opacity = '0';
@@ -989,7 +978,7 @@ class ServiceModalSystem {
     }
 
     animateContentOut() {
-        const sections = this.modalContentWrapper.querySelectorAll('.modal-section, .modal-conditions, .modal-pricing');
+        const sections = this.modalContentWrapper.querySelectorAll('.modal-section, .modal-conditions');
         
         sections.forEach((section, index) => {
             setTimeout(() => {
@@ -1001,119 +990,17 @@ class ServiceModalSystem {
     }
 }
 
-// =========================
-// TESTIMONIALS SLIDER CLASS
-// =========================
-class TestimonialsSlider {
-    constructor() {
-        this.track = document.getElementById('testimonialTrack');
-        this.prevBtn = document.getElementById('prevBtn');
-        this.nextBtn = document.getElementById('nextBtn');
-        this.dotsContainer = document.getElementById('sliderDots');
-        
-        if (!this.track || !this.prevBtn || !this.nextBtn || !this.dotsContainer) return;
-        
-        this.cards = Array.from(this.track.children);
-        this.currentIndex = 0;
-        this.autoplayInterval = null;
-        this.autoplayDelay = 5000;
-        this.dots = [];
-        
-        this.init();
-    }
-
-    init() {
-        this.createDots();
-        this.setupEventListeners();
-        this.startAutoplay();
-        this.updateSlider();
-    }
-
-    createDots() {
-        this.cards.forEach((_, index) => {
-            const dot = document.createElement('div');
-            dot.classList.add('slider-dot');
-            if (index === 0) dot.classList.add('active');
-            
-            dot.addEventListener('click', () => {
-                this.goToSlide(index);
-                this.resetAutoplay();
-            });
-            
-            this.dotsContainer.appendChild(dot);
-        });
-        
-        this.dots = Array.from(this.dotsContainer.children);
-    }
-
-    setupEventListeners() {
-        this.prevBtn.addEventListener('click', () => {
-            this.prevSlide();
-            this.resetAutoplay();
-        });
-
-        this.nextBtn.addEventListener('click', () => {
-            this.nextSlide();
-            this.resetAutoplay();
-        });
-
-        let startX = 0;
-        let endX = 0;
-
-        this.track.addEventListener('touchstart', (e) => {
-            startX = e.touches[0].clientX;
-        }, { passive: true });
-
-        this.track.addEventListener('touchend', (e) => {
-            endX = e.changedTouches[0].clientX;
-            const diff = startX - endX;
-
-            if (Math.abs(diff) > 50) {
-                if (diff > 0) {
-                    this.nextSlide();
-                } else {
-                    this.prevSlide();
-                }
-                this.resetAutoplay();
-            }
-        }, { passive: true });
-    }
-
-    goToSlide(index) {
-        this.currentIndex = index;
-        this.updateSlider();
-    }
-
-    nextSlide() {
-        this.currentIndex = (this.currentIndex + 1) % this.cards.length;
-        this.updateSlider();
-    }
-
-    prevSlide() {
-        this.currentIndex = (this.currentIndex - 1 + this.cards.length) % this.cards.length;
-        this.updateSlider();
-    }
-
-    updateSlider() {
-        const offset = -this.currentIndex * 100;
-        this.track.style.transform = `translateX(${offset}%)`;
-        
-        this.dots.forEach((dot, index) => {
-            dot.classList.toggle('active', index === this.currentIndex);
-        });
-    }
-
-    startAutoplay() {
-        this.autoplayInterval = setInterval(() => {
-            this.nextSlide();
-        }, this.autoplayDelay);
-    }
-
-    resetAutoplay() {
-        clearInterval(this.autoplayInterval);
-        this.startAutoplay();
-    }
-}
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize Services Carousel
+    const servicesCarousel = new ServicesCarousel();
+    
+    // Initialize Service Modal System
+    const serviceModals = new ServiceModalSystem();
+    
+    // Log initialization
+    console.log('✨ Services Carousel Initialized');
+    console.log('✨ Service Modal System Initialized');
+});
 
 // =========================
 // FORM HANDLER CLASS
