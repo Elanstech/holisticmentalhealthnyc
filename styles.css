@@ -134,8 +134,8 @@ img {
 }
 
 .logo-image {
-    width: 45px;
-    height: 45px;
+    width: 100px;
+    height: 100px;
     object-fit: contain;
     filter: drop-shadow(0 2px 8px rgba(93, 187, 195, 0.2));
     transition: all 0.3s ease;
