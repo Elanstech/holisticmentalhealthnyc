@@ -1,12 +1,13 @@
 /**
  * ================================================
  * HOLISTIC MENTAL HEALTH SERVICES
- * Complete JavaScript with ES6 Class Architecture
+ * Complete JavaScript with ES6+ Architecture
+ * Premium, Modern & Fully Integrated - FIXED VERSION
  * ================================================
  */
 
 // =========================
-// PROGRESS NAVIGATION MANAGER
+// ENHANCED PROGRESS NAVIGATION CLASS
 // =========================
 class EnhancedProgressNavigation {
     constructor() {
@@ -36,6 +37,7 @@ class EnhancedProgressNavigation {
         this.setupActiveSectionDetection();
         this.setupSmoothScrolling();
         this.setupHeaderScroll();
+        this.addMobileProgressStyles();
         this.updateActiveSection();
     }
 
@@ -57,6 +59,28 @@ class EnhancedProgressNavigation {
                 });
             }
         });
+    }
+
+    addMobileProgressStyles() {
+        // Add custom styles for mobile progress without accessing external stylesheets
+        if (!document.getElementById('mobile-progress-dynamic')) {
+            const style = document.createElement('style');
+            style.id = 'mobile-progress-dynamic';
+            style.textContent = `
+                .mobile-progress-line::after {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    height: 100%;
+                    width: 0%;
+                    background: linear-gradient(90deg, #5DBBC3, #7B88C4);
+                    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+                    border-radius: 2px;
+                }
+            `;
+            document.head.appendChild(style);
+        }
     }
 
     setupScrollProgress() {
@@ -127,28 +151,31 @@ class EnhancedProgressNavigation {
 
     updateNavigationState(activeSection, activeIndex) {
         const totalSections = this.sections.length;
-        const progress = (activeIndex / (totalSections - 1)) * 100;
+        const progress = totalSections > 1 ? (activeIndex / (totalSections - 1)) * 100 : 0;
         
         // Update desktop progress line fill
         if (this.progressLineFill) {
             this.progressLineFill.style.width = `${progress}%`;
         }
         
-        // Update mobile progress line
+        // Update mobile progress line using CSS variable (FIXED - no stylesheet access)
         if (this.mobileProgressLine) {
-            this.mobileProgressLine.style.setProperty('--mobile-progress', `${progress}%`);
-            // Use CSS to update the ::after pseudo-element
-            const styleSheet = document.styleSheets[0];
-            const rule = `.mobile-progress-line::after { width: ${progress}%; }`;
-            
-            // Find and update or insert the rule
-            for (let i = 0; i < styleSheet.cssRules.length; i++) {
-                if (styleSheet.cssRules[i].selectorText === '.mobile-progress-line::after') {
-                    styleSheet.deleteRule(i);
-                    break;
-                }
+            const mobileProgressStyle = document.getElementById('mobile-progress-dynamic');
+            if (mobileProgressStyle) {
+                mobileProgressStyle.textContent = `
+                    .mobile-progress-line::after {
+                        content: '';
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        height: 100%;
+                        width: ${progress}%;
+                        background: linear-gradient(90deg, #5DBBC3, #7B88C4);
+                        transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+                        border-radius: 2px;
+                    }
+                `;
             }
-            styleSheet.insertRule(rule, styleSheet.cssRules.length);
         }
 
         // Update desktop navigation dots
@@ -357,16 +384,6 @@ class LocationsModal {
             window.scrollTo(0, this.scrollPosition);
         }, 300);
     }
-
-    // Public method to programmatically open modal
-    openModal() {
-        this.open();
-    }
-
-    // Public method to programmatically close modal
-    closeModal() {
-        this.close();
-    }
 }
 
 // =========================
@@ -382,8 +399,25 @@ class ActionIconsEnhancer {
     }
 
     init() {
+        this.addRippleAnimation();
         this.setupRippleEffect();
-        this.setupHoverSound();
+        this.setupHoverFeedback();
+    }
+
+    addRippleAnimation() {
+        if (!document.getElementById('ripple-animation')) {
+            const style = document.createElement('style');
+            style.id = 'ripple-animation';
+            style.textContent = `
+                @keyframes ripple {
+                    to {
+                        transform: scale(30);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
     }
 
     setupRippleEffect() {
@@ -408,98 +442,25 @@ class ActionIconsEnhancer {
                 `;
                 
                 icon.style.position = 'relative';
+                icon.style.overflow = 'hidden';
                 icon.appendChild(ripple);
                 
                 setTimeout(() => ripple.remove(), 600);
             });
         });
-        
-        // Add ripple animation
-        this.addRippleAnimation();
     }
 
-    addRippleAnimation() {
-        if (!document.getElementById('ripple-animation')) {
-            const style = document.createElement('style');
-            style.id = 'ripple-animation';
-            style.textContent = `
-                @keyframes ripple {
-                    to {
-                        transform: scale(30);
-                        opacity: 0;
-                    }
-                }
-            `;
-            document.head.appendChild(style);
-        }
-    }
-
-    setupHoverSound() {
-        // Optional: Add subtle haptic feedback for mobile
+    setupHoverFeedback() {
+        // Add subtle haptic feedback for mobile
         this.actionIcons.forEach(icon => {
             icon.addEventListener('touchstart', () => {
                 if (navigator.vibrate) {
                     navigator.vibrate(10);
                 }
-            });
+            }, { passive: true });
         });
     }
 }
-
-// =========================
-// INITIALIZE ENHANCED HEADER SYSTEM
-// =========================
-class EnhancedHeaderSystem {
-    constructor() {
-        this.init();
-    }
-
-    init() {
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => this.initializeModules());
-        } else {
-            this.initializeModules();
-        }
-    }
-
-    initializeModules() {
-        // Initialize enhanced progress navigation
-        const progressNav = new EnhancedProgressNavigation();
-        
-        // Initialize locations modal
-        const locationsModal = new LocationsModal();
-        
-        // Initialize action icons enhancements
-        new ActionIconsEnhancer();
-
-        // Make instances globally accessible
-        window.enhancedProgressNav = progressNav;
-        window.locationsModal = locationsModal;
-
-        // Refresh positions after images load
-        window.addEventListener('load', () => {
-            if (progressNav) {
-                progressNav.refreshPositions();
-            }
-        });
-        
-        // Refresh on window resize
-        let resizeTimer;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                if (progressNav) {
-                    progressNav.refreshPositions();
-                }
-            }, 250);
-        });
-        
-        console.log('%c✨ Enhanced Header System Initialized', 'color: #5DBBC3; font-size: 16px; font-weight: bold;');
-    }
-}
-
-// Initialize the enhanced header system
-new EnhancedHeaderSystem();
 
 // =========================
 // HERO VIDEO CONTROLLER
@@ -509,7 +470,7 @@ class HeroVideo {
         this.video = document.querySelector('.hero-bg-video');
         this.hero = document.querySelector('.hero');
         
-        if (this.video) {
+        if (this.video && this.hero) {
             this.init();
         }
     }
@@ -534,7 +495,7 @@ class HeroVideo {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    this.video.play();
+                    this.video.play().catch(() => {});
                 } else {
                     this.video.pause();
                 }
@@ -622,12 +583,13 @@ class TestimonialsSlider {
         this.nextBtn = document.getElementById('nextBtn');
         this.dotsContainer = document.getElementById('sliderDots');
         
-        if (!this.track) return;
+        if (!this.track || !this.prevBtn || !this.nextBtn || !this.dotsContainer) return;
         
         this.cards = Array.from(this.track.children);
         this.currentIndex = 0;
         this.autoplayInterval = null;
         this.autoplayDelay = 5000;
+        this.dots = [];
         
         this.init();
     }
@@ -672,7 +634,7 @@ class TestimonialsSlider {
 
         this.track.addEventListener('touchstart', (e) => {
             startX = e.touches[0].clientX;
-        });
+        }, { passive: true });
 
         this.track.addEventListener('touchend', (e) => {
             endX = e.changedTouches[0].clientX;
@@ -686,7 +648,7 @@ class TestimonialsSlider {
                 }
                 this.resetAutoplay();
             }
-        });
+        }, { passive: true });
     }
 
     goToSlide(index) {
@@ -913,7 +875,7 @@ class ScrollToTop {
             } else {
                 this.button.classList.remove('visible');
             }
-        });
+        }, { passive: true });
     }
 
     setupClickHandler() {
@@ -969,13 +931,13 @@ class SmoothScrollEnhancer {
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', (e) => {
                 const href = anchor.getAttribute('href');
-                if (href === '#') return;
+                if (href === '#' || href === '#!') return;
 
                 const target = document.querySelector(href);
                 if (target) {
                     e.preventDefault();
                     
-                    const offsetTop = target.offsetTop - 75;
+                    const offsetTop = target.offsetTop - 80;
                     window.scrollTo({
                         top: offsetTop,
                         behavior: 'smooth'
@@ -987,10 +949,57 @@ class SmoothScrollEnhancer {
 }
 
 // =========================
-// INITIALIZE APPLICATION
+// PERFORMANCE MONITOR (Optional)
 // =========================
-class App {
+class PerformanceMonitor {
     constructor() {
+        this.metrics = {
+            loadTime: 0,
+            resourceCount: 0,
+            memoryUsage: 0
+        };
+        
+        this.init();
+    }
+
+    init() {
+        // Monitor page load time
+        window.addEventListener('load', () => {
+            if (performance && performance.timing) {
+                const perfData = performance.timing;
+                this.metrics.loadTime = perfData.loadEventEnd - perfData.navigationStart;
+                
+                // Get resource count
+                if (performance.getEntriesByType) {
+                    this.metrics.resourceCount = performance.getEntriesByType('resource').length;
+                }
+                
+                // Get memory usage (if available)
+                if (performance.memory) {
+                    this.metrics.memoryUsage = (performance.memory.usedJSHeapSize / 1048576).toFixed(2);
+                }
+                
+                this.logMetrics();
+            }
+        });
+    }
+
+    logMetrics() {
+        console.log('%c📊 Performance Metrics', 'color: #5DBBC3; font-size: 16px; font-weight: bold;');
+        console.log(`⏱️  Load Time: ${this.metrics.loadTime}ms`);
+        console.log(`📦 Resources Loaded: ${this.metrics.resourceCount}`);
+        if (this.metrics.memoryUsage) {
+            console.log(`💾 Memory Usage: ${this.metrics.memoryUsage}MB`);
+        }
+    }
+}
+
+// =========================
+// MAIN APPLICATION CLASS
+// =========================
+class HolisticMentalHealthApp {
+    constructor() {
+        this.modules = {};
         this.init();
     }
 
@@ -1003,82 +1012,112 @@ class App {
     }
 
     initializeModules() {
-        // Initialize AOS (Animate On Scroll)
-        if (typeof AOS !== 'undefined') {
-            AOS.init({
-                duration: 1000,
-                once: true,
-                offset: 100,
-                easing: 'ease-out-cubic'
-            });
-        }
-
-        // Initialize all modules
-        const EnhancedHeaderSystem = new EnhancedHeaderSystem();
-        new HeroVideo();
-        new StatisticsCounter();
-        new TestimonialsSlider();
-        new FormHandler();
-        new ScrollToTop();
-        new CircleAnimation();
-        new SmoothScrollEnhancer();
-
-        // Make progressNav globally accessible
-        window.progressNav = progressNav;
-
-        // Add notification styles
-        this.addNotificationStyles();
-        
-        // Refresh positions after images load
-        window.addEventListener('load', () => {
-            if (progressNav) {
-                progressNav.refreshPositions();
+        try {
+            // Initialize AOS (Animate On Scroll)
+            if (typeof AOS !== 'undefined') {
+                AOS.init({
+                    duration: 1000,
+                    once: true,
+                    offset: 100,
+                    easing: 'ease-out-cubic'
+                });
             }
-        });
-        
-        // Refresh on window resize
-        let resizeTimer;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                if (progressNav) {
-                    progressNav.refreshPositions();
+
+            // Initialize all modules with error handling
+            this.modules.progressNav = new EnhancedProgressNavigation();
+            this.modules.locationsModal = new LocationsModal();
+            this.modules.actionIcons = new ActionIconsEnhancer();
+            this.modules.heroVideo = new HeroVideo();
+            this.modules.statsCounter = new StatisticsCounter();
+            this.modules.testimonialsSlider = new TestimonialsSlider();
+            this.modules.formHandler = new FormHandler();
+            this.modules.scrollToTop = new ScrollToTop();
+            this.modules.circleAnimation = new CircleAnimation();
+            this.modules.smoothScroll = new SmoothScrollEnhancer();
+            this.modules.perfMonitor = new PerformanceMonitor();
+
+            // Make modules globally accessible for debugging
+            window.holisticApp = this.modules;
+
+            // Add notification styles
+            this.addNotificationStyles();
+            
+            // Refresh positions after images and resources load
+            window.addEventListener('load', () => {
+                if (this.modules.progressNav) {
+                    setTimeout(() => {
+                        this.modules.progressNav.refreshPositions();
+                    }, 100);
                 }
-            }, 250);
-        });
-        
-        console.log('%c✨ Holistic Mental Health Services', 'color: #5DBBC3; font-size: 20px; font-weight: bold;');
-        console.log('%cWebsite initialized successfully!', 'color: #7B88C4; font-size: 14px;');
+            });
+            
+            // Refresh on window resize with debouncing
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    if (this.modules.progressNav) {
+                        this.modules.progressNav.refreshPositions();
+                    }
+                }, 250);
+            }, { passive: true });
+            
+            // Log success message
+            this.logSuccess();
+            
+        } catch (error) {
+            console.error('Error initializing modules:', error);
+        }
     }
 
     addNotificationStyles() {
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideIn {
-                from {
-                    transform: translateX(400px);
-                    opacity: 0;
+        if (!document.getElementById('notification-styles')) {
+            const style = document.createElement('style');
+            style.id = 'notification-styles';
+            style.textContent = `
+                @keyframes slideIn {
+                    from {
+                        transform: translateX(400px);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
                 }
-                to {
-                    transform: translateX(0);
-                    opacity: 1;
+                
+                @keyframes slideOut {
+                    from {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                    to {
+                        transform: translateX(400px);
+                        opacity: 0;
+                    }
                 }
-            }
-            
-            @keyframes slideOut {
-                from {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-                to {
-                    transform: translateX(400px);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(style);
+            `;
+            document.head.appendChild(style);
+        }
+    }
+
+    logSuccess() {
+        console.log('%c✨ Holistic Mental Health Services', 'color: #5DBBC3; font-size: 24px; font-weight: bold;');
+        console.log('%c🚀 All systems initialized successfully!', 'color: #7B88C4; font-size: 16px;');
+        console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #D1D5DB;');
+        console.log('%c✓ Enhanced Progress Navigation', 'color: #10B981;');
+        console.log('%c✓ Locations Modal System', 'color: #10B981;');
+        console.log('%c✓ Action Icons & Interactions', 'color: #10B981;');
+        console.log('%c✓ Hero Video Controller', 'color: #10B981;');
+        console.log('%c✓ Statistics Counter', 'color: #10B981;');
+        console.log('%c✓ Testimonials Slider', 'color: #10B981;');
+        console.log('%c✓ Form Validation & Handling', 'color: #10B981;');
+        console.log('%c✓ Smooth Scroll & Animations', 'color: #10B981;');
+        console.log('%c✓ Performance Monitoring', 'color: #10B981;');
     }
 }
 
-// Initialize the application
-new App();
+// =========================
+// INITIALIZE APPLICATION
+// =========================
+new HolisticMentalHealthApp();
