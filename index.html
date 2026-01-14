@@ -22,7 +22,7 @@
 </head>
 <body>
 
-<!-- Progress Tracker Navigation Header -->
+<!-- Enhanced Progress Tracker Navigation Header -->
 <header class="progress-nav-header" id="progressHeader">
     <div class="header-container">
         <!-- Logo Section -->
@@ -30,55 +30,75 @@
             <img src="logo.png" alt="Holistic Mental Health" class="logo-image">
         </a>
 
-        <!-- Desktop Progress Navigation -->
+        <!-- Desktop Progress Navigation - Enhanced Design -->
         <nav class="desktop-progress-nav" aria-label="Main navigation">
-            <div class="progress-container">
-                <!-- Connecting Line -->
-                <div class="progress-connector"></div>
+            <div class="progress-track">
+                <!-- Animated Progress Line -->
+                <div class="progress-line">
+                    <div class="progress-line-fill"></div>
+                </div>
                 
-                <!-- Navigation Dots -->
-                <a href="#home" class="nav-point" data-target="home">
-                    <span class="point-label">Home</span>
-                    <span class="point-dot"></span>
+                <!-- Navigation Points with Labels -->
+                <a href="#home" class="nav-dot" data-target="home">
+                    <span class="dot-circle"></span>
+                    <span class="dot-label">Home</span>
                 </a>
-                <a href="#about" class="nav-point" data-target="about">
-                    <span class="point-label">About</span>
-                    <span class="point-dot"></span>
+                <a href="#about" class="nav-dot" data-target="about">
+                    <span class="dot-circle"></span>
+                    <span class="dot-label">About</span>
                 </a>
-                <a href="#services" class="nav-point" data-target="services">
-                    <span class="point-label">Services</span>
-                    <span class="point-dot"></span>
+                <a href="#services" class="nav-dot" data-target="services">
+                    <span class="dot-circle"></span>
+                    <span class="dot-label">Services</span>
                 </a>
-                <a href="#approach" class="nav-point" data-target="approach">
-                    <span class="point-label">Approach</span>
-                    <span class="point-dot"></span>
+                <a href="#approach" class="nav-dot" data-target="approach">
+                    <span class="dot-circle"></span>
+                    <span class="dot-label">Approach</span>
                 </a>
-                <a href="#team" class="nav-point" data-target="team">
-                    <span class="point-label">Team</span>
-                    <span class="point-dot"></span>
+                <a href="#team" class="nav-dot" data-target="team">
+                    <span class="dot-circle"></span>
+                    <span class="dot-label">Team</span>
                 </a>
-                <a href="#testimonials" class="nav-point" data-target="testimonials">
-                    <span class="point-label">Testimonials</span>
-                    <span class="point-dot"></span>
+                <a href="#testimonials" class="nav-dot" data-target="testimonials">
+                    <span class="dot-circle"></span>
+                    <span class="dot-label">Testimonials</span>
                 </a>
-                <a href="#contact" class="nav-point" data-target="contact">
-                    <span class="point-label">Contact</span>
-                    <span class="point-dot"></span>
+                <a href="#contact" class="nav-dot" data-target="contact">
+                    <span class="dot-circle"></span>
+                    <span class="dot-label">Contact</span>
                 </a>
             </div>
         </nav>
 
+        <!-- Action Icons Section -->
+        <div class="header-actions">
+            <a href="tel:+15551234567" class="action-icon" aria-label="Call us">
+                <i class="fas fa-phone-alt"></i>
+                <span class="action-tooltip">Call Us</span>
+            </a>
+            <button class="action-icon" id="locationsBtn" aria-label="View locations">
+                <i class="fas fa-map-marker-alt"></i>
+                <span class="action-tooltip">Our Locations</span>
+            </button>
+        </div>
+
         <!-- Mobile Progress Navigation -->
         <nav class="mobile-progress-nav" aria-label="Mobile navigation">
-            <span class="active-section-name">Home</span>
-            <div class="mobile-progress-dots">
-                <a href="#home" class="mobile-point" data-target="home" aria-label="Home section"></a>
-                <a href="#about" class="mobile-point" data-target="about" aria-label="About section"></a>
-                <a href="#services" class="mobile-point" data-target="services" aria-label="Services section"></a>
-                <a href="#approach" class="mobile-point" data-target="approach" aria-label="Approach section"></a>
-                <a href="#team" class="mobile-point" data-target="team" aria-label="Team section"></a>
-                <a href="#testimonials" class="mobile-point" data-target="testimonials" aria-label="Testimonials section"></a>
-                <a href="#contact" class="mobile-point" data-target="contact" aria-label="Contact section"></a>
+            <div class="mobile-section-info">
+                <span class="mobile-section-label">Home</span>
+                <span class="mobile-section-count">1 / 7</span>
+            </div>
+            <div class="mobile-progress-track">
+                <div class="mobile-progress-line"></div>
+                <div class="mobile-dots-container">
+                    <a href="#home" class="mobile-dot" data-target="home" aria-label="Home"></a>
+                    <a href="#about" class="mobile-dot" data-target="about" aria-label="About"></a>
+                    <a href="#services" class="mobile-dot" data-target="services" aria-label="Services"></a>
+                    <a href="#approach" class="mobile-dot" data-target="approach" aria-label="Approach"></a>
+                    <a href="#team" class="mobile-dot" data-target="team" aria-label="Team"></a>
+                    <a href="#testimonials" class="mobile-dot" data-target="testimonials" aria-label="Testimonials"></a>
+                    <a href="#contact" class="mobile-dot" data-target="contact" aria-label="Contact"></a>
+                </div>
             </div>
         </nav>
     </div>
@@ -89,6 +109,144 @@
     </div>
 </header>
 
+<!-- Locations Modal -->
+<div class="locations-modal" id="locationsModal">
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+        <button class="modal-close" id="modalClose">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <div class="modal-header">
+            <div class="modal-icon">
+                <i class="fas fa-map-marked-alt"></i>
+            </div>
+            <h3>Our Locations</h3>
+            <p>Find the office nearest to you</p>
+        </div>
+
+        <div class="modal-body">
+            <div class="locations-grid">
+                
+                <!-- Location 1 - Main Office -->
+                <div class="location-card" data-location="main">
+                    <div class="location-badge">Main Office</div>
+                    <div class="location-image">
+                        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop" alt="Main Office">
+                        <div class="location-overlay"></div>
+                    </div>
+                    <div class="location-details">
+                        <h4>Downtown Wellness Center</h4>
+                        <div class="location-info-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>123 Wellness Way, Suite 200<br>New York, NY 10001</span>
+                        </div>
+                        <div class="location-info-item">
+                            <i class="fas fa-phone-alt"></i>
+                            <a href="tel:+15551234567">(555) 123-4567</a>
+                        </div>
+                        <div class="location-info-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Mon-Fri: 8am - 7pm<br>Sat: 9am - 3pm</span>
+                        </div>
+                        <div class="location-actions">
+                            <a href="https://www.google.com/maps/dir/?api=1&destination=123+Wellness+Way+Suite+200+New+York+NY+10001" 
+                               target="_blank" 
+                               class="location-btn primary">
+                                <i class="fas fa-directions"></i>
+                                Get Directions
+                            </a>
+                            <button class="location-btn secondary" onclick="window.open('tel:+15551234567')">
+                                <i class="fas fa-phone-alt"></i>
+                                Call Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Location 2 - Brooklyn Office -->
+                <div class="location-card" data-location="brooklyn">
+                    <div class="location-image">
+                        <img src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&h=600&fit=crop" alt="Brooklyn Office">
+                        <div class="location-overlay"></div>
+                    </div>
+                    <div class="location-details">
+                        <h4>Brooklyn Heights Office</h4>
+                        <div class="location-info-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>456 Mental Health Blvd<br>Brooklyn, NY 11201</span>
+                        </div>
+                        <div class="location-info-item">
+                            <i class="fas fa-phone-alt"></i>
+                            <a href="tel:+15559876543">(555) 987-6543</a>
+                        </div>
+                        <div class="location-info-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Mon-Fri: 9am - 6pm<br>Sat: 10am - 2pm</span>
+                        </div>
+                        <div class="location-actions">
+                            <a href="https://www.google.com/maps/dir/?api=1&destination=456+Mental+Health+Blvd+Brooklyn+NY+11201" 
+                               target="_blank" 
+                               class="location-btn primary">
+                                <i class="fas fa-directions"></i>
+                                Get Directions
+                            </a>
+                            <button class="location-btn secondary" onclick="window.open('tel:+15559876543')">
+                                <i class="fas fa-phone-alt"></i>
+                                Call Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Location 3 - Queens Office -->
+                <div class="location-card" data-location="queens">
+                    <div class="location-image">
+                        <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=800&h=600&fit=crop" alt="Queens Office">
+                        <div class="location-overlay"></div>
+                    </div>
+                    <div class="location-details">
+                        <h4>Forest Hills Therapy Center</h4>
+                        <div class="location-info-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>789 Serenity Lane<br>Forest Hills, NY 11375</span>
+                        </div>
+                        <div class="location-info-item">
+                            <i class="fas fa-phone-alt"></i>
+                            <a href="tel:+15555554321">(555) 555-4321</a>
+                        </div>
+                        <div class="location-info-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Mon-Thu: 8am - 8pm<br>Fri-Sat: 9am - 4pm</span>
+                        </div>
+                        <div class="location-actions">
+                            <a href="https://www.google.com/maps/dir/?api=1&destination=789+Serenity+Lane+Forest+Hills+NY+11375" 
+                               target="_blank" 
+                               class="location-btn primary">
+                                <i class="fas fa-directions"></i>
+                                Get Directions
+                            </a>
+                            <button class="location-btn secondary" onclick="window.open('tel:+15555554321')">
+                                <i class="fas fa-phone-alt"></i>
+                                Call Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Quick Contact Section -->
+            <div class="modal-footer">
+                <div class="footer-info">
+                    <i class="fas fa-info-circle"></i>
+                    <span>All locations accept most major insurance plans. <a href="#contact">Learn more</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
 <!-- Hero Section with Liquid Glass Logo Background -->
 <section class="hero" id="home">
     <!-- Background Video -->
