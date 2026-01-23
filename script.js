@@ -1003,28 +1003,48 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // =========================
-// FORM HANDLER CLASS
+// CONTACT SECTION - FORM HANDLER & INTERACTIONS
 // =========================
-class FormHandler {
+
+class ContactFormHandler {
     constructor() {
         this.form = document.getElementById('contactForm');
+        this.submitBtn = document.querySelector('.submit-btn');
+        this.locationCards = document.querySelectorAll('.location-card');
+        this.partnerCard = document.querySelector('.partner-location-card');
         
-        if (!this.form) return;
-        
-        this.init();
+        if (this.form) {
+            this.init();
+        }
     }
 
     init() {
-        this.setupValidation();
-        this.setupSubmitHandler();
+        this.setupFormValidation();
+        this.setupFormSubmission();
+        this.setupLocationCardEffects();
+        this.setupPhoneFormatting();
+        this.setupInputAnimations();
     }
 
-    setupValidation() {
+    // Real-time form validation
+    setupFormValidation() {
         const inputs = this.form.querySelectorAll('input, textarea, select');
         
         inputs.forEach(input => {
+            // Validate on blur
             input.addEventListener('blur', () => this.validateField(input));
-            input.addEventListener('input', () => this.clearError(input));
+            
+            // Clear error on input
+            input.addEventListener('input', () => this.clearFieldError(input));
+            
+            // Add focus effect
+            input.addEventListener('focus', () => {
+                input.parentElement.classList.add('field-focused');
+            });
+            
+            input.addEventListener('blur', () => {
+                input.parentElement.classList.remove('field-focused');
+            });
         });
     }
 
@@ -1033,138 +1053,481 @@ class FormHandler {
         let isValid = true;
         let errorMessage = '';
 
+        // Required field validation
         if (field.hasAttribute('required') && !value) {
             isValid = false;
             errorMessage = 'This field is required';
-        } else if (field.type === 'email' && value) {
+        }
+        
+        // Email validation
+        else if (field.type === 'email' && value) {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(value)) {
                 isValid = false;
                 errorMessage = 'Please enter a valid email address';
             }
-        } else if (field.type === 'tel' && value) {
-            const phoneRegex = /^[\d\s\-\+\(\)]+$/;
-            if (!phoneRegex.test(value)) {
+        }
+        
+        // Phone validation
+        else if (field.type === 'tel' && value) {
+            const phoneRegex = /^[\d\s\-\+\(\)]{10,}$/;
+            if (!phoneRegex.test(value.replace(/\s/g, ''))) {
                 isValid = false;
                 errorMessage = 'Please enter a valid phone number';
             }
         }
 
         if (!isValid) {
-            this.showError(field, errorMessage);
+            this.showFieldError(field, errorMessage);
         } else {
-            this.clearError(field);
+            this.clearFieldError(field);
         }
 
         return isValid;
     }
 
-    showError(field, message) {
-        this.clearError(field);
+    showFieldError(field, message) {
+        this.clearFieldError(field);
         
+        field.classList.add('field-error');
         field.style.borderColor = '#EF4444';
         
-        const error = document.createElement('span');
-        error.className = 'field-error';
-        error.style.color = '#EF4444';
-        error.style.fontSize = '14px';
-        error.style.marginTop = '4px';
-        error.style.display = 'block';
-        error.textContent = message;
+        const errorEl = document.createElement('span');
+        errorEl.className = 'error-message';
+        errorEl.style.cssText = `
+            display: block;
+            color: #EF4444;
+            font-size: 13px;
+            margin-top: 6px;
+            animation: fadeInError 0.3s ease;
+        `;
+        errorEl.textContent = message;
         
-        field.parentElement.appendChild(error);
+        field.parentElement.appendChild(errorEl);
     }
 
-    clearError(field) {
+    clearFieldError(field) {
+        field.classList.remove('field-error');
         field.style.borderColor = '';
         
-        const error = field.parentElement.querySelector('.field-error');
-        if (error) {
-            error.remove();
+        const existingError = field.parentElement.querySelector('.error-message');
+        if (existingError) {
+            existingError.remove();
         }
     }
 
-    setupSubmitHandler() {
+    // Form submission with mailto
+    setupFormSubmission() {
         this.form.addEventListener('submit', (e) => {
             e.preventDefault();
             
-            const inputs = this.form.querySelectorAll('input[required], textarea[required], select[required]');
-            let isValid = true;
-
-            inputs.forEach(input => {
-                if (!this.validateField(input)) {
-                    isValid = false;
+            // Validate all required fields
+            const requiredFields = this.form.querySelectorAll('[required]');
+            let allValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!this.validateField(field)) {
+                    allValid = false;
                 }
             });
 
-            if (isValid) {
-                this.submitForm();
-            } else {
-                this.showNotification('Please fill in all required fields correctly', 'error');
+            if (!allValid) {
+                this.showNotification('Please fill in all required fields correctly.', 'error');
+                return;
             }
+
+            // Show loading state
+            this.setLoadingState(true);
+
+            // Collect form data
+            const formData = this.collectFormData();
+            
+            // Send via mailto
+            this.sendViaMailto(formData);
         });
     }
 
-    async submitForm() {
-        const formData = new FormData(this.form);
-        const data = Object.fromEntries(formData.entries());
+    collectFormData() {
+        return {
+            firstName: document.getElementById('firstName')?.value || '',
+            lastName: document.getElementById('lastName')?.value || '',
+            email: document.getElementById('email')?.value || '',
+            phone: document.getElementById('phone')?.value || '',
+            service: document.getElementById('service')?.value || 'Not specified',
+            preferredLocation: document.getElementById('preferredLocation')?.value || 'Not specified',
+            message: document.getElementById('message')?.value || ''
+        };
+    }
 
-        const submitBtn = this.form.querySelector('button[type="submit"]');
-        const originalText = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-        submitBtn.disabled = true;
+    sendViaMailto(data) {
+        const recipient = 'support@holisticmentalhealthny.com';
+        const subject = encodeURIComponent(`New Inquiry from ${data.firstName} ${data.lastName}`);
+        
+        const body = encodeURIComponent(
+`New Contact Form Submission
+================================
 
-        try {
-            await this.simulateAPICall(data);
+Name: ${data.firstName} ${data.lastName}
+Email: ${data.email}
+Phone: ${data.phone || 'Not provided'}
+
+Service Interested In: ${data.service}
+Preferred Location: ${data.preferredLocation}
+
+Message:
+${data.message}
+
+================================
+Sent from Holistic Mental Health Services website`
+        );
+
+        // Create mailto link
+        const mailtoLink = `mailto:${recipient}?subject=${subject}&body=${body}`;
+        
+        // Simulate brief loading then open mailto
+        setTimeout(() => {
+            this.setLoadingState(false);
             
-            this.showNotification('Thank you! We\'ll be in touch within 24 hours.', 'success');
-            this.form.reset();
-        } catch (error) {
-            this.showNotification('Something went wrong. Please try again.', 'error');
-        } finally {
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
+            // Open mail client
+            window.location.href = mailtoLink;
+            
+            // Show success message
+            this.showNotification('Opening your email client...', 'success');
+            
+            // Reset form after delay
+            setTimeout(() => {
+                this.form.reset();
+            }, 1000);
+            
+        }, 800);
+    }
+
+    setLoadingState(loading) {
+        if (loading) {
+            this.submitBtn.disabled = true;
+            this.submitBtn.innerHTML = `
+                <i class="fas fa-spinner fa-spin"></i>
+                Preparing...
+            `;
+        } else {
+            this.submitBtn.disabled = false;
+            this.submitBtn.innerHTML = `
+                <i class="fas fa-paper-plane"></i>
+                Send Message
+            `;
         }
     }
 
-    simulateAPICall(data) {
-        return new Promise((resolve) => {
-            console.log('Form submission:', data);
-            setTimeout(resolve, 1500);
+    // Phone number formatting
+    setupPhoneFormatting() {
+        const phoneInput = document.getElementById('phone');
+        
+        if (phoneInput) {
+            phoneInput.addEventListener('input', (e) => {
+                let value = e.target.value.replace(/\D/g, '');
+                
+                if (value.length > 0) {
+                    if (value.length <= 3) {
+                        value = `(${value}`;
+                    } else if (value.length <= 6) {
+                        value = `(${value.slice(0, 3)}) ${value.slice(3)}`;
+                    } else {
+                        value = `(${value.slice(0, 3)}) ${value.slice(3, 6)}-${value.slice(6, 10)}`;
+                    }
+                }
+                
+                e.target.value = value;
+            });
+        }
+    }
+
+    // Input field animations
+    setupInputAnimations() {
+        const inputs = this.form.querySelectorAll('input, textarea, select');
+        
+        inputs.forEach(input => {
+            // Floating label effect (optional enhancement)
+            input.addEventListener('focus', () => {
+                input.style.transform = 'scale(1.01)';
+            });
+            
+            input.addEventListener('blur', () => {
+                input.style.transform = 'scale(1)';
+            });
         });
     }
 
+    // Location card hover effects
+    setupLocationCardEffects() {
+        this.locationCards.forEach(card => {
+            card.addEventListener('mouseenter', (e) => {
+                this.createRippleEffect(card, e);
+            });
+        });
+
+        // Partner card special effect
+        if (this.partnerCard) {
+            this.partnerCard.addEventListener('mouseenter', () => {
+                this.partnerCard.style.transform = 'translateY(-4px)';
+            });
+            
+            this.partnerCard.addEventListener('mouseleave', () => {
+                this.partnerCard.style.transform = 'translateY(0)';
+            });
+        }
+    }
+
+    createRippleEffect(element, event) {
+        const rect = element.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        
+        const ripple = document.createElement('div');
+        ripple.style.cssText = `
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(93, 187, 195, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            left: ${x}px;
+            top: ${y}px;
+            transform: translate(-50%, -50%) scale(0);
+            pointer-events: none;
+            animation: rippleExpand 0.6s ease-out forwards;
+        `;
+        
+        element.style.position = 'relative';
+        element.style.overflow = 'hidden';
+        element.appendChild(ripple);
+        
+        setTimeout(() => ripple.remove(), 600);
+    }
+
+    // Notification system
     showNotification(message, type = 'success') {
+        // Remove existing notifications
+        const existing = document.querySelector('.contact-notification');
+        if (existing) existing.remove();
+        
         const notification = document.createElement('div');
-        notification.className = 'notification';
+        notification.className = 'contact-notification';
         notification.style.cssText = `
             position: fixed;
             top: 100px;
             right: 30px;
-            background: ${type === 'success' ? 'linear-gradient(135deg, #5DBBC3, #7B88C4)' : '#EF4444'};
+            padding: 20px 28px;
+            background: ${type === 'success' 
+                ? 'linear-gradient(135deg, #5DBBC3 0%, #7B88C4 100%)' 
+                : '#EF4444'};
             color: white;
-            padding: 20px 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
             z-index: 10000;
-            animation: slideIn 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+            animation: slideInNotification 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             max-width: 400px;
         `;
+        
+        const icon = type === 'success' ? 'check-circle' : 'exclamation-circle';
         notification.innerHTML = `
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}" style="font-size: 24px;"></i>
-                <span>${message}</span>
-            </div>
+            <i class="fas fa-${icon}" style="font-size: 22px;"></i>
+            <span>${message}</span>
         `;
-
+        
         document.body.appendChild(notification);
-
+        
+        // Auto remove
         setTimeout(() => {
-            notification.style.animation = 'slideOut 0.3s ease';
-            setTimeout(() => notification.remove(), 300);
-        }, 5000);
+            notification.style.animation = 'slideOutNotification 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards';
+            setTimeout(() => notification.remove(), 400);
+        }, 4000);
     }
 }
+
+class LocationsInteraction {
+    constructor() {
+        this.locationCards = document.querySelectorAll('.location-card');
+        this.directionsBtns = document.querySelectorAll('.directions-btn');
+        this.phoneBtns = document.querySelectorAll('.phone-link');
+        
+        if (this.locationCards.length > 0) {
+            this.init();
+        }
+    }
+
+    init() {
+        this.setupCardAnimations();
+        this.setupDirectionsTracking();
+        this.setupPhoneTracking();
+        this.setupScrollReveal();
+    }
+
+    setupCardAnimations() {
+        this.locationCards.forEach((card, index) => {
+            // Staggered entrance animation
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            card.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateY(0)';
+                        }, index * 100);
+                        observer.disconnect();
+                    }
+                });
+            }, { threshold: 0.2 });
+            
+            observer.observe(card);
+        });
+    }
+
+    setupDirectionsTracking() {
+        this.directionsBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                // Optional: Track directions clicks
+                const card = btn.closest('.location-card') || btn.closest('.partner-location-card');
+                const locationName = card?.querySelector('h4')?.textContent || 'Unknown';
+                
+                console.log(`📍 Directions requested for: ${locationName}`);
+                
+                // Add click feedback
+                btn.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    btn.style.transform = '';
+                }, 150);
+            });
+        });
+    }
+
+    setupPhoneTracking() {
+        this.phoneBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                console.log(`📞 Phone call initiated: ${btn.textContent.trim()}`);
+                
+                // Haptic feedback on mobile
+                if (navigator.vibrate) {
+                    navigator.vibrate(50);
+                }
+            });
+        });
+    }
+
+    setupScrollReveal() {
+        const partnerCard = document.querySelector('.partner-location-card');
+        
+        if (partnerCard) {
+            partnerCard.style.opacity = '0';
+            partnerCard.style.transform = 'translateY(40px)';
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        partnerCard.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+                        partnerCard.style.opacity = '1';
+                        partnerCard.style.transform = 'translateY(0)';
+                        observer.disconnect();
+                    }
+                });
+            }, { threshold: 0.3 });
+            
+            observer.observe(partnerCard);
+        }
+    }
+}
+
+function addContactAnimationStyles() {
+    if (document.getElementById('contact-animation-styles')) return;
+    
+    const style = document.createElement('style');
+    style.id = 'contact-animation-styles';
+    style.textContent = `
+        @keyframes fadeInError {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes rippleExpand {
+            from {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 1;
+            }
+            to {
+                transform: translate(-50%, -50%) scale(4);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes slideInNotification {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOutNotification {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+        
+        .form-group {
+            transition: all 0.3s ease;
+        }
+        
+        .form-group.field-focused label {
+            color: #5DBBC3;
+        }
+        
+        .contact-form input,
+        .contact-form select,
+        .contact-form textarea {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .location-card,
+        .partner-location-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Add animation styles
+    addContactAnimationStyles();
+    
+    // Initialize contact form handler
+    const contactForm = new ContactFormHandler();
+    
+    // Initialize locations interaction
+    const locationsInteraction = new LocationsInteraction();
+    
+    // Log initialization
+    console.log('✨ Contact Section Initialized');
+    console.log('✨ Locations Interaction Initialized');
+});
 
 // =========================
 // SCROLL TO TOP CLASS
@@ -1347,7 +1710,7 @@ class HolisticMentalHealthApp {
             this.modules.servicesCarousel = new ServicesCarousel();
             this.modules.serviceModals = new ServiceModalSystem();
             this.modules.testimonialsSlider = new TestimonialsSlider();
-            this.modules.formHandler = new FormHandler();
+            this.modules.formHandler = new ContactFormHandler();
             this.modules.scrollToTop = new ScrollToTop();
             this.modules.circleAnimation = new CircleAnimation();
             this.modules.smoothScroll = new SmoothScrollEnhancer();
