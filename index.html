@@ -72,14 +72,10 @@
 
         <!-- Action Icons Section -->
         <div class="header-actions">
-            <a href="tel:+15551234567" class="action-icon" aria-label="Call us">
+            <a href="tel:6312659850" class="action-icon" aria-label="Call us">
                 <i class="fas fa-phone-alt"></i>
                 <span class="action-tooltip">Call Us</span>
             </a>
-            <button class="action-icon" id="locationsBtn" aria-label="View locations">
-                <i class="fas fa-map-marker-alt"></i>
-                <span class="action-tooltip">Our Locations</span>
-            </button>
         </div>
 
         <!-- Mobile Progress Navigation -->
@@ -109,142 +105,6 @@
     </div>
 </header>
 
-<!-- Locations Modal -->
-<div class="locations-modal" id="locationsModal">
-    <div class="modal-overlay"></div>
-    <div class="modal-content">
-        <button class="modal-close" id="modalClose">
-            <i class="fas fa-times"></i>
-        </button>
-        
-        <div class="modal-header">
-            <div class="modal-icon">
-                <i class="fas fa-map-marked-alt"></i>
-            </div>
-            <h3>Our Locations</h3>
-            <p>Find the office nearest to you</p>
-        </div>
-
-        <div class="modal-body">
-            <div class="locations-grid">
-                
-                <!-- Location 1 - Main Office -->
-                <div class="location-card" data-location="main">
-                    <div class="location-image">
-                        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop" alt="Main Office">
-                        <div class="location-overlay"></div>
-                    </div>
-                    <div class="location-details">
-                        <h4>Downtown Wellness Center</h4>
-                        <div class="location-info-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>123 Wellness Way, Suite 200<br>New York, NY 10001</span>
-                        </div>
-                        <div class="location-info-item">
-                            <i class="fas fa-phone-alt"></i>
-                            <a href="tel:+15551234567">(555) 123-4567</a>
-                        </div>
-                        <div class="location-info-item">
-                            <i class="fas fa-clock"></i>
-                            <span>Mon-Fri: 8am - 7pm<br>Sat: 9am - 3pm</span>
-                        </div>
-                        <div class="location-actions">
-                            <a href="https://www.google.com/maps/dir/?api=1&destination=123+Wellness+Way+Suite+200+New+York+NY+10001" 
-                               target="_blank" 
-                               class="location-btn primary">
-                                <i class="fas fa-directions"></i>
-                                Get Directions
-                            </a>
-                            <button class="location-btn secondary" onclick="window.open('tel:+15551234567')">
-                                <i class="fas fa-phone-alt"></i>
-                                Call Now
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Location 2 - Brooklyn Office -->
-                <div class="location-card" data-location="brooklyn">
-                    <div class="location-image">
-                        <img src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&h=600&fit=crop" alt="Brooklyn Office">
-                        <div class="location-overlay"></div>
-                    </div>
-                    <div class="location-details">
-                        <h4>Brooklyn Heights Office</h4>
-                        <div class="location-info-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>456 Mental Health Blvd<br>Brooklyn, NY 11201</span>
-                        </div>
-                        <div class="location-info-item">
-                            <i class="fas fa-phone-alt"></i>
-                            <a href="tel:+15559876543">(555) 987-6543</a>
-                        </div>
-                        <div class="location-info-item">
-                            <i class="fas fa-clock"></i>
-                            <span>Mon-Fri: 9am - 6pm<br>Sat: 10am - 2pm</span>
-                        </div>
-                        <div class="location-actions">
-                            <a href="https://www.google.com/maps/dir/?api=1&destination=456+Mental+Health+Blvd+Brooklyn+NY+11201" 
-                               target="_blank" 
-                               class="location-btn primary">
-                                <i class="fas fa-directions"></i>
-                                Get Directions
-                            </a>
-                            <button class="location-btn secondary" onclick="window.open('tel:+15559876543')">
-                                <i class="fas fa-phone-alt"></i>
-                                Call Now
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Location 3 - Queens Office -->
-                <div class="location-card" data-location="queens">
-                    <div class="location-image">
-                        <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=800&h=600&fit=crop" alt="Queens Office">
-                        <div class="location-overlay"></div>
-                    </div>
-                    <div class="location-details">
-                        <h4>Forest Hills Therapy Center</h4>
-                        <div class="location-info-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>789 Serenity Lane<br>Forest Hills, NY 11375</span>
-                        </div>
-                        <div class="location-info-item">
-                            <i class="fas fa-phone-alt"></i>
-                            <a href="tel:+15555554321">(555) 555-4321</a>
-                        </div>
-                        <div class="location-info-item">
-                            <i class="fas fa-clock"></i>
-                            <span>Mon-Thu: 8am - 8pm<br>Fri-Sat: 9am - 4pm</span>
-                        </div>
-                        <div class="location-actions">
-                            <a href="https://www.google.com/maps/dir/?api=1&destination=789+Serenity+Lane+Forest+Hills+NY+11375" 
-                               target="_blank" 
-                               class="location-btn primary">
-                                <i class="fas fa-directions"></i>
-                                Get Directions
-                            </a>
-                            <button class="location-btn secondary" onclick="window.open('tel:+15555554321')">
-                                <i class="fas fa-phone-alt"></i>
-                                Call Now
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Quick Contact Section -->
-            <div class="modal-footer">
-                <div class="footer-info">
-                    <i class="fas fa-info-circle"></i>
-                    <span>All locations accept most major insurance plans. <a href="#contact">Learn more</a></span>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
     
 <!-- Hero Section with Liquid Glass Logo Background -->
 <section class="hero" id="home">
