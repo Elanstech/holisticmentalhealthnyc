@@ -1365,107 +1365,254 @@
     </div>
 </section>
 
-    <!-- Contact Section -->
-    <section class="contact" id="contact">
-        <div class="container">
-            <div class="contact-wrapper">
-                <div class="contact-info" data-aos="fade-right">
-                    <span class="section-label">Get In Touch</span>
-                    <h2>Begin Your Healing Journey Today</h2>
-                    <p>Taking the first step is often the hardest. We're here to make it as easy as possible. Reach out for a free consultation.</p>
-                    
-                    <div class="contact-details">
-                        <div class="contact-item">
-                            <div class="contact-icon">
-                                <i class="fas fa-phone-alt"></i>
-                            </div>
-                            <div>
-                                <strong>Phone</strong>
-                                <a href="tel:+15551234567">(555) 123-4567</a>
-                            </div>
+<!-- Contact Section - Full Redesign with All Locations -->
+<section class="contact-section" id="contact">
+    <div class="container">
+        <!-- Section Header -->
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-label">Get In Touch</span>
+            <h2>Begin Your Healing Journey</h2>
+            <p>Taking the first step is often the hardest. We're here to make it easy.</p>
+        </div>
+
+        <!-- Main Contact Grid -->
+        <div class="contact-main-grid">
+            <!-- Contact Form Panel -->
+            <div class="contact-form-panel" data-aos="fade-right">
+                <div class="form-header">
+                    <div class="form-icon">
+                        <i class="fas fa-envelope-open-text"></i>
+                    </div>
+                    <h3>Send Us a Message</h3>
+                    <p>Fill out the form below and we'll get back to you within 24 hours</p>
+                </div>
+
+                <form class="contact-form" id="contactForm" action="mailto:support@holisticmentalhealthny.com" method="post" enctype="text/plain">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name *</label>
+                            <input type="text" id="firstName" name="firstName" required placeholder="Your first name">
                         </div>
-                        <div class="contact-item">
-                            <div class="contact-icon">
-                                <i class="fas fa-envelope"></i>
-                            </div>
-                            <div>
-                                <strong>Email</strong>
-                                <a href="mailto:info@holisticmhs.com">info@holisticmhs.com</a>
-                            </div>
-                        </div>
-                        <div class="contact-item">
-                            <div class="contact-icon">
-                                <i class="fas fa-map-marker-alt"></i>
-                            </div>
-                            <div>
-                                <strong>Location</strong>
-                                <span>123 Wellness Way, Suite 200<br>Your City, ST 12345</span>
-                            </div>
-                        </div>
-                        <div class="contact-item">
-                            <div class="contact-icon">
-                                <i class="fas fa-clock"></i>
-                            </div>
-                            <div>
-                                <strong>Hours</strong>
-                                <span>Mon-Fri: 8am - 7pm<br>Sat: 9am - 3pm</span>
-                            </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name *</label>
+                            <input type="text" id="lastName" name="lastName" required placeholder="Your last name">
                         </div>
                     </div>
 
-                    <div class="insurance-info">
-                        <h4><i class="fas fa-shield-alt"></i> We Accept Most Insurance Plans</h4>
-                        <p>Including Blue Cross, Aetna, Cigna, United Healthcare, and more. Sliding scale fees available.</p>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" required placeholder="your@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="tel" id="phone" name="phone" placeholder="(631) 123-4567">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="service">Service Interested In</label>
+                        <select id="service" name="service">
+                            <option value="">Select a service...</option>
+                            <option value="Individual Therapy">Individual Therapy</option>
+                            <option value="Couples Counseling">Couples Counseling</option>
+                            <option value="Family Therapy">Family Therapy</option>
+                            <option value="Mindfulness-Based Therapy">Mindfulness-Based Therapy</option>
+                            <option value="Cognitive Behavioral Therapy">Cognitive Behavioral Therapy</option>
+                            <option value="Group Therapy">Group Therapy</option>
+                            <option value="Other">Other / Not Sure</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="preferredLocation">Preferred Location</label>
+                        <select id="preferredLocation" name="preferredLocation">
+                            <option value="">Select a location...</option>
+                            <option value="Hauppauge">Hauppauge Office (Main)</option>
+                            <option value="Forest Hills">Forest Hills Office</option>
+                            <option value="Patchogue">Patchogue Office</option>
+                            <option value="Mineola">Mineola Office</option>
+                            <option value="Telehealth">Telehealth / Virtual</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Your Message *</label>
+                        <textarea id="message" name="message" rows="4" required placeholder="Tell us a little about what brings you here..."></textarea>
+                    </div>
+
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="consent" name="consent" required>
+                        <label for="consent">I consent to being contacted about my inquiry. All information is confidential.</label>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i>
+                        Send Message
+                    </button>
+
+                    <p class="form-disclaimer">
+                        <i class="fas fa-lock"></i> Your information is 100% confidential and secure.
+                    </p>
+                </form>
+            </div>
+
+            <!-- Contact Info Panel -->
+            <div class="contact-info-panel" data-aos="fade-left">
+                <!-- Quick Contact Card -->
+                <div class="quick-contact-card">
+                    <div class="quick-contact-item">
+                        <div class="qc-icon phone-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div class="qc-content">
+                            <span class="qc-label">Call Us Today</span>
+                            <a href="tel:+16312659850" class="qc-value">(631) 265-9850</a>
+                        </div>
+                    </div>
+                    <div class="quick-contact-divider"></div>
+                    <div class="quick-contact-item">
+                        <div class="qc-icon email-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="qc-content">
+                            <span class="qc-label">Email Us</span>
+                            <a href="mailto:support@holisticmentalhealthny.com" class="qc-value qc-email">support@holisticmentalhealthny.com</a>
+                        </div>
+                    </div>
+                    <div class="quick-contact-divider"></div>
+                    <div class="quick-contact-item">
+                        <div class="qc-icon hours-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="qc-content">
+                            <span class="qc-label">Office Hours</span>
+                            <span class="qc-value">Mon – Sun: 9:00 AM – 9:00 PM</span>
+                        </div>
                     </div>
                 </div>
 
-                <div class="contact-form-wrapper" data-aos="fade-left">
-                    <form class="contact-form" id="contactForm">
-                        <div class="form-group">
-                            <label for="name"><i class="fas fa-user"></i> Full Name *</label>
-                            <input type="text" id="name" name="name" required>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="email"><i class="fas fa-envelope"></i> Email *</label>
-                                <input type="email" id="email" name="email" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="phone"><i class="fas fa-phone"></i> Phone</label>
-                                <input type="tel" id="phone" name="phone">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="service"><i class="fas fa-hand-holding-heart"></i> Service Interested In</label>
-                            <select id="service" name="service">
-                                <option value="">Select a service...</option>
-                                <option value="individual">Individual Therapy</option>
-                                <option value="couples">Couples Counseling</option>
-                                <option value="family">Family Therapy</option>
-                                <option value="mindfulness">Mindfulness-Based Therapy</option>
-                                <option value="cbt">Cognitive Behavioral Therapy</option>
-                                <option value="group">Group Therapy</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="message"><i class="fas fa-comment-dots"></i> Message *</label>
-                            <textarea id="message" name="message" rows="5" required></textarea>
-                        </div>
-                        <div class="form-group checkbox-group">
-                            <input type="checkbox" id="consent" name="consent" required>
-                            <label for="consent">I consent to being contacted about my inquiry *</label>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-full">
-                            <i class="fas fa-paper-plane"></i>
-                            Send Message
-                        </button>
-                        <p class="form-note">We'll respond within 24 hours. All inquiries are confidential.</p>
-                    </form>
+                <!-- Insurance Banner -->
+                <div class="insurance-banner">
+                    <i class="fas fa-shield-alt"></i>
+                    <div>
+                        <strong>We Accept Most Insurance Plans</strong>
+                        <span>Blue Cross, Aetna, Cigna, United Healthcare & more</span>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
 
+        <!-- Locations Section -->
+        <div class="locations-section" data-aos="fade-up">
+            <div class="locations-header">
+                <h3><i class="fas fa-map-marked-alt"></i> Our Locations</h3>
+                <p>Convenient offices across Long Island & Queens</p>
+            </div>
+
+            <div class="locations-grid">
+                <!-- Hauppauge Office - Main -->
+                <div class="location-card main-office">
+                    <div class="location-badge">Main Office</div>
+                    <div class="location-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h4>Hauppauge Office</h4>
+                    <p class="location-address">
+                        521 Route 111, Suite 200<br>
+                        Hauppauge, NY 11788
+                    </p>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=521+Route+111+Suite+200+Hauppauge+NY+11788" target="_blank" class="directions-btn">
+                        <i class="fas fa-directions"></i> Get Directions
+                    </a>
+                    <a href="tel:+16312659850" class="phone-link">
+                        <i class="fas fa-phone-alt"></i> (631) 265-9850
+                    </a>
+                </div>
+
+                <!-- Forest Hills Office -->
+                <div class="location-card">
+                    <div class="location-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h4>Forest Hills Office</h4>
+                    <p class="location-address">
+                        102-30 Queens Blvd, Suite LC<br>
+                        Forest Hills, NY 11375
+                    </p>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=102-30+Queens+Blvd+Suite+LC+Forest+Hills+NY+11375" target="_blank" class="directions-btn">
+                        <i class="fas fa-directions"></i> Get Directions
+                    </a>
+                    <a href="tel:+16312659850" class="phone-link">
+                        <i class="fas fa-phone-alt"></i> (631) 265-9850
+                    </a>
+                </div>
+
+                <!-- Patchogue Office -->
+                <div class="location-card">
+                    <div class="location-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h4>Patchogue Office</h4>
+                    <p class="location-address">
+                        124 Medford Ave<br>
+                        Patchogue, NY 11772
+                    </p>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=124+Medford+Ave+Patchogue+NY+11772" target="_blank" class="directions-btn">
+                        <i class="fas fa-directions"></i> Get Directions
+                    </a>
+                    <a href="tel:+16312659850" class="phone-link">
+                        <i class="fas fa-phone-alt"></i> (631) 265-9850
+                    </a>
+                </div>
+
+                <!-- Mineola Office -->
+                <div class="location-card">
+                    <div class="location-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h4>Mineola Office</h4>
+                    <p class="location-address">
+                        1527 Franklin Ave, Suite 100<br>
+                        Mineola, NY 11501
+                    </p>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=1527+Franklin+Ave+Suite+100+Mineola+NY+11501" target="_blank" class="directions-btn">
+                        <i class="fas fa-directions"></i> Get Directions
+                    </a>
+                    <a href="tel:+16312659850" class="phone-link">
+                        <i class="fas fa-phone-alt"></i> (631) 265-9850
+                    </a>
+                </div>
+            </div>
+
+            <!-- Partner Location -->
+            <div class="partner-location-card" data-aos="fade-up">
+                <div class="partner-badge">
+                    <i class="fas fa-handshake"></i> Partner Location
+                </div>
+                <div class="partner-content">
+                    <div class="partner-logo">
+                        <!-- Replace src with actual partner logo -->
+                        <img src="partner-logo.png" alt="Holistic Psychological Services Logo">
+                    </div>
+                    <div class="partner-info">
+                        <h4>Holistic Psychological Services</h4>
+                        <span class="partner-subtitle">In Partnership With</span>
+                        <p class="partner-address">
+                            <i class="fas fa-map-marker-alt"></i>
+                            274 Madison Ave, Suite 905<br>
+                            New York, NY 10016
+                        </p>
+                    </div>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=274+Madison+Ave+Suite+905+New+York+NY+10016" target="_blank" class="partner-directions-btn">
+                        Get Directions <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
