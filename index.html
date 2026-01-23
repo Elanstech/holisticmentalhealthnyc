@@ -1534,10 +1534,61 @@
         </div>
     </footer>
 
-    <!-- Scroll to Top Button -->
-    <button class="scroll-top" id="scrollTop">
-        <i class="fas fa-arrow-up"></i>
+<!-- Back to Top Button - LEFT SIDE -->
+<button class="back-to-top-btn" id="backToTopBtn" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+    <span class="btt-progress">
+        <svg viewBox="0 0 36 36">
+            <path class="btt-progress-circle" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+        </svg>
+    </span>
+</button>
+
+<!-- Contact FAB - RIGHT SIDE -->
+<div class="fab-container" id="fabContainer">
+    <!-- Backdrop Overlay -->
+    <div class="fab-backdrop" id="fabBackdrop"></div>
+    
+    <!-- FAB Action Items -->
+    <div class="fab-actions" id="fabActions">
+        <!-- Psychology Today -->
+        <a href="https://www.psychologytoday.com" target="_blank" class="fab-action" data-tooltip="Psychology Today">
+            <div class="fab-action-btn psychology-today">
+                <svg viewBox="0 0 24 24" fill="currentColor" class="pt-icon">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                </svg>
+            </div>
+            <span class="fab-action-label">Psychology Today</span>
+        </a>
+        
+        <!-- Email -->
+        <a href="mailto:support@holisticmentalhealthny.com" class="fab-action" data-tooltip="Email Us">
+            <div class="fab-action-btn email">
+                <i class="fas fa-envelope"></i>
+            </div>
+            <span class="fab-action-label">Email Us</span>
+        </a>
+        
+        <!-- Call -->
+        <a href="tel:+16312659850" class="fab-action" data-tooltip="Call Us">
+            <div class="fab-action-btn call">
+                <i class="fas fa-phone-alt"></i>
+            </div>
+            <span class="fab-action-label">Call Us</span>
+        </a>
+    </div>
+    
+    <!-- Main FAB Button -->
+    <button class="fab-main" id="fabMain" aria-label="Contact options">
+        <span class="fab-icon-open">
+            <i class="fas fa-comment-dots"></i>
+        </span>
+        <span class="fab-icon-close">
+            <i class="fas fa-times"></i>
+        </span>
+        <span class="fab-pulse"></span>
     </button>
+</div>
 
     <!-- AOS Animation Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
