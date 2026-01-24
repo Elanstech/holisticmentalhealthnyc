@@ -746,6 +746,7 @@ class TestimonialsSlider {
         this.createDots();
         this.setupEventListeners();
         this.setupAccessibility();
+        this.setupResponsive();
         this.updateSlider();
         this.startAutoplay();
         this.animateOnScroll();
@@ -802,9 +803,11 @@ class TestimonialsSlider {
             // Add visual feedback during drag
             if (Math.abs(diff) > 10) {
                 this.track.style.transition = 'none';
-                const baseOffset = -(this.currentIndex * 100);
-                const dragOffset = (diff / this.track.offsetWidth) * 100;
-                this.track.style.transform = `translateX(${baseOffset - dragOffset}%)`;
+                const cardWidth = this.cards[0].offsetWidth;
+                const computedStyle = window.getComputedStyle(this.track);
+                const gap = parseInt(computedStyle.gap) || 32;
+                const baseOffset = -(this.currentIndex * (cardWidth + gap));
+                this.track.style.transform = `translateX(${baseOffset - diff}px)`;
             }
         }, { passive: true });
         
@@ -861,6 +864,17 @@ class TestimonialsSlider {
         });
     }
 
+    setupResponsive() {
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                // Recalculate position on resize
+                this.updateSlider();
+            }, 250);
+        });
+    }
+
     goToSlide(index) {
         if (this.isTransitioning) return;
         this.currentIndex = Math.max(0, Math.min(index, this.totalCards - 1));
@@ -882,8 +896,13 @@ class TestimonialsSlider {
     updateSlider() {
         this.isTransitioning = true;
         
-        const offset = -(this.currentIndex * 100);
-        this.track.style.transform = `translateX(${offset}%)`;
+        // Calculate offset accounting for gap between cards (responsive)
+        const cardWidth = this.cards[0].offsetWidth;
+        const computedStyle = window.getComputedStyle(this.track);
+        const gap = parseInt(computedStyle.gap) || 32; // Get actual gap from CSS
+        const offset = -(this.currentIndex * (cardWidth + gap));
+        
+        this.track.style.transform = `translateX(${offset}px)`;
         
         // Update dots
         this.dots.forEach((dot, i) => {
