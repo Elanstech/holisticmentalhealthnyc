@@ -2763,6 +2763,10 @@ img {
         padding: 0 70px;
     }
     
+    .testimonials-track {
+        gap: 24px; /* Slightly smaller gap on mobile */
+    }
+    
     .testimonial-card {
         padding: 44px 32px;
     }
@@ -2831,6 +2835,10 @@ img {
         padding: 0 60px;
     }
     
+    .testimonials-track {
+        gap: 20px; /* Even smaller gap on small mobile */
+    }
+    
     .testimonial-card {
         padding: 36px 24px;
     }
@@ -2869,6 +2877,10 @@ img {
 @media (max-width: 480px) {
     .testimonials-wrapper {
         padding: 0 52px;
+    }
+    
+    .testimonials-track {
+        gap: 16px; /* Minimal gap on tiny screens */
     }
     
     .testimonial-card {
