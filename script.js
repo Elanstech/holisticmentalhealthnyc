@@ -1058,6 +1058,322 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('%c✓ FAQ Section Initialized', 'color: #5DBBC3; font-weight: bold;');
 });
 
+
+class TeamCarousel {
+    constructor() {
+        this.carousel = document.getElementById('teamCarousel');
+        this.cards = document.querySelectorAll('.team-card');
+        this.prevBtn = document.getElementById('teamPrev');
+        this.nextBtn = document.getElementById('teamNext');
+        this.indicatorsContainer = document.getElementById('teamIndicators');
+        
+        this.currentIndex = 0;
+        this.totalCards = this.cards.length;
+        this.cardsPerView = this.getCardsPerView();
+        this.autoplayInterval = null;
+        this.autoplayDelay = 5000;
+        this.isTransitioning = false;
+        
+        if (this.carousel && this.cards.length > 0) {
+            this.init();
+        }
+    }
+
+    init() {
+        this.createIndicators();
+        this.setupEventListeners();
+        this.setupResponsive();
+        this.updateCarousel();
+        this.startAutoplay();
+    }
+
+    /**
+     * Determine cards per view based on screen width
+     */
+    getCardsPerView() {
+        const width = window.innerWidth;
+        if (width <= 768) return 1;
+        if (width <= 1200) return 2;
+        return 3;
+    }
+
+    /**
+     * Create indicator dots
+     */
+    createIndicators() {
+        this.indicatorsContainer.innerHTML = '';
+        const totalSlides = Math.ceil(this.totalCards / this.cardsPerView);
+        
+        for (let i = 0; i < totalSlides; i++) {
+            const indicator = document.createElement('div');
+            indicator.classList.add('team-indicator');
+            if (i === 0) indicator.classList.add('active');
+            
+            indicator.addEventListener('click', () => {
+                this.goToSlide(i);
+                this.resetAutoplay();
+            });
+            
+            this.indicatorsContainer.appendChild(indicator);
+        }
+        
+        this.indicators = Array.from(this.indicatorsContainer.children);
+    }
+
+    /**
+     * Setup all event listeners
+     */
+    setupEventListeners() {
+        // Button controls
+        this.prevBtn?.addEventListener('click', () => {
+            if (!this.isTransitioning) {
+                this.prevSlide();
+                this.resetAutoplay();
+            }
+        });
+        
+        this.nextBtn?.addEventListener('click', () => {
+            if (!this.isTransitioning) {
+                this.nextSlide();
+                this.resetAutoplay();
+            }
+        });
+
+        // Touch/Swipe support
+        let startX = 0;
+        let isDragging = false;
+        
+        this.carousel.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            isDragging = true;
+            this.stopAutoplay();
+        }, { passive: true });
+        
+        this.carousel.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            const currentX = e.touches[0].clientX;
+            const diff = startX - currentX;
+            
+            // Visual feedback during drag
+            if (Math.abs(diff) > 10) {
+                this.carousel.style.transition = 'none';
+                const cardWidth = this.cards[0].offsetWidth;
+                const gap = 32;
+                const baseOffset = -(this.currentIndex * this.cardsPerView * (cardWidth + gap));
+                this.carousel.style.transform = `translateX(${baseOffset - diff}px)`;
+            }
+        }, { passive: true });
+        
+        this.carousel.addEventListener('touchend', (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            
+            this.carousel.style.transition = '';
+            const diff = startX - e.changedTouches[0].clientX;
+            
+            if (Math.abs(diff) > 80) {
+                diff > 0 ? this.nextSlide() : this.prevSlide();
+            } else {
+                this.updateCarousel(); // Snap back
+            }
+            
+            this.resetAutoplay();
+        }, { passive: true });
+
+        // Mouse/Desktop drag support
+        let mouseStartX = 0;
+        let isMouseDragging = false;
+        
+        this.carousel.addEventListener('mousedown', (e) => {
+            mouseStartX = e.clientX;
+            isMouseDragging = true;
+            this.carousel.style.cursor = 'grabbing';
+            this.stopAutoplay();
+            e.preventDefault();
+        });
+        
+        document.addEventListener('mousemove', (e) => {
+            if (!isMouseDragging) return;
+            const diff = mouseStartX - e.clientX;
+            
+            if (Math.abs(diff) > 10) {
+                this.carousel.style.transition = 'none';
+                const cardWidth = this.cards[0].offsetWidth;
+                const gap = 32;
+                const baseOffset = -(this.currentIndex * this.cardsPerView * (cardWidth + gap));
+                this.carousel.style.transform = `translateX(${baseOffset - diff}px)`;
+            }
+        });
+        
+        document.addEventListener('mouseup', (e) => {
+            if (!isMouseDragging) return;
+            isMouseDragging = false;
+            
+            this.carousel.style.transition = '';
+            this.carousel.style.cursor = '';
+            const diff = mouseStartX - e.clientX;
+            
+            if (Math.abs(diff) > 80) {
+                diff > 0 ? this.nextSlide() : this.prevSlide();
+            } else {
+                this.updateCarousel(); // Snap back
+            }
+            
+            this.resetAutoplay();
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (this.isInViewport() && !this.isTransitioning) {
+                if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    this.prevSlide();
+                    this.resetAutoplay();
+                } else if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    this.nextSlide();
+                    this.resetAutoplay();
+                }
+            }
+        });
+
+        // Pause on hover
+        this.carousel.addEventListener('mouseenter', () => this.stopAutoplay());
+        this.carousel.addEventListener('mouseleave', () => this.startAutoplay());
+    }
+
+    /**
+     * Navigate to specific slide
+     */
+    goToSlide(index) {
+        if (this.isTransitioning) return;
+        const maxIndex = Math.ceil(this.totalCards / this.cardsPerView) - 1;
+        this.currentIndex = Math.max(0, Math.min(index, maxIndex));
+        this.updateCarousel();
+    }
+
+    /**
+     * Go to next slide
+     */
+    nextSlide() {
+        if (this.isTransitioning) return;
+        const maxIndex = Math.ceil(this.totalCards / this.cardsPerView) - 1;
+        this.currentIndex = (this.currentIndex + 1) > maxIndex ? 0 : this.currentIndex + 1;
+        this.updateCarousel();
+    }
+
+    /**
+     * Go to previous slide
+     */
+    prevSlide() {
+        if (this.isTransitioning) return;
+        const maxIndex = Math.ceil(this.totalCards / this.cardsPerView) - 1;
+        this.currentIndex = (this.currentIndex - 1) < 0 ? maxIndex : this.currentIndex - 1;
+        this.updateCarousel();
+    }
+
+    /**
+     * Update carousel position and indicators
+     */
+    updateCarousel() {
+        this.isTransitioning = true;
+        
+        const cardWidth = this.cards[0].offsetWidth;
+        const gap = 32;
+        const offset = -(this.currentIndex * this.cardsPerView * (cardWidth + gap));
+        
+        this.carousel.style.transform = `translateX(${offset}px)`;
+        
+        // Update indicators
+        this.indicators.forEach((ind, i) => {
+            ind.classList.toggle('active', i === this.currentIndex);
+        });
+
+        // Reset transition lock
+        setTimeout(() => {
+            this.isTransitioning = false;
+        }, 600);
+    }
+
+    /**
+     * Setup responsive behavior
+     */
+    setupResponsive() {
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                const newCardsPerView = this.getCardsPerView();
+                if (newCardsPerView !== this.cardsPerView) {
+                    this.cardsPerView = newCardsPerView;
+                    this.indicatorsContainer.innerHTML = '';
+                    this.createIndicators();
+                    this.currentIndex = 0;
+                    this.updateCarousel();
+                }
+            }, 250);
+        });
+    }
+
+    /**
+     * Check if carousel is in viewport
+     */
+    isInViewport() {
+        if (!this.carousel) return false;
+        const rect = this.carousel.getBoundingClientRect();
+        return (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+    }
+
+    /**
+     * Start autoplay
+     */
+    startAutoplay() {
+        this.stopAutoplay();
+        this.autoplayInterval = setInterval(() => this.nextSlide(), this.autoplayDelay);
+    }
+
+    /**
+     * Stop autoplay
+     */
+    stopAutoplay() {
+        if (this.autoplayInterval) {
+            clearInterval(this.autoplayInterval);
+            this.autoplayInterval = null;
+        }
+    }
+
+    /**
+     * Reset autoplay
+     */
+    resetAutoplay() {
+        this.stopAutoplay();
+        this.startAutoplay();
+    }
+
+    /**
+     * Destroy carousel (cleanup)
+     */
+    destroy() {
+        this.stopAutoplay();
+        this.indicators.forEach(ind => ind.remove());
+    }
+}
+
+// Initialize Team Carousel
+document.addEventListener('DOMContentLoaded', () => {
+    const teamCarousel = new TeamCarousel();
+    
+    // Make globally accessible
+    window.teamCarousel = teamCarousel;
+    
+    console.log('%c✓ Team Carousel Initialized', 'color: #5DBBC3; font-weight: bold;');
+});
+
 // =========================
 // TESTIMONIALS SLIDER - ENHANCED
 // =========================
