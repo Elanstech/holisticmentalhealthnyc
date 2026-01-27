@@ -1845,6 +1845,7 @@ class FloatingButtons {
         this.fabContainer = document.getElementById('fabContainer');
         this.fabMain = document.getElementById('fabMain');
         this.fabBackdrop = document.getElementById('fabBackdrop');
+        this.fabActions = document.getElementById('fabActions');
         
         this.isOpen = false;
         this.scrollThreshold = 300;
@@ -1858,59 +1859,128 @@ class FloatingButtons {
         this.setupBackToTop();
         this.setupFAB();
         this.setupScrollListener();
+        this.setupOutsideClick();
     }
 
+    /**
+     * Add SVG gradient for progress circle
+     */
     addSVGGradient() {
+        if (document.getElementById('bttGradient')) return;
+        
         const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svg.setAttribute('width', '0');
         svg.setAttribute('height', '0');
         svg.style.position = 'absolute';
-        svg.innerHTML = `<defs><linearGradient id="bttGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style="stop-color:#5DBBC3"/><stop offset="100%" style="stop-color:#7B88C4"/>
-        </linearGradient></defs>`;
+        svg.innerHTML = `
+            <defs>
+                <linearGradient id="bttGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#5DBBC3"/>
+                    <stop offset="100%" style="stop-color:#7B88C4"/>
+                </linearGradient>
+            </defs>
+        `;
         document.body.appendChild(svg);
-        if (this.progressCircle) this.progressCircle.style.stroke = 'url(#bttGradient)';
-    }
-
-    setupBackToTop() {
-        this.backToTopBtn?.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            this.backToTopBtn.style.transform = 'scale(0.9)';
-            setTimeout(() => { this.backToTopBtn.style.transform = ''; }, 150);
-        });
-    }
-
-    setupFAB() {
-        this.fabMain?.addEventListener('click', () => this.toggleFAB());
-        this.fabBackdrop?.addEventListener('click', () => this.closeFAB());
         
-        document.querySelectorAll('.fab-action').forEach(action => {
-            action.addEventListener('click', () => setTimeout(() => this.closeFAB(), 150));
+        if (this.progressCircle) {
+            this.progressCircle.style.stroke = 'url(#bttGradient)';
+        }
+    }
+
+    /**
+     * Setup Back to Top button
+     */
+    setupBackToTop() {
+        if (!this.backToTopBtn) return;
+        
+        this.backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ 
+                top: 0, 
+                behavior: 'smooth' 
+            });
+            
+            // Small animation feedback
+            this.backToTopBtn.style.transform = 'scale(0.9)';
+            setTimeout(() => {
+                this.backToTopBtn.style.transform = '';
+            }, 150);
+        });
+    }
+
+    /**
+     * Setup FAB menu
+     */
+    setupFAB() {
+        if (!this.fabMain) return;
+        
+        this.fabMain.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.toggleFAB();
+        });
+        
+        if (this.fabBackdrop) {
+            this.fabBackdrop.addEventListener('click', () => {
+                this.closeFAB();
+            });
+        }
+        
+        // Close FAB when action is clicked
+        const fabActions = document.querySelectorAll('.fab-action');
+        fabActions.forEach(action => {
+            action.addEventListener('click', () => {
+                setTimeout(() => this.closeFAB(), 150);
+            });
         });
 
+        // Close on Escape key
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this.isOpen) this.closeFAB();
+            if (e.key === 'Escape' && this.isOpen) {
+                this.closeFAB();
+            }
         });
     }
 
+    /**
+     * Toggle FAB open/close
+     */
     toggleFAB() {
-        this.isOpen ? this.closeFAB() : this.openFAB();
+        if (this.isOpen) {
+            this.closeFAB();
+        } else {
+            this.openFAB();
+        }
     }
 
+    /**
+     * Open FAB menu
+     */
     openFAB() {
         this.isOpen = true;
         this.fabContainer.classList.add('active');
-        if (window.innerWidth <= 768) document.body.style.overflow = 'hidden';
+        
+        // Prevent body scroll on mobile
+        if (window.innerWidth <= 768) {
+            document.body.style.overflow = 'hidden';
+        }
     }
 
+    /**
+     * Close FAB menu
+     */
     closeFAB() {
         this.isOpen = false;
         this.fabContainer.classList.remove('active');
+        
+        // Restore body scroll
         document.body.style.overflow = '';
     }
 
+    /**
+     * Setup scroll listener for both buttons
+     */
     setupScrollListener() {
         let ticking = false;
+        
         window.addEventListener('scroll', () => {
             if (!ticking) {
                 window.requestAnimationFrame(() => {
@@ -1920,28 +1990,79 @@ class FloatingButtons {
                 ticking = true;
             }
         }, { passive: true });
+        
+        // Initial call
         this.handleScroll();
     }
 
+    /**
+     * Handle scroll updates
+     */
     handleScroll() {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         const docHeight = document.documentElement.scrollHeight - window.innerHeight;
         const scrollPercent = (scrollTop / docHeight) * 100;
 
+        // Update back to top button visibility
         if (this.backToTopBtn) {
-            scrollTop > this.scrollThreshold 
-                ? this.backToTopBtn.classList.add('visible') 
-                : this.backToTopBtn.classList.remove('visible');
+            if (scrollTop > this.scrollThreshold) {
+                this.backToTopBtn.classList.add('visible');
+            } else {
+                this.backToTopBtn.classList.remove('visible');
+            }
             
+            // Update progress circle
             if (this.progressCircle) {
-                this.progressCircle.style.strokeDashoffset = Math.max(0, 100 - scrollPercent);
+                const offset = Math.max(0, 100 - scrollPercent);
+                this.progressCircle.style.strokeDashoffset = offset;
             }
         }
 
-        if (this.isOpen && Math.abs(this.lastScrollTop - scrollTop) > 50) this.closeFAB();
+        // Close FAB if scrolling significantly
+        if (this.isOpen && Math.abs(this.lastScrollTop - scrollTop) > 50) {
+            this.closeFAB();
+        }
+        
         this.lastScrollTop = scrollTop;
     }
+
+    /**
+     * Close FAB when clicking outside
+     */
+    setupOutsideClick() {
+        document.addEventListener('click', (e) => {
+            if (this.isOpen && 
+                !this.fabContainer.contains(e.target) && 
+                !this.fabMain.contains(e.target)) {
+                this.closeFAB();
+            }
+        });
+    }
+
+    /**
+     * Public method to programmatically close FAB
+     */
+    close() {
+        this.closeFAB();
+    }
+
+    /**
+     * Public method to programmatically open FAB
+     */
+    open() {
+        this.openFAB();
+    }
 }
+
+// Initialize Floating Buttons
+document.addEventListener('DOMContentLoaded', () => {
+    const floatingButtons = new FloatingButtons();
+    
+    // Make globally accessible
+    window.floatingButtons = floatingButtons;
+    
+    console.log('%c✓ Floating Buttons Initialized', 'color: #5DBBC3; font-weight: bold;');
+});
 
 // =========================
 // CIRCLE ANIMATION
