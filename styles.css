@@ -5123,17 +5123,12 @@ a.qc-value:hover {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    filter: brightness(0) invert(1);
-    transition: filter 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .design-credits:hover .credits-logo {
     background: linear-gradient(135deg, #5DBBC3, #7B88C4);
     transform: rotate(5deg) scale(1.1);
-}
-
-.design-credits:hover .credits-logo img {
-    filter: brightness(0) invert(1);
 }
 
 .credits-text {
