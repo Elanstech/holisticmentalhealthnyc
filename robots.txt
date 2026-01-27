@@ -1,0 +1,35 @@
+# robots.txt for Holistic Mental Health Services
+# https://www.holisticmentalhealthny.com
+
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+Disallow: /temp/
+Disallow: /*.pdf$
+
+# Sitemap Location
+Sitemap: https://www.holisticmentalhealthny.com/sitemap.xml
+
+# Crawl-delay (be nice to smaller bots)
+Crawl-delay: 1
+
+# Google-specific
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+
+# Bing-specific  
+User-agent: Bingbot
+Allow: /
+Disallow: /admin/
+
+# Block bad bots (optional - remove if causing issues)
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
