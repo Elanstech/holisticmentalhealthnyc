@@ -4999,7 +4999,7 @@ a.qc-value:hover {
 }
 
 .social-links a:hover {
-    background: var(--gradient-primary);
+    background: linear-gradient(135deg, #5DBBC3, #7B88C4);
     transform: scale(1.1);
 }
 
@@ -5031,6 +5031,7 @@ a.qc-value:hover {
     padding-left: 8px;
 }
 
+/* Footer Bottom - Updated Layout */
 .footer-bottom {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     padding-top: 30px;
@@ -5038,27 +5039,120 @@ a.qc-value:hover {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 16px;
+    gap: 24px;
 }
 
-.footer-bottom p {
+.footer-bottom-left {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.footer-bottom-left p {
     color: rgba(255, 255, 255, 0.6);
     font-size: 14px;
+    margin: 0;
 }
 
 .crisis-line {
     display: flex;
     align-items: center;
     gap: 16px;
+    flex-wrap: wrap;
 }
 
 .crisis-line a {
     color: #FFFFFF;
     text-decoration: none;
     font-weight: 600;
+    transition: color 0.3s ease;
 }
 
-/* Footer Mobile */
+.crisis-line a:hover {
+    color: #5DBBC3;
+}
+
+/* Design Credits - Modern & Sleek */
+.design-credits {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.design-credits:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(93, 187, 195, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(93, 187, 195, 0.15);
+}
+
+.credits-label {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+}
+
+.credits-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.credits-logo {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 4px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.credits-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    transition: filter 0.3s ease;
+}
+
+.design-credits:hover .credits-logo {
+    background: linear-gradient(135deg, #5DBBC3, #7B88C4);
+    transform: rotate(5deg) scale(1.1);
+}
+
+.design-credits:hover .credits-logo img {
+    filter: brightness(0) invert(1);
+}
+
+.credits-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+.design-credits:hover .credits-text {
+    color: #FFFFFF;
+    background: linear-gradient(135deg, #5DBBC3, #7B88C4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Mobile Responsive */
 @media (max-width: 768px) {
     .footer-content {
         grid-template-columns: 1fr;
@@ -5068,18 +5162,48 @@ a.qc-value:hover {
     .footer-bottom {
         flex-direction: column;
         text-align: center;
+        gap: 20px;
+    }
+    
+    .footer-bottom-left {
+        align-items: center;
     }
     
     .crisis-line {
         flex-direction: column;
         gap: 8px;
     }
+    
+    .design-credits {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .credits-label {
+        font-size: 11px;
+    }
+    
+    .credits-text {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .design-credits {
+        flex-direction: column;
+        gap: 8px;
+        padding: 16px;
+        text-align: center;
+    }
+    
+    .credits-link {
+        flex-direction: column;
+        gap: 6px;
+    }
 }
 
 /* ===================================
    FLOATING BUTTONS - FIXED & OPTIMIZED
-   Back to Top (Left) + FAB (Right)
-   Same Vertical Level, Proper Expansion
    =================================== */
 
 /* Back to Top Button - LEFT SIDE */
