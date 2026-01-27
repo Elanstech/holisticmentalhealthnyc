@@ -1,13 +1,12 @@
 /**
  * ================================================
  * HOLISTIC MENTAL HEALTH SERVICES
- * Complete Website JavaScript - Full Integration
- * Modern ES6+ Architecture with All Features
+ * Complete Optimized JavaScript - All Features
  * ================================================
  */
 
 // =========================
-// ENHANCED PROGRESS NAVIGATION CLASS
+// 1. ENHANCED PROGRESS NAVIGATION
 // =========================
 class EnhancedProgressNavigation {
     constructor() {
@@ -24,9 +23,7 @@ class EnhancedProgressNavigation {
         this.currentSection = null;
         this.offsetThreshold = 100;
         
-        if (this.header) {
-            this.init();
-        }
+        if (this.header) this.init();
     }
 
     init() {
@@ -92,7 +89,6 @@ class EnhancedProgressNavigation {
         };
 
         updateProgress();
-
         let ticking = false;
         window.addEventListener('scroll', () => {
             if (!ticking) {
@@ -108,7 +104,6 @@ class EnhancedProgressNavigation {
     setupActiveSectionDetection() {
         const detectActive = () => {
             const scrollPosition = window.pageYOffset + this.offsetThreshold;
-            
             let activeSection = null;
             let activeSectionIndex = 0;
 
@@ -130,7 +125,6 @@ class EnhancedProgressNavigation {
         };
 
         detectActive();
-
         let scrollTicking = false;
         window.addEventListener('scroll', () => {
             if (!scrollTicking) {
@@ -242,56 +236,110 @@ class EnhancedProgressNavigation {
 }
 
 // =========================
-// HERO VIDEO CONTROLLER
+// 2. OPTIMIZED HERO VIDEO
 // =========================
-class HeroVideo {
+class OptimizedHeroVideo {
     constructor() {
         this.video = document.querySelector('.hero-bg-video');
+        this.videoContainer = document.querySelector('.hero-video-container');
         this.hero = document.querySelector('.hero');
+        this.placeholder = document.querySelector('.hero-placeholder');
+        
+        this.hasLoaded = false;
+        this.isVisible = false;
+        
         if (this.video && this.hero) this.init();
     }
 
     init() {
-        this.setupVideoAutoplay();
-        this.setupVideoOptimization();
-        this.addVideoFallback();
+        if (this.isMobile()) {
+            this.skipVideoOnMobile();
+            return;
+        }
+
+        this.setupIntersectionObserver();
+        this.setupVideoHandlers();
+        this.prefetchVideo();
     }
 
-    setupVideoAutoplay() {
-        this.video.addEventListener('loadeddata', () => {
-            this.video.play().catch(() => {
-                this.video.muted = true;
-                this.video.play();
-            });
-        });
+    isMobile() {
+        return window.innerWidth <= 768 || 
+               /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     }
 
-    setupVideoOptimization() {
+    skipVideoOnMobile() {
+        if (this.videoContainer) this.videoContainer.style.display = 'none';
+        if (this.placeholder) this.placeholder.style.display = 'none';
+    }
+
+    setupIntersectionObserver() {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    this.video.play().catch(() => {});
+                if (entry.isIntersecting && !this.hasLoaded) {
+                    this.loadVideo();
+                    this.isVisible = true;
                 } else {
-                    this.video.pause();
+                    this.isVisible = false;
+                    if (this.hasLoaded && this.video) this.video.pause();
                 }
             });
-        }, { threshold: 0.25 });
+        }, { threshold: 0.25, rootMargin: '50px' });
+
         observer.observe(this.hero);
     }
 
-    addVideoFallback() {
-        this.video.addEventListener('error', () => {
-            const container = document.querySelector('.hero-video-container');
-            if (container) {
-                container.style.background = 'linear-gradient(135deg, #5DBBC3 0%, #7B88C4 100%)';
-            }
-            this.video.style.display = 'none';
+    loadVideo() {
+        if (this.hasLoaded) return;
+        this.hasLoaded = true;
+        
+        this.video.play().catch(error => {
+            this.video.muted = true;
+            this.video.play().catch(e => this.handleVideoError());
         });
+    }
+
+    setupVideoHandlers() {
+        this.video.addEventListener('canplaythrough', () => {
+            if (this.videoContainer) this.videoContainer.style.opacity = '1';
+        }, { once: true });
+
+        this.video.addEventListener('playing', () => {
+            if (this.placeholder) {
+                setTimeout(() => this.placeholder.remove(), 500);
+            }
+        }, { once: true });
+
+        this.video.addEventListener('error', () => this.handleVideoError());
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                this.video.pause();
+            } else if (this.isVisible && this.hasLoaded) {
+                this.video.play().catch(() => {});
+            }
+        });
+    }
+
+    prefetchVideo() {
+        if ('connection' in navigator) {
+            const connection = navigator.connection;
+            if (connection.effectiveType !== '4g' || connection.saveData) {
+                this.video.preload = 'metadata';
+            }
+        }
+    }
+
+    handleVideoError() {
+        if (this.videoContainer) this.videoContainer.style.display = 'none';
+        if (this.placeholder) {
+            this.placeholder.style.animation = 'none';
+            this.placeholder.style.opacity = '1';
+        }
     }
 }
 
 // =========================
-// STATISTICS COUNTER CLASS
+// 3. STATISTICS COUNTER
 // =========================
 class StatisticsCounter {
     constructor() {
@@ -332,110 +380,7 @@ class StatisticsCounter {
 }
 
 // =========================
-// FOUNDER IMAGE PARALLAX
-// =========================
-class FounderImageParallax {
-    constructor() {
-        this.founderImage = document.querySelector('.founder-image-wrapper');
-        this.founderSection = document.querySelector('.founder-spotlight');
-        if (this.founderImage && this.founderSection) this.init();
-    }
-
-    init() {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    window.addEventListener('scroll', this.handleScroll.bind(this), { passive: true });
-                } else {
-                    window.removeEventListener('scroll', this.handleScroll.bind(this));
-                }
-            });
-        }, { threshold: 0.1 });
-        observer.observe(this.founderSection);
-    }
-
-    handleScroll() {
-        const rect = this.founderSection.getBoundingClientRect();
-        const scrollProgress = 1 - (rect.top / window.innerHeight);
-        if (scrollProgress > 0 && scrollProgress < 1) {
-            this.founderImage.style.transform = `translateY(${scrollProgress * 30}px)`;
-        }
-    }
-}
-
-// =========================
-// CREDENTIAL TAGS ANIMATION
-// =========================
-class CredentialTagsAnimation {
-    constructor() {
-        this.credentialTags = document.querySelectorAll('.credential-tag');
-        if (this.credentialTags.length > 0) this.init();
-    }
-
-    init() {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    this.credentialTags.forEach((tag, index) => {
-                        setTimeout(() => {
-                            tag.style.opacity = '0';
-                            tag.style.transform = 'translateY(20px)';
-                            setTimeout(() => {
-                                tag.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
-                                tag.style.opacity = '1';
-                                tag.style.transform = 'translateY(0)';
-                            }, 50);
-                        }, index * 100);
-                    });
-                    observer.disconnect();
-                }
-            });
-        }, { threshold: 0.5 });
-
-        if (this.credentialTags.length > 0) {
-            observer.observe(this.credentialTags[0].parentElement);
-        }
-    }
-}
-
-// =========================
-// VALUE CARDS EFFECT
-// =========================
-class ValueCardsEffect {
-    constructor() {
-        this.valueCards = document.querySelectorAll('.value-card');
-        if (this.valueCards.length > 0) this.init();
-    }
-
-    init() {
-        this.valueCards.forEach(card => {
-            card.addEventListener('mouseenter', (e) => {
-                const rect = card.getBoundingClientRect();
-                const glow = document.createElement('div');
-                glow.style.cssText = `
-                    position: absolute;
-                    top: ${e.clientY - rect.top}px;
-                    left: ${e.clientX - rect.left}px;
-                    width: 200px; height: 200px;
-                    background: radial-gradient(circle, rgba(93, 187, 195, 0.15) 0%, transparent 70%);
-                    border-radius: 50%;
-                    pointer-events: none;
-                    transform: translate(-50%, -50%);
-                    transition: opacity 0.6s ease;
-                `;
-                card.style.position = 'relative';
-                card.appendChild(glow);
-                setTimeout(() => {
-                    glow.style.opacity = '0';
-                    setTimeout(() => glow.remove(), 600);
-                }, 100);
-            });
-        });
-    }
-}
-
-// =========================
-// SERVICES CAROUSEL CLASS
+// 4. SERVICES CAROUSEL
 // =========================
 class ServicesCarousel {
     constructor() {
@@ -485,8 +430,8 @@ class ServicesCarousel {
     }
 
     setupEventListeners() {
-        this.prevBtn.addEventListener('click', () => { this.prevSlide(); this.resetAutoplay(); });
-        this.nextBtn.addEventListener('click', () => { this.nextSlide(); this.resetAutoplay(); });
+        this.prevBtn?.addEventListener('click', () => { this.prevSlide(); this.resetAutoplay(); });
+        this.nextBtn?.addEventListener('click', () => { this.nextSlide(); this.resetAutoplay(); });
 
         let startX = 0;
         this.carousel.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; }, { passive: true });
@@ -551,7 +496,7 @@ class ServicesCarousel {
 }
 
 // =========================
-// SERVICE MODAL SYSTEM
+// 5. SERVICE MODAL SYSTEM
 // =========================
 class ServiceModalSystem {
     constructor() {
@@ -596,7 +541,6 @@ class ServiceModalSystem {
         this.modal.classList.add('active');
         this.isOpen = true;
 
-        // Animate sections
         const sections = this.modalContentWrapper.querySelectorAll('.modal-section, .modal-conditions');
         sections.forEach((section, index) => {
             section.style.opacity = '0';
@@ -608,7 +552,6 @@ class ServiceModalSystem {
             }, 100 + (index * 80));
         });
 
-        // CTA button handler
         const ctaBtn = content.querySelector('.modal-cta-btn');
         if (ctaBtn) {
             ctaBtn.addEventListener('click', (e) => {
@@ -642,86 +585,8 @@ class ServiceModalSystem {
 }
 
 // =========================
-// TRUST BAR ANIMATION
+// 6. FAQ SECTION
 // =========================
-class TrustBarAnimation {
-    constructor() {
-        this.trustBar = document.querySelector('.trust-bar');
-        this.trustItems = document.querySelectorAll('.trust-item');
-        this.animated = false;
-        
-        if (this.trustBar && this.trustItems.length > 0) this.init();
-    }
-
-    init() {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting && !this.animated) {
-                    this.animateTrustItems();
-                    this.animated = true;
-                    observer.disconnect();
-                }
-            });
-        }, { threshold: 0.5 });
-
-        observer.observe(this.trustBar);
-    }
-
-    animateTrustItems() {
-        this.trustItems.forEach((item, index) => {
-            const number = item.querySelector('strong');
-            if (!number) return;
-
-            // Prepare animation
-            item.style.opacity = '0';
-            item.style.transform = 'translateY(20px)';
-
-            // Animate in
-            setTimeout(() => {
-                item.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-                item.style.opacity = '1';
-                item.style.transform = 'translateY(0)';
-
-                // Animate number counting
-                this.animateNumber(number);
-            }, index * 100);
-        });
-    }
-
-    animateNumber(element) {
-        const text = element.textContent;
-        const hasPercent = text.includes('%');
-        const hasPlus = text.includes('+');
-        const numericText = text.replace(/[^0-9.]/g, '');
-        const target = parseFloat(numericText);
-        
-        if (isNaN(target)) return;
-
-        const duration = 1500;
-        const steps = 60;
-        const increment = target / steps;
-        let current = 0;
-        let step = 0;
-
-        const interval = setInterval(() => {
-            step++;
-            current = Math.min(current + increment, target);
-            
-            let displayValue = Math.floor(current);
-            if (target % 1 !== 0) {
-                displayValue = current.toFixed(1);
-            }
-            
-            element.textContent = displayValue + (hasPercent ? '%' : '') + (hasPlus ? '+' : '');
-
-            if (step >= steps || current >= target) {
-                element.textContent = text; // Restore original
-                clearInterval(interval);
-            }
-        }, duration / steps);
-    }
-}
-
 class FAQSection {
     constructor() {
         this.faqSection = document.querySelector('.faq-section');
@@ -732,22 +597,15 @@ class FAQSection {
         this.activeCategory = 'all';
         this.openItems = new Set();
         
-        if (this.faqSection) {
-            this.init();
-        }
+        if (this.faqSection) this.init();
     }
 
     init() {
         this.setupCategoryFiltering();
         this.setupAccordion();
         this.setupKeyboardNavigation();
-        this.setupDeepLinking();
-        this.animateOnScroll();
     }
 
-    /**
-     * Category Filtering System
-     */
     setupCategoryFiltering() {
         this.categoryButtons.forEach(button => {
             button.addEventListener('click', () => {
@@ -760,8 +618,6 @@ class FAQSection {
 
     filterByCategory(category) {
         this.activeCategory = category;
-        
-        // Close all open items when switching categories
         this.closeAllItems();
         
         this.faqItems.forEach((item, index) => {
@@ -769,13 +625,11 @@ class FAQSection {
             const shouldShow = category === 'all' || itemCategory === category;
             
             if (shouldShow) {
-                // Show with staggered animation
                 setTimeout(() => {
                     item.classList.remove('hidden');
                     item.style.opacity = '0';
                     item.style.transform = 'translateY(20px)';
                     
-                    // Trigger animation
                     requestAnimationFrame(() => {
                         item.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
                         item.style.opacity = '1';
@@ -783,14 +637,10 @@ class FAQSection {
                     });
                 }, index * 50);
             } else {
-                // Hide with fade out
                 item.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
                 item.style.opacity = '0';
                 item.style.transform = 'translateY(-10px)';
-                
-                setTimeout(() => {
-                    item.classList.add('hidden');
-                }, 300);
+                setTimeout(() => item.classList.add('hidden'), 300);
             }
         });
     }
@@ -800,9 +650,6 @@ class FAQSection {
         activeButton.classList.add('active');
     }
 
-    /**
-     * Accordion Functionality
-     */
     setupAccordion() {
         this.faqQuestions.forEach(question => {
             question.addEventListener('click', () => {
@@ -814,44 +661,20 @@ class FAQSection {
 
     toggleItem(item) {
         const isOpen = item.classList.contains('active');
-        
-        if (isOpen) {
-            this.closeItem(item);
-        } else {
-            this.openItem(item);
-        }
+        isOpen ? this.closeItem(item) : this.openItem(item);
     }
 
     openItem(item) {
-        // Add active class
         item.classList.add('active');
         this.openItems.add(item);
         
-        // Get the answer element
         const answer = item.querySelector('.faq-answer');
         const content = item.querySelector('.faq-answer-content');
         
         if (answer && content) {
-            // Calculate the height needed
             const contentHeight = content.scrollHeight;
             answer.style.maxHeight = `${contentHeight + 50}px`;
         }
-        
-        // Scroll into view if needed (with offset for header)
-        setTimeout(() => {
-            const rect = item.getBoundingClientRect();
-            const isInViewport = rect.top >= 100 && rect.bottom <= window.innerHeight;
-            
-            if (!isInViewport) {
-                const yOffset = -100; // Header offset
-                const y = item.getBoundingClientRect().top + window.pageYOffset + yOffset;
-                
-                window.scrollTo({
-                    top: y,
-                    behavior: 'smooth'
-                });
-            }
-        }, 100);
     }
 
     closeItem(item) {
@@ -859,206 +682,35 @@ class FAQSection {
         this.openItems.delete(item);
         
         const answer = item.querySelector('.faq-answer');
-        if (answer) {
-            answer.style.maxHeight = '0';
-        }
+        if (answer) answer.style.maxHeight = '0';
     }
 
     closeAllItems() {
         this.faqItems.forEach(item => {
-            if (item.classList.contains('active')) {
-                this.closeItem(item);
-            }
+            if (item.classList.contains('active')) this.closeItem(item);
         });
     }
 
-    /**
-     * Keyboard Navigation
-     */
     setupKeyboardNavigation() {
-        this.faqQuestions.forEach((question, index) => {
+        this.faqQuestions.forEach((question) => {
             question.addEventListener('keydown', (e) => {
                 const faqItem = question.closest('.faq-item');
                 
-                // Enter or Space to toggle
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
                     this.toggleItem(faqItem);
                 }
-                
-                // Arrow keys to navigate
-                if (e.key === 'ArrowDown') {
-                    e.preventDefault();
-                    this.focusNextQuestion(index);
-                } else if (e.key === 'ArrowUp') {
-                    e.preventDefault();
-                    this.focusPreviousQuestion(index);
-                }
-                
-                // Home/End keys
-                if (e.key === 'Home') {
-                    e.preventDefault();
-                    this.faqQuestions[0].focus();
-                } else if (e.key === 'End') {
-                    e.preventDefault();
-                    this.faqQuestions[this.faqQuestions.length - 1].focus();
-                }
             });
             
-            // Make questions focusable
             question.setAttribute('tabindex', '0');
             question.setAttribute('role', 'button');
-            question.setAttribute('aria-expanded', 'false');
         });
-    }
-
-    focusNextQuestion(currentIndex) {
-        const visibleQuestions = Array.from(this.faqQuestions).filter(q => {
-            const item = q.closest('.faq-item');
-            return !item.classList.contains('hidden');
-        });
-        
-        const currentQuestion = this.faqQuestions[currentIndex];
-        const currentIndexInVisible = visibleQuestions.indexOf(currentQuestion);
-        
-        if (currentIndexInVisible < visibleQuestions.length - 1) {
-            visibleQuestions[currentIndexInVisible + 1].focus();
-        }
-    }
-
-    focusPreviousQuestion(currentIndex) {
-        const visibleQuestions = Array.from(this.faqQuestions).filter(q => {
-            const item = q.closest('.faq-item');
-            return !item.classList.contains('hidden');
-        });
-        
-        const currentQuestion = this.faqQuestions[currentIndex];
-        const currentIndexInVisible = visibleQuestions.indexOf(currentQuestion);
-        
-        if (currentIndexInVisible > 0) {
-            visibleQuestions[currentIndexInVisible - 1].focus();
-        }
-    }
-
-    /**
-     * Deep Linking Support
-     * Allows linking directly to specific FAQ items
-     */
-    setupDeepLinking() {
-        // Check if URL has a hash
-        const hash = window.location.hash;
-        if (hash && hash.startsWith('#faq-')) {
-            setTimeout(() => {
-                const targetId = hash.substring(1);
-                const targetItem = document.getElementById(targetId);
-                
-                if (targetItem && targetItem.classList.contains('faq-item')) {
-                    // Open the item
-                    this.openItem(targetItem);
-                    
-                    // Scroll to it
-                    setTimeout(() => {
-                        targetItem.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'center'
-                        });
-                    }, 300);
-                }
-            }, 500);
-        }
-    }
-
-    /**
-     * Animate FAQ items on scroll
-     */
-    animateOnScroll() {
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry, index) => {
-                if (entry.isIntersecting) {
-                    // Add staggered animation
-                    setTimeout(() => {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }, index * 50);
-                    
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-
-        // Initially hide items for animation
-        this.faqItems.forEach(item => {
-            if (!item.classList.contains('hidden')) {
-                item.style.opacity = '0';
-                item.style.transform = 'translateY(30px)';
-                item.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-                observer.observe(item);
-            }
-        });
-    }
-
-    /**
-     * Utility: Get all visible FAQ items
-     */
-    getVisibleItems() {
-        return Array.from(this.faqItems).filter(item => 
-            !item.classList.contains('hidden')
-        );
-    }
-
-    /**
-     * Public method to open a specific FAQ by index
-     */
-    openFAQByIndex(index) {
-        const visibleItems = this.getVisibleItems();
-        if (index >= 0 && index < visibleItems.length) {
-            this.openItem(visibleItems[index]);
-        }
-    }
-
-    /**
-     * Public method to search FAQ content
-     */
-    searchFAQs(searchTerm) {
-        const term = searchTerm.toLowerCase();
-        let foundCount = 0;
-        
-        this.faqItems.forEach(item => {
-            const question = item.querySelector('.faq-question-text').textContent.toLowerCase();
-            const answer = item.querySelector('.faq-answer-content').textContent.toLowerCase();
-            
-            const matches = question.includes(term) || answer.includes(term);
-            
-            if (matches) {
-                item.classList.remove('hidden');
-                item.style.opacity = '1';
-                item.style.transform = 'translateY(0)';
-                foundCount++;
-            } else {
-                item.classList.add('hidden');
-            }
-        });
-        
-        return foundCount;
     }
 }
 
-// Initialize FAQ Section
-document.addEventListener('DOMContentLoaded', () => {
-    const faqSection = new FAQSection();
-    
-    // Make it globally accessible for debugging/external control
-    window.faqSection = faqSection;
-    
-    console.log('%c✓ FAQ Section Initialized', 'color: #5DBBC3; font-weight: bold;');
-});
-
-
+// =========================
+// 7. TEAM CAROUSEL
+// =========================
 class TeamCarousel {
     constructor() {
         this.carousel = document.getElementById('teamCarousel');
@@ -1074,9 +726,7 @@ class TeamCarousel {
         this.autoplayDelay = 5000;
         this.isTransitioning = false;
         
-        if (this.carousel && this.cards.length > 0) {
-            this.init();
-        }
+        if (this.carousel && this.cards.length > 0) this.init();
     }
 
     init() {
@@ -1087,9 +737,6 @@ class TeamCarousel {
         this.startAutoplay();
     }
 
-    /**
-     * Determine cards per view based on screen width
-     */
     getCardsPerView() {
         const width = window.innerWidth;
         if (width <= 768) return 1;
@@ -1097,9 +744,6 @@ class TeamCarousel {
         return 3;
     }
 
-    /**
-     * Create indicator dots
-     */
     createIndicators() {
         this.indicatorsContainer.innerHTML = '';
         const totalSlides = Math.ceil(this.totalCards / this.cardsPerView);
@@ -1120,11 +764,7 @@ class TeamCarousel {
         this.indicators = Array.from(this.indicatorsContainer.children);
     }
 
-    /**
-     * Setup all event listeners
-     */
     setupEventListeners() {
-        // Button controls
         this.prevBtn?.addEventListener('click', () => {
             if (!this.isTransitioning) {
                 this.prevSlide();
@@ -1139,7 +779,6 @@ class TeamCarousel {
             }
         });
 
-        // Touch/Swipe support
         let startX = 0;
         let isDragging = false;
         
@@ -1149,102 +788,25 @@ class TeamCarousel {
             this.stopAutoplay();
         }, { passive: true });
         
-        this.carousel.addEventListener('touchmove', (e) => {
-            if (!isDragging) return;
-            const currentX = e.touches[0].clientX;
-            const diff = startX - currentX;
-            
-            // Visual feedback during drag
-            if (Math.abs(diff) > 10) {
-                this.carousel.style.transition = 'none';
-                const cardWidth = this.cards[0].offsetWidth;
-                const gap = 32;
-                const baseOffset = -(this.currentIndex * this.cardsPerView * (cardWidth + gap));
-                this.carousel.style.transform = `translateX(${baseOffset - diff}px)`;
-            }
-        }, { passive: true });
-        
         this.carousel.addEventListener('touchend', (e) => {
             if (!isDragging) return;
             isDragging = false;
             
-            this.carousel.style.transition = '';
             const diff = startX - e.changedTouches[0].clientX;
             
             if (Math.abs(diff) > 80) {
                 diff > 0 ? this.nextSlide() : this.prevSlide();
             } else {
-                this.updateCarousel(); // Snap back
+                this.updateCarousel();
             }
             
             this.resetAutoplay();
         }, { passive: true });
 
-        // Mouse/Desktop drag support
-        let mouseStartX = 0;
-        let isMouseDragging = false;
-        
-        this.carousel.addEventListener('mousedown', (e) => {
-            mouseStartX = e.clientX;
-            isMouseDragging = true;
-            this.carousel.style.cursor = 'grabbing';
-            this.stopAutoplay();
-            e.preventDefault();
-        });
-        
-        document.addEventListener('mousemove', (e) => {
-            if (!isMouseDragging) return;
-            const diff = mouseStartX - e.clientX;
-            
-            if (Math.abs(diff) > 10) {
-                this.carousel.style.transition = 'none';
-                const cardWidth = this.cards[0].offsetWidth;
-                const gap = 32;
-                const baseOffset = -(this.currentIndex * this.cardsPerView * (cardWidth + gap));
-                this.carousel.style.transform = `translateX(${baseOffset - diff}px)`;
-            }
-        });
-        
-        document.addEventListener('mouseup', (e) => {
-            if (!isMouseDragging) return;
-            isMouseDragging = false;
-            
-            this.carousel.style.transition = '';
-            this.carousel.style.cursor = '';
-            const diff = mouseStartX - e.clientX;
-            
-            if (Math.abs(diff) > 80) {
-                diff > 0 ? this.nextSlide() : this.prevSlide();
-            } else {
-                this.updateCarousel(); // Snap back
-            }
-            
-            this.resetAutoplay();
-        });
-
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (this.isInViewport() && !this.isTransitioning) {
-                if (e.key === 'ArrowLeft') {
-                    e.preventDefault();
-                    this.prevSlide();
-                    this.resetAutoplay();
-                } else if (e.key === 'ArrowRight') {
-                    e.preventDefault();
-                    this.nextSlide();
-                    this.resetAutoplay();
-                }
-            }
-        });
-
-        // Pause on hover
         this.carousel.addEventListener('mouseenter', () => this.stopAutoplay());
         this.carousel.addEventListener('mouseleave', () => this.startAutoplay());
     }
 
-    /**
-     * Navigate to specific slide
-     */
     goToSlide(index) {
         if (this.isTransitioning) return;
         const maxIndex = Math.ceil(this.totalCards / this.cardsPerView) - 1;
@@ -1252,9 +814,6 @@ class TeamCarousel {
         this.updateCarousel();
     }
 
-    /**
-     * Go to next slide
-     */
     nextSlide() {
         if (this.isTransitioning) return;
         const maxIndex = Math.ceil(this.totalCards / this.cardsPerView) - 1;
@@ -1262,9 +821,6 @@ class TeamCarousel {
         this.updateCarousel();
     }
 
-    /**
-     * Go to previous slide
-     */
     prevSlide() {
         if (this.isTransitioning) return;
         const maxIndex = Math.ceil(this.totalCards / this.cardsPerView) - 1;
@@ -1272,9 +828,6 @@ class TeamCarousel {
         this.updateCarousel();
     }
 
-    /**
-     * Update carousel position and indicators
-     */
     updateCarousel() {
         this.isTransitioning = true;
         
@@ -1284,20 +837,15 @@ class TeamCarousel {
         
         this.carousel.style.transform = `translateX(${offset}px)`;
         
-        // Update indicators
         this.indicators.forEach((ind, i) => {
             ind.classList.toggle('active', i === this.currentIndex);
         });
 
-        // Reset transition lock
         setTimeout(() => {
             this.isTransitioning = false;
         }, 600);
     }
 
-    /**
-     * Setup responsive behavior
-     */
     setupResponsive() {
         let resizeTimer;
         window.addEventListener('resize', () => {
@@ -1315,31 +863,11 @@ class TeamCarousel {
         });
     }
 
-    /**
-     * Check if carousel is in viewport
-     */
-    isInViewport() {
-        if (!this.carousel) return false;
-        const rect = this.carousel.getBoundingClientRect();
-        return (
-            rect.top >= 0 &&
-            rect.left >= 0 &&
-            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-        );
-    }
-
-    /**
-     * Start autoplay
-     */
     startAutoplay() {
         this.stopAutoplay();
         this.autoplayInterval = setInterval(() => this.nextSlide(), this.autoplayDelay);
     }
 
-    /**
-     * Stop autoplay
-     */
     stopAutoplay() {
         if (this.autoplayInterval) {
             clearInterval(this.autoplayInterval);
@@ -1347,35 +875,14 @@ class TeamCarousel {
         }
     }
 
-    /**
-     * Reset autoplay
-     */
     resetAutoplay() {
         this.stopAutoplay();
         this.startAutoplay();
     }
-
-    /**
-     * Destroy carousel (cleanup)
-     */
-    destroy() {
-        this.stopAutoplay();
-        this.indicators.forEach(ind => ind.remove());
-    }
 }
 
-// Initialize Team Carousel
-document.addEventListener('DOMContentLoaded', () => {
-    const teamCarousel = new TeamCarousel();
-    
-    // Make globally accessible
-    window.teamCarousel = teamCarousel;
-    
-    console.log('%c✓ Team Carousel Initialized', 'color: #5DBBC3; font-weight: bold;');
-});
-
 // =========================
-// TESTIMONIALS SLIDER - ENHANCED
+// 8. TESTIMONIALS SLIDER
 // =========================
 class TestimonialsSlider {
     constructor() {
@@ -1388,7 +895,7 @@ class TestimonialsSlider {
         this.currentIndex = 0;
         this.totalCards = this.cards.length;
         this.autoplayInterval = null;
-        this.autoplayDelay = 7000; // Longer delay for more content
+        this.autoplayDelay = 7000;
         this.isTransitioning = false;
         
         if (this.track && this.cards.length > 0) this.init();
@@ -1397,11 +904,8 @@ class TestimonialsSlider {
     init() {
         this.createDots();
         this.setupEventListeners();
-        this.setupAccessibility();
-        this.setupResponsive();
         this.updateSlider();
         this.startAutoplay();
-        this.animateOnScroll();
     }
 
     createDots() {
@@ -1410,8 +914,6 @@ class TestimonialsSlider {
             const dot = document.createElement('div');
             dot.classList.add('testimonial-dot');
             if (i === 0) dot.classList.add('active');
-            dot.setAttribute('role', 'button');
-            dot.setAttribute('aria-label', `Go to testimonial ${i + 1}`);
             dot.addEventListener('click', () => { 
                 this.goToSlide(i); 
                 this.resetAutoplay(); 
@@ -1422,7 +924,6 @@ class TestimonialsSlider {
     }
 
     setupEventListeners() {
-        // Button controls
         this.prevBtn?.addEventListener('click', () => { 
             if (!this.isTransitioning) {
                 this.prevSlide(); 
@@ -1437,7 +938,6 @@ class TestimonialsSlider {
             }
         });
 
-        // Touch/Swipe support
         let startX = 0;
         let isDragging = false;
         
@@ -1447,84 +947,23 @@ class TestimonialsSlider {
             this.stopAutoplay();
         }, { passive: true });
         
-        this.track.addEventListener('touchmove', (e) => {
-            if (!isDragging) return;
-            const currentX = e.touches[0].clientX;
-            const diff = startX - currentX;
-            
-            // Add visual feedback during drag
-            if (Math.abs(diff) > 10) {
-                this.track.style.transition = 'none';
-                const cardWidth = this.cards[0].offsetWidth;
-                const computedStyle = window.getComputedStyle(this.track);
-                const gap = parseInt(computedStyle.gap) || 32;
-                const baseOffset = -(this.currentIndex * (cardWidth + gap));
-                this.track.style.transform = `translateX(${baseOffset - diff}px)`;
-            }
-        }, { passive: true });
-        
         this.track.addEventListener('touchend', (e) => {
             if (!isDragging) return;
             isDragging = false;
             
-            this.track.style.transition = '';
             const diff = startX - e.changedTouches[0].clientX;
             
             if (Math.abs(diff) > 80) {
                 diff > 0 ? this.nextSlide() : this.prevSlide();
             } else {
-                this.updateSlider(); // Snap back
+                this.updateSlider();
             }
             
             this.resetAutoplay();
         }, { passive: true });
 
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (this.isInViewport() && !this.isTransitioning) {
-                if (e.key === 'ArrowLeft') {
-                    e.preventDefault();
-                    this.prevSlide();
-                    this.resetAutoplay();
-                } else if (e.key === 'ArrowRight') {
-                    e.preventDefault();
-                    this.nextSlide();
-                    this.resetAutoplay();
-                }
-            }
-        });
-
-        // Pause on hover
         this.track.addEventListener('mouseenter', () => this.stopAutoplay());
         this.track.addEventListener('mouseleave', () => this.startAutoplay());
-
-        // Pause on focus (accessibility)
-        this.cards.forEach(card => {
-            card.addEventListener('focusin', () => this.stopAutoplay());
-            card.addEventListener('focusout', () => this.startAutoplay());
-        });
-    }
-
-    setupAccessibility() {
-        this.track.setAttribute('role', 'region');
-        this.track.setAttribute('aria-label', 'Client testimonials');
-        
-        this.cards.forEach((card, index) => {
-            card.setAttribute('role', 'group');
-            card.setAttribute('aria-roledescription', 'slide');
-            card.setAttribute('aria-label', `Testimonial ${index + 1} of ${this.totalCards}`);
-        });
-    }
-
-    setupResponsive() {
-        let resizeTimer;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                // Recalculate position on resize
-                this.updateSlider();
-            }, 250);
-        });
     }
 
     goToSlide(index) {
@@ -1548,79 +987,20 @@ class TestimonialsSlider {
     updateSlider() {
         this.isTransitioning = true;
         
-        // Calculate offset accounting for gap between cards (responsive)
         const cardWidth = this.cards[0].offsetWidth;
         const computedStyle = window.getComputedStyle(this.track);
-        const gap = parseInt(computedStyle.gap) || 32; // Get actual gap from CSS
+        const gap = parseInt(computedStyle.gap) || 32;
         const offset = -(this.currentIndex * (cardWidth + gap));
         
         this.track.style.transform = `translateX(${offset}px)`;
         
-        // Update dots
         this.dots.forEach((dot, i) => {
             dot.classList.toggle('active', i === this.currentIndex);
-            dot.setAttribute('aria-current', i === this.currentIndex ? 'true' : 'false');
         });
 
-        // Update card visibility for screen readers
-        this.cards.forEach((card, i) => {
-            card.setAttribute('aria-hidden', i !== this.currentIndex);
-        });
-
-        // Add animation to active card elements
-        const activeCard = this.cards[this.currentIndex];
-        this.animateCardElements(activeCard);
-
-        // Reset transition lock after animation completes
         setTimeout(() => {
             this.isTransitioning = false;
         }, 600);
-    }
-
-    animateCardElements(card) {
-        const elements = [
-            card.querySelector('.testimonial-stars'),
-            card.querySelector('.testimonial-title'),
-            card.querySelector('.testimonial-text'),
-            card.querySelector('.testimonial-author')
-        ];
-
-        elements.forEach((el, index) => {
-            if (el) {
-                el.style.opacity = '0';
-                el.style.transform = 'translateY(20px)';
-                
-                setTimeout(() => {
-                    el.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
-                    el.style.opacity = '1';
-                    el.style.transform = 'translateY(0)';
-                }, 100 + (index * 80));
-            }
-        });
-    }
-
-    animateOnScroll() {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    this.startAutoplay();
-                } else {
-                    this.stopAutoplay();
-                }
-            });
-        }, { threshold: 0.3 });
-
-        observer.observe(this.track);
-    }
-
-    isInViewport() {
-        const rect = this.track.getBoundingClientRect();
-        return (
-            rect.top >= 0 &&
-            rect.left >= 0 &&
-            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-        );
     }
 
     startAutoplay() { 
@@ -1639,15 +1019,10 @@ class TestimonialsSlider {
         this.stopAutoplay(); 
         this.startAutoplay(); 
     }
-
-    destroy() {
-        this.stopAutoplay();
-        this.dots.forEach(dot => dot.remove());
-    }
 }
 
 // =========================
-// CONTACT FORM HANDLER
+// 9. CONTACT FORM HANDLER
 // =========================
 class ContactFormHandler {
     constructor() {
@@ -1741,8 +1116,7 @@ Location: ${data.preferredLocation}
 
 Message:
 ${data.message}
-================================
-Sent from Holistic Mental Health Services website`
+================================`
             );
 
             setTimeout(() => {
@@ -1776,67 +1150,16 @@ Sent from Holistic Mental Health Services website`
             position:fixed;top:100px;right:30px;padding:20px 28px;
             background:${type === 'success' ? 'linear-gradient(135deg, #5DBBC3, #7B88C4)' : '#EF4444'};
             color:white;border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,0.2);
-            z-index:10000;display:flex;align-items:center;gap:12px;font-weight:500;
-            animation:slideInNotification 0.4s cubic-bezier(0.4, 0, 0.2, 1);max-width:400px;
+            z-index:10000;display:flex;align-items:center;gap:12px;font-weight:500;max-width:400px;
         `;
         notification.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}" style="font-size:22px;"></i><span>${message}</span>`;
         document.body.appendChild(notification);
-        setTimeout(() => {
-            notification.style.animation = 'slideOutNotification 0.4s forwards';
-            setTimeout(() => notification.remove(), 400);
-        }, 4000);
+        setTimeout(() => notification.remove(), 4000);
     }
 }
 
 // =========================
-// LOCATIONS INTERACTION
-// =========================
-class LocationsInteraction {
-    constructor() {
-        this.locationCards = document.querySelectorAll('.location-card');
-        this.partnerCard = document.querySelector('.partner-location-card');
-        if (this.locationCards.length > 0) this.init();
-    }
-
-    init() {
-        this.locationCards.forEach((card, index) => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(30px)';
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        setTimeout(() => {
-                            card.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-                            card.style.opacity = '1';
-                            card.style.transform = 'translateY(0)';
-                        }, index * 100);
-                        observer.disconnect();
-                    }
-                });
-            }, { threshold: 0.2 });
-            observer.observe(card);
-        });
-
-        if (this.partnerCard) {
-            this.partnerCard.style.opacity = '0';
-            this.partnerCard.style.transform = 'translateY(40px)';
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        this.partnerCard.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
-                        this.partnerCard.style.opacity = '1';
-                        this.partnerCard.style.transform = 'translateY(0)';
-                        observer.disconnect();
-                    }
-                });
-            }, { threshold: 0.3 });
-            observer.observe(this.partnerCard);
-        }
-    }
-}
-
-// =========================
-// FLOATING BUTTONS (FAB + Back to Top)
+// 10. FLOATING BUTTONS
 // =========================
 class FloatingButtons {
     constructor() {
@@ -1845,7 +1168,6 @@ class FloatingButtons {
         this.fabContainer = document.getElementById('fabContainer');
         this.fabMain = document.getElementById('fabMain');
         this.fabBackdrop = document.getElementById('fabBackdrop');
-        this.fabActions = document.getElementById('fabActions');
         
         this.isOpen = false;
         this.scrollThreshold = 300;
@@ -1862,9 +1184,6 @@ class FloatingButtons {
         this.setupOutsideClick();
     }
 
-    /**
-     * Add SVG gradient for progress circle
-     */
     addSVGGradient() {
         if (document.getElementById('bttGradient')) return;
         
@@ -1887,29 +1206,16 @@ class FloatingButtons {
         }
     }
 
-    /**
-     * Setup Back to Top button
-     */
     setupBackToTop() {
         if (!this.backToTopBtn) return;
         
         this.backToTopBtn.addEventListener('click', () => {
-            window.scrollTo({ 
-                top: 0, 
-                behavior: 'smooth' 
-            });
-            
-            // Small animation feedback
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             this.backToTopBtn.style.transform = 'scale(0.9)';
-            setTimeout(() => {
-                this.backToTopBtn.style.transform = '';
-            }, 150);
+            setTimeout(() => { this.backToTopBtn.style.transform = ''; }, 150);
         });
     }
 
-    /**
-     * Setup FAB menu
-     */
     setupFAB() {
         if (!this.fabMain) return;
         
@@ -1919,12 +1225,9 @@ class FloatingButtons {
         });
         
         if (this.fabBackdrop) {
-            this.fabBackdrop.addEventListener('click', () => {
-                this.closeFAB();
-            });
+            this.fabBackdrop.addEventListener('click', () => this.closeFAB());
         }
         
-        // Close FAB when action is clicked
         const fabActions = document.querySelectorAll('.fab-action');
         fabActions.forEach(action => {
             action.addEventListener('click', () => {
@@ -1932,55 +1235,29 @@ class FloatingButtons {
             });
         });
 
-        // Close on Escape key
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this.isOpen) {
-                this.closeFAB();
-            }
+            if (e.key === 'Escape' && this.isOpen) this.closeFAB();
         });
     }
 
-    /**
-     * Toggle FAB open/close
-     */
     toggleFAB() {
-        if (this.isOpen) {
-            this.closeFAB();
-        } else {
-            this.openFAB();
-        }
+        this.isOpen ? this.closeFAB() : this.openFAB();
     }
 
-    /**
-     * Open FAB menu
-     */
     openFAB() {
         this.isOpen = true;
         this.fabContainer.classList.add('active');
-        
-        // Prevent body scroll on mobile
-        if (window.innerWidth <= 768) {
-            document.body.style.overflow = 'hidden';
-        }
+        if (window.innerWidth <= 768) document.body.style.overflow = 'hidden';
     }
 
-    /**
-     * Close FAB menu
-     */
     closeFAB() {
         this.isOpen = false;
         this.fabContainer.classList.remove('active');
-        
-        // Restore body scroll
         document.body.style.overflow = '';
     }
 
-    /**
-     * Setup scroll listener for both buttons
-     */
     setupScrollListener() {
         let ticking = false;
-        
         window.addEventListener('scroll', () => {
             if (!ticking) {
                 window.requestAnimationFrame(() => {
@@ -1990,20 +1267,14 @@ class FloatingButtons {
                 ticking = true;
             }
         }, { passive: true });
-        
-        // Initial call
         this.handleScroll();
     }
 
-    /**
-     * Handle scroll updates
-     */
     handleScroll() {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         const docHeight = document.documentElement.scrollHeight - window.innerHeight;
         const scrollPercent = (scrollTop / docHeight) * 100;
 
-        // Update back to top button visibility
         if (this.backToTopBtn) {
             if (scrollTop > this.scrollThreshold) {
                 this.backToTopBtn.classList.add('visible');
@@ -2011,14 +1282,12 @@ class FloatingButtons {
                 this.backToTopBtn.classList.remove('visible');
             }
             
-            // Update progress circle
             if (this.progressCircle) {
                 const offset = Math.max(0, 100 - scrollPercent);
                 this.progressCircle.style.strokeDashoffset = offset;
             }
         }
 
-        // Close FAB if scrolling significantly
         if (this.isOpen && Math.abs(this.lastScrollTop - scrollTop) > 50) {
             this.closeFAB();
         }
@@ -2026,9 +1295,6 @@ class FloatingButtons {
         this.lastScrollTop = scrollTop;
     }
 
-    /**
-     * Close FAB when clicking outside
-     */
     setupOutsideClick() {
         document.addEventListener('click', (e) => {
             if (this.isOpen && 
@@ -2038,150 +1304,53 @@ class FloatingButtons {
             }
         });
     }
-
-    /**
-     * Public method to programmatically close FAB
-     */
-    close() {
-        this.closeFAB();
-    }
-
-    /**
-     * Public method to programmatically open FAB
-     */
-    open() {
-        this.openFAB();
-    }
 }
 
-// Initialize Floating Buttons
+// =========================
+// MAIN INITIALIZATION
+// =========================
 document.addEventListener('DOMContentLoaded', () => {
-    const floatingButtons = new FloatingButtons();
-    
-    // Make globally accessible
-    window.floatingButtons = floatingButtons;
-    
-    console.log('%c✓ Floating Buttons Initialized', 'color: #5DBBC3; font-weight: bold;');
-});
-
-// =========================
-// CIRCLE ANIMATION
-// =========================
-class CircleAnimation {
-    constructor() {
-        this.circle = document.querySelector('.holistic-circle');
-        if (this.circle) this.init();
-    }
-
-    init() {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                const ring = this.circle.querySelector('.orbit-ring');
-                if (ring) ring.style.animationPlayState = entry.isIntersecting ? 'running' : 'paused';
-            });
-        }, { threshold: 0.3 });
-        observer.observe(this.circle);
-    }
-}
-
-// =========================
-// SMOOTH SCROLL ENHANCER
-// =========================
-class SmoothScrollEnhancer {
-    constructor() {
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', (e) => {
-                const href = anchor.getAttribute('href');
-                if (href === '#' || href === '#!') return;
-                const target = document.querySelector(href);
-                if (target) {
-                    e.preventDefault();
-                    window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
-                }
-            });
+    // Initialize AOS if available
+    if (typeof AOS !== 'undefined') {
+        AOS.init({ 
+            duration: 1000, 
+            once: true, 
+            offset: 100, 
+            easing: 'ease-out-cubic' 
         });
     }
-}
 
-// =========================
-// ADD ANIMATION STYLES
-// =========================
-function addAnimationStyles() {
-    if (document.getElementById('app-animation-styles')) return;
-    const style = document.createElement('style');
-    style.id = 'app-animation-styles';
-    style.textContent = `
-        @keyframes slideInNotification { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        @keyframes slideOutNotification { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }
-        @keyframes rippleEffect { to { transform: scale(4); opacity: 0; } }
-    `;
-    document.head.appendChild(style);
-}
+    // Initialize all modules
+    const modules = {
+        progressNav: new EnhancedProgressNavigation(),
+        heroVideo: new OptimizedHeroVideo(),
+        statsCounter: new StatisticsCounter(),
+        servicesCarousel: new ServicesCarousel(),
+        serviceModals: new ServiceModalSystem(),
+        faqSection: new FAQSection(),
+        teamCarousel: new TeamCarousel(),
+        testimonialsSlider: new TestimonialsSlider(),
+        contactForm: new ContactFormHandler(),
+        floatingButtons: new FloatingButtons()
+    };
 
-// =========================
-// MAIN APPLICATION
-// =========================
-class HolisticMentalHealthApp {
-    constructor() {
-        this.modules = {};
-        document.readyState === 'loading' 
-            ? document.addEventListener('DOMContentLoaded', () => this.initializeModules())
-            : this.initializeModules();
-    }
+    // Make globally accessible
+    window.holisticApp = modules;
 
-    initializeModules() {
-        try {
-            addAnimationStyles();
-            
-            if (typeof AOS !== 'undefined') {
-                AOS.init({ duration: 1000, once: true, offset: 100, easing: 'ease-out-cubic' });
-            }
+    // Refresh positions on window load
+    window.addEventListener('load', () => {
+        setTimeout(() => modules.progressNav?.refreshPositions(), 100);
+    });
 
-            this.modules = {
-                progressNav: new EnhancedProgressNavigation(),
-                heroVideo: new HeroVideo(),
-                statsCounter: new StatisticsCounter(),
-                founderParallax: new FounderImageParallax(),
-                credentialTags: new CredentialTagsAnimation(),
-                valueCards: new ValueCardsEffect(),
-                servicesCarousel: new ServicesCarousel(),
-                serviceModals: new ServiceModalSystem(),
-                testimonialsSlider: new TestimonialsSlider(),
-                contactForm: new ContactFormHandler(),
-                locationsInteraction: new LocationsInteraction(),
-                floatingButtons: new FloatingButtons(),
-                circleAnimation: new CircleAnimation(),
-                smoothScroll: new SmoothScrollEnhancer()
-            };
+    // Handle window resize
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            modules.progressNav?.refreshPositions();
+        }, 250);
+    }, { passive: true });
 
-            window.holisticApp = this.modules;
-
-            window.addEventListener('load', () => {
-                setTimeout(() => this.modules.progressNav?.refreshPositions(), 100);
-            });
-
-            let resizeTimer;
-            window.addEventListener('resize', () => {
-                clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(() => this.modules.progressNav?.refreshPositions(), 250);
-            }, { passive: true });
-
-            this.logSuccess();
-        } catch (error) {
-            console.error('Error initializing modules:', error);
-        }
-    }
-
-    logSuccess() {
-        console.log('%c✨ Holistic Mental Health Services', 'color: #5DBBC3; font-size: 24px; font-weight: bold;');
-        console.log('%c🚀 All Systems Initialized!', 'color: #7B88C4; font-size: 16px;');
-        console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #D1D5DB;');
-        Object.keys(this.modules).forEach(key => console.log(`%c✓ ${key}`, 'color: #10B981;'));
-        console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #D1D5DB;');
-    }
-}
-
-// =========================
-// INITIALIZE
-// =========================
-new HolisticMentalHealthApp();
+    console.log('%c✨ Holistic Mental Health Services', 'color: #5DBBC3; font-size: 24px; font-weight: bold;');
+    console.log('%c🚀 All Systems Initialized!', 'color: #7B88C4; font-size: 16px;');
+});
