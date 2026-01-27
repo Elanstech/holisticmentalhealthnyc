@@ -722,6 +722,342 @@ class TrustBarAnimation {
     }
 }
 
+class FAQSection {
+    constructor() {
+        this.faqSection = document.querySelector('.faq-section');
+        this.categoryButtons = document.querySelectorAll('.faq-category-btn');
+        this.faqItems = document.querySelectorAll('.faq-item');
+        this.faqQuestions = document.querySelectorAll('.faq-question');
+        
+        this.activeCategory = 'all';
+        this.openItems = new Set();
+        
+        if (this.faqSection) {
+            this.init();
+        }
+    }
+
+    init() {
+        this.setupCategoryFiltering();
+        this.setupAccordion();
+        this.setupKeyboardNavigation();
+        this.setupDeepLinking();
+        this.animateOnScroll();
+    }
+
+    /**
+     * Category Filtering System
+     */
+    setupCategoryFiltering() {
+        this.categoryButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const category = button.getAttribute('data-category');
+                this.filterByCategory(category);
+                this.updateActiveButton(button);
+            });
+        });
+    }
+
+    filterByCategory(category) {
+        this.activeCategory = category;
+        
+        // Close all open items when switching categories
+        this.closeAllItems();
+        
+        this.faqItems.forEach((item, index) => {
+            const itemCategory = item.getAttribute('data-category');
+            const shouldShow = category === 'all' || itemCategory === category;
+            
+            if (shouldShow) {
+                // Show with staggered animation
+                setTimeout(() => {
+                    item.classList.remove('hidden');
+                    item.style.opacity = '0';
+                    item.style.transform = 'translateY(20px)';
+                    
+                    // Trigger animation
+                    requestAnimationFrame(() => {
+                        item.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+                        item.style.opacity = '1';
+                        item.style.transform = 'translateY(0)';
+                    });
+                }, index * 50);
+            } else {
+                // Hide with fade out
+                item.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(-10px)';
+                
+                setTimeout(() => {
+                    item.classList.add('hidden');
+                }, 300);
+            }
+        });
+    }
+
+    updateActiveButton(activeButton) {
+        this.categoryButtons.forEach(btn => btn.classList.remove('active'));
+        activeButton.classList.add('active');
+    }
+
+    /**
+     * Accordion Functionality
+     */
+    setupAccordion() {
+        this.faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                const faqItem = question.closest('.faq-item');
+                this.toggleItem(faqItem);
+            });
+        });
+    }
+
+    toggleItem(item) {
+        const isOpen = item.classList.contains('active');
+        
+        if (isOpen) {
+            this.closeItem(item);
+        } else {
+            this.openItem(item);
+        }
+    }
+
+    openItem(item) {
+        // Add active class
+        item.classList.add('active');
+        this.openItems.add(item);
+        
+        // Get the answer element
+        const answer = item.querySelector('.faq-answer');
+        const content = item.querySelector('.faq-answer-content');
+        
+        if (answer && content) {
+            // Calculate the height needed
+            const contentHeight = content.scrollHeight;
+            answer.style.maxHeight = `${contentHeight + 50}px`;
+        }
+        
+        // Scroll into view if needed (with offset for header)
+        setTimeout(() => {
+            const rect = item.getBoundingClientRect();
+            const isInViewport = rect.top >= 100 && rect.bottom <= window.innerHeight;
+            
+            if (!isInViewport) {
+                const yOffset = -100; // Header offset
+                const y = item.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                
+                window.scrollTo({
+                    top: y,
+                    behavior: 'smooth'
+                });
+            }
+        }, 100);
+    }
+
+    closeItem(item) {
+        item.classList.remove('active');
+        this.openItems.delete(item);
+        
+        const answer = item.querySelector('.faq-answer');
+        if (answer) {
+            answer.style.maxHeight = '0';
+        }
+    }
+
+    closeAllItems() {
+        this.faqItems.forEach(item => {
+            if (item.classList.contains('active')) {
+                this.closeItem(item);
+            }
+        });
+    }
+
+    /**
+     * Keyboard Navigation
+     */
+    setupKeyboardNavigation() {
+        this.faqQuestions.forEach((question, index) => {
+            question.addEventListener('keydown', (e) => {
+                const faqItem = question.closest('.faq-item');
+                
+                // Enter or Space to toggle
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.toggleItem(faqItem);
+                }
+                
+                // Arrow keys to navigate
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    this.focusNextQuestion(index);
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    this.focusPreviousQuestion(index);
+                }
+                
+                // Home/End keys
+                if (e.key === 'Home') {
+                    e.preventDefault();
+                    this.faqQuestions[0].focus();
+                } else if (e.key === 'End') {
+                    e.preventDefault();
+                    this.faqQuestions[this.faqQuestions.length - 1].focus();
+                }
+            });
+            
+            // Make questions focusable
+            question.setAttribute('tabindex', '0');
+            question.setAttribute('role', 'button');
+            question.setAttribute('aria-expanded', 'false');
+        });
+    }
+
+    focusNextQuestion(currentIndex) {
+        const visibleQuestions = Array.from(this.faqQuestions).filter(q => {
+            const item = q.closest('.faq-item');
+            return !item.classList.contains('hidden');
+        });
+        
+        const currentQuestion = this.faqQuestions[currentIndex];
+        const currentIndexInVisible = visibleQuestions.indexOf(currentQuestion);
+        
+        if (currentIndexInVisible < visibleQuestions.length - 1) {
+            visibleQuestions[currentIndexInVisible + 1].focus();
+        }
+    }
+
+    focusPreviousQuestion(currentIndex) {
+        const visibleQuestions = Array.from(this.faqQuestions).filter(q => {
+            const item = q.closest('.faq-item');
+            return !item.classList.contains('hidden');
+        });
+        
+        const currentQuestion = this.faqQuestions[currentIndex];
+        const currentIndexInVisible = visibleQuestions.indexOf(currentQuestion);
+        
+        if (currentIndexInVisible > 0) {
+            visibleQuestions[currentIndexInVisible - 1].focus();
+        }
+    }
+
+    /**
+     * Deep Linking Support
+     * Allows linking directly to specific FAQ items
+     */
+    setupDeepLinking() {
+        // Check if URL has a hash
+        const hash = window.location.hash;
+        if (hash && hash.startsWith('#faq-')) {
+            setTimeout(() => {
+                const targetId = hash.substring(1);
+                const targetItem = document.getElementById(targetId);
+                
+                if (targetItem && targetItem.classList.contains('faq-item')) {
+                    // Open the item
+                    this.openItem(targetItem);
+                    
+                    // Scroll to it
+                    setTimeout(() => {
+                        targetItem.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center'
+                        });
+                    }, 300);
+                }
+            }, 500);
+        }
+    }
+
+    /**
+     * Animate FAQ items on scroll
+     */
+    animateOnScroll() {
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    // Add staggered animation
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, index * 50);
+                    
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Initially hide items for animation
+        this.faqItems.forEach(item => {
+            if (!item.classList.contains('hidden')) {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(30px)';
+                item.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                observer.observe(item);
+            }
+        });
+    }
+
+    /**
+     * Utility: Get all visible FAQ items
+     */
+    getVisibleItems() {
+        return Array.from(this.faqItems).filter(item => 
+            !item.classList.contains('hidden')
+        );
+    }
+
+    /**
+     * Public method to open a specific FAQ by index
+     */
+    openFAQByIndex(index) {
+        const visibleItems = this.getVisibleItems();
+        if (index >= 0 && index < visibleItems.length) {
+            this.openItem(visibleItems[index]);
+        }
+    }
+
+    /**
+     * Public method to search FAQ content
+     */
+    searchFAQs(searchTerm) {
+        const term = searchTerm.toLowerCase();
+        let foundCount = 0;
+        
+        this.faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question-text').textContent.toLowerCase();
+            const answer = item.querySelector('.faq-answer-content').textContent.toLowerCase();
+            
+            const matches = question.includes(term) || answer.includes(term);
+            
+            if (matches) {
+                item.classList.remove('hidden');
+                item.style.opacity = '1';
+                item.style.transform = 'translateY(0)';
+                foundCount++;
+            } else {
+                item.classList.add('hidden');
+            }
+        });
+        
+        return foundCount;
+    }
+}
+
+// Initialize FAQ Section
+document.addEventListener('DOMContentLoaded', () => {
+    const faqSection = new FAQSection();
+    
+    // Make it globally accessible for debugging/external control
+    window.faqSection = faqSection;
+    
+    console.log('%c✓ FAQ Section Initialized', 'color: #5DBBC3; font-weight: bold;');
+});
+
 // =========================
 // TESTIMONIALS SLIDER - ENHANCED
 // =========================
