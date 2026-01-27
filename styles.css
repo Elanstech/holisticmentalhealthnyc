@@ -655,6 +655,26 @@ img {
     position: relative;
     padding: 120px 24px 80px;
     overflow: hidden;
+    background: linear-gradient(135deg, #1F2937 0%, #111827 100%);
+}
+
+/* Gradient Placeholder - Shows Instantly */
+.hero-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(31, 41, 55, 0.95) 0%, rgba(17, 24, 39, 0.95) 100%);
+    z-index: 0;
+    animation: fadeOut 0.8s ease-out 0.5s forwards;
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
 }
 
 .hero-video-container {
@@ -665,6 +685,14 @@ img {
     height: 100%;
     overflow: hidden;
     z-index: 0;
+    opacity: 0;
+    animation: fadeIn 0.8s ease-out 0.3s forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
 }
 
 .hero-bg-video {
@@ -677,6 +705,17 @@ img {
     height: auto;
     transform: translate(-50%, -50%);
     object-fit: cover;
+    will-change: transform;
+    backface-visibility: hidden;
+    /* Performance optimization */
+    transform: translate3d(-50%, -50%, 0);
+}
+
+/* Reduce video quality on mobile for faster loading */
+@media (max-width: 768px) {
+    .hero-bg-video {
+        display: none; /* Hide video on mobile, use gradient only */
+    }
 }
 
 .hero-video-overlay {
@@ -745,7 +784,7 @@ img {
 }
 
 .btn-primary {
-    background: var(--gradient-primary);
+    background: linear-gradient(135deg, #5DBBC3 0%, #7B88C4 100%);
     color: #FFFFFF;
     box-shadow: 0 4px 12px rgba(93, 187, 195, 0.3);
 }
@@ -762,7 +801,7 @@ img {
 }
 
 .btn-secondary:hover {
-    background: var(--gradient-primary);
+    background: linear-gradient(135deg, #5DBBC3 0%, #7B88C4 100%);
     color: #FFFFFF;
     border-color: transparent;
 }
@@ -801,6 +840,7 @@ img {
     box-shadow: 0 8px 32px rgba(93, 187, 195, 0.2);
     animation: morphGlass 12s ease-in-out infinite;
     overflow: hidden;
+    will-change: border-radius, transform;
 }
 
 @keyframes morphGlass {
@@ -829,6 +869,7 @@ img {
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 4px 20px rgba(93, 187, 195, 0.3);
+    will-change: transform;
 }
 
 .blob-1 {
@@ -922,7 +963,7 @@ img {
     }
 }
 
-/* Hero Mobile */
+/* Mobile Responsive */
 @media (max-width: 1024px) {
     .hero-content {
         grid-template-columns: 1fr;
@@ -946,6 +987,12 @@ img {
 @media (max-width: 768px) {
     .hero {
         padding: 100px 20px 60px;
+        /* Gradient background always visible on mobile */
+        background: linear-gradient(135deg, #1F2937 0%, #111827 100%);
+    }
+    
+    .hero-placeholder {
+        display: none; /* Not needed on mobile */
     }
     
     .hero-text h1 {
