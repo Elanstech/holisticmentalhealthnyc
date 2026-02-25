@@ -1022,6 +1022,53 @@ class TestimonialsSlider {
 }
 
 // =========================
+// THERAPY P.L.U.S. MODAL
+// =========================
+class TherapyPlusModal {
+    constructor() {
+        this.modal = document.getElementById('tpModal');
+        this.trigger = document.getElementById('tpModalTrigger');
+        this.closeBtn = document.getElementById('tpModalClose');
+        this.overlay = document.getElementById('tpModalOverlay');
+        this.scrollPosition = 0;
+
+        if (this.modal && this.trigger) this.init();
+    }
+
+    init() {
+        this.trigger.addEventListener('click', () => this.open());
+        this.closeBtn?.addEventListener('click', () => this.close());
+        this.overlay?.addEventListener('click', () => this.close());
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.modal.classList.contains('active')) this.close();
+        });
+
+        // Close modal & scroll to contact when CTA clicked
+        this.modal.querySelectorAll('.tp-modal-contact-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.close();
+                setTimeout(() => {
+                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                }, 400);
+            });
+        });
+    }
+
+    open() {
+        this.scrollPosition = window.pageYOffset;
+        document.body.style.cssText = `overflow:hidden;position:fixed;top:-${this.scrollPosition}px;width:100%`;
+        this.modal.classList.add('active');
+    }
+
+    close() {
+        this.modal.classList.remove('active');
+        document.body.style.cssText = '';
+        window.scrollTo(0, this.scrollPosition);
+    }
+}
+
+// =========================
 // 9. CONTACT FORM HANDLER
 // =========================
 class ContactFormHandler {
@@ -1330,6 +1377,7 @@ document.addEventListener('DOMContentLoaded', () => {
         faqSection: new FAQSection(),
         teamCarousel: new TeamCarousel(),
         testimonialsSlider: new TestimonialsSlider(),
+        therapyPlusModal: new TherapyPlusModal(),
         contactForm: new ContactFormHandler(),
         floatingButtons: new FloatingButtons()
     };
