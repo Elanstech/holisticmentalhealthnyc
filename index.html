@@ -1285,7 +1285,7 @@
     </div>
 </div>
 
-<!-- Therapy P.L.U.S. Section - LGBT+ Specialized Services -->
+<!-- Therapy P.L.U.S. Section - Compact Card -->
 <section class="therapy-plus-section" id="therapy-plus">
     <div class="container">
         <!-- Section Header -->
@@ -1298,21 +1298,24 @@
             <p>Proud. Loving. Unconditional Support.</p>
         </div>
 
-        <!-- Main Content Card -->
-        <div class="therapy-plus-card" data-aos="fade-up" data-aos-delay="100">
-            
-            <!-- Logo & Header -->
-            <div class="tp-header">
-                <div class="tp-logo-container">
-                    <img src="therapyplus.jpeg" 
-                         alt="Therapy P.L.U.S. - Proud Loving Unconditional Support" 
-                         class="tp-logo">
+        <!-- Compact Card -->
+        <div class="tp-compact-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="tp-compact-inner">
+                <!-- Logo -->
+                <div class="tp-compact-logo-wrap">
+                    <div class="tp-compact-logo-ring">
+                        <img src="therapyplus.jpeg" 
+                             alt="Therapy P.L.U.S. - Proud Loving Unconditional Support" 
+                             class="tp-logo">
+                    </div>
                 </div>
-                <div class="tp-intro">
-                    <h3 class="tp-title">
+
+                <!-- Content -->
+                <div class="tp-compact-body">
+                    <h3 class="tp-compact-title">
                         <span class="rainbow-text">Therapy P.L.U.S.</span>
                     </h3>
-                    <p class="tp-tagline">Proud. Loving. Unconditional Support.</p>
+                    <p class="tp-compact-tagline">Affirming, compassionate mental health support specifically designed for the LGBTQ+ community in Long Island.</p>
                     <div class="tp-badges">
                         <div class="tp-badge">
                             <i class="fas fa-heart"></i>
@@ -1328,17 +1331,53 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Action -->
+                <div class="tp-compact-actions">
+                    <button class="tp-modal-trigger" id="tpModalTrigger">
+                        Explore Program <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <a href="tel:+16312659850" class="tp-compact-phone">
+                        <i class="fas fa-phone-alt"></i> (631) 265-9850
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Therapy P.L.U.S. Modal -->
+<div class="tp-modal" id="tpModal">
+    <div class="modal-overlay" id="tpModalOverlay"></div>
+    <div class="tp-modal-container">
+        <button class="modal-close" id="tpModalClose">
+            <i class="fas fa-times"></i>
+        </button>
+
+        <div class="tp-modal-scroll">
+            <!-- Modal Header -->
+            <div class="tp-modal-header">
+                <div class="tp-modal-logo-wrap">
+                    <img src="therapyplus.jpeg" alt="Therapy P.L.U.S." class="tp-logo">
+                </div>
+                <h2><span class="rainbow-text">Therapy P.L.U.S.</span></h2>
+                <p class="tp-modal-subtitle">Proud. Loving. Unconditional Support.</p>
+                <div class="tp-badges" style="justify-content:center; margin-top:16px;">
+                    <div class="tp-badge"><i class="fas fa-heart"></i><span>LGBTQ+ Affirming</span></div>
+                    <div class="tp-badge"><i class="fas fa-shield-alt"></i><span>Safe Space</span></div>
+                    <div class="tp-badge"><i class="fas fa-users"></i><span>Inclusive Care</span></div>
+                </div>
             </div>
 
-            <!-- Description -->
-            <div class="tp-content">
-                <div class="tp-description">
+            <!-- Modal Body -->
+            <div class="tp-modal-body">
+                <!-- Description -->
+                <div class="tp-modal-section">
                     <p class="lead-text">
                         <strong>Therapy P.L.U.S.</strong> is our specialized program providing affirming, compassionate mental health support 
                         specifically designed for the LGBTQ+ community in Long Island. Based in Hauppauge, we offer a safe, 
                         judgment-free environment where you can be your authentic self.
                     </p>
-                    
                     <p>
                         We understand the unique challenges faced by LGBTQ+ individuals, including identity exploration, 
                         coming out, discrimination, family acceptance, and relationship dynamics. Our therapists are trained 
@@ -1351,57 +1390,39 @@
                 <div class="rainbow-divider"></div>
 
                 <!-- Services Grid -->
-                <div class="tp-services">
+                <div class="tp-modal-section">
                     <h4 class="tp-section-title">
                         <i class="fas fa-rainbow"></i>
                         Our LGBTQ+ Specialized Services
                     </h4>
-                    
                     <div class="tp-services-grid">
                         <div class="tp-service-item">
-                            <div class="tp-service-icon">
-                                <i class="fas fa-user-check"></i>
-                            </div>
+                            <div class="tp-service-icon"><i class="fas fa-user-check"></i></div>
                             <h5>Identity Exploration</h5>
                             <p>Support for understanding and embracing your sexual orientation, gender identity, and authentic self.</p>
                         </div>
-
                         <div class="tp-service-item">
-                            <div class="tp-service-icon">
-                                <i class="fas fa-door-open"></i>
-                            </div>
+                            <div class="tp-service-icon"><i class="fas fa-door-open"></i></div>
                             <h5>Coming Out Support</h5>
                             <p>Guidance through the coming out process at your own pace, with family and workplace navigation.</p>
                         </div>
-
                         <div class="tp-service-item">
-                            <div class="tp-service-icon">
-                                <i class="fas fa-heart-broken"></i>
-                            </div>
+                            <div class="tp-service-icon"><i class="fas fa-heart-broken"></i></div>
                             <h5>Relationship Counseling</h5>
                             <p>Affirming couples therapy for LGBTQ+ relationships, addressing unique dynamics and challenges.</p>
                         </div>
-
                         <div class="tp-service-item">
-                            <div class="tp-service-icon">
-                                <i class="fas fa-hands-helping"></i>
-                            </div>
+                            <div class="tp-service-icon"><i class="fas fa-hands-helping"></i></div>
                             <h5>Family Acceptance</h5>
                             <p>Support for families learning to understand and accept their LGBTQ+ loved ones.</p>
                         </div>
-
                         <div class="tp-service-item">
-                            <div class="tp-service-icon">
-                                <i class="fas fa-transgender-alt"></i>
-                            </div>
+                            <div class="tp-service-icon"><i class="fas fa-transgender-alt"></i></div>
                             <h5>Gender-Affirming Care</h5>
                             <p>Support for transgender and non-binary individuals throughout their transition journey.</p>
                         </div>
-
                         <div class="tp-service-item">
-                            <div class="tp-service-icon">
-                                <i class="fas fa-bullhorn"></i>
-                            </div>
+                            <div class="tp-service-icon"><i class="fas fa-bullhorn"></i></div>
                             <h5>Discrimination & Trauma</h5>
                             <p>Healing from discrimination, hate, trauma, and minority stress specific to LGBTQ+ experiences.</p>
                         </div>
@@ -1411,13 +1432,12 @@
                 <!-- Rainbow Divider -->
                 <div class="rainbow-divider"></div>
 
-                <!-- Why Choose Section -->
-                <div class="tp-why-choose">
+                <!-- Why Choose -->
+                <div class="tp-modal-section">
                     <h4 class="tp-section-title">
                         <i class="fas fa-star"></i>
                         Why Choose Therapy P.L.U.S.?
                     </h4>
-                    
                     <div class="tp-features">
                         <div class="tp-feature">
                             <i class="fas fa-check-circle"></i>
@@ -1426,7 +1446,6 @@
                                 <span>Our team has specialized training in LGBTQ+ affirming care and cultural competency</span>
                             </div>
                         </div>
-                        
                         <div class="tp-feature">
                             <i class="fas fa-check-circle"></i>
                             <div>
@@ -1434,7 +1453,6 @@
                                 <span>A judgment-free space where you can be completely yourself without fear</span>
                             </div>
                         </div>
-                        
                         <div class="tp-feature">
                             <i class="fas fa-check-circle"></i>
                             <div>
@@ -1442,15 +1460,13 @@
                                 <span>We provide resources and referrals to LGBTQ+ support groups and community organizations</span>
                             </div>
                         </div>
-                        
                         <div class="tp-feature">
                             <i class="fas fa-check-circle"></i>
                             <div>
                                 <strong>Confidential & Respectful</strong>
-                                <span>Your privacy is paramount - we honor your pronouns, chosen name, and personal journey</span>
+                                <span>Your privacy is paramount — we honor your pronouns, chosen name, and personal journey</span>
                             </div>
                         </div>
-
                         <div class="tp-feature">
                             <i class="fas fa-check-circle"></i>
                             <div>
@@ -1461,7 +1477,7 @@
                     </div>
                 </div>
 
-                <!-- Quote Box -->
+                <!-- Quote -->
                 <div class="tp-quote-box">
                     <i class="fas fa-quote-left"></i>
                     <p>"You deserve a therapist who celebrates who you are, not someone who merely tolerates it. 
@@ -1470,14 +1486,14 @@
                 </div>
             </div>
 
-            <!-- CTA Section -->
+            <!-- Modal CTA -->
             <div class="tp-cta">
                 <div class="tp-cta-content">
                     <h4>Ready to Start Your Journey?</h4>
                     <p>Join a welcoming community where you can heal, grow, and thrive as your authentic self.</p>
                 </div>
                 <div class="tp-cta-buttons">
-                    <a href="#contact" class="tp-cta-btn primary">
+                    <a href="#contact" class="tp-cta-btn primary tp-modal-contact-link">
                         <i class="fas fa-calendar-check"></i>
                         Schedule Consultation
                     </a>
@@ -1488,7 +1504,7 @@
                 </div>
             </div>
 
-            <!-- Location Info -->
+            <!-- Location -->
             <div class="tp-location">
                 <div class="tp-location-icon">
                     <i class="fas fa-map-marker-alt"></i>
@@ -1497,18 +1513,14 @@
                     <strong>Therapy P.L.U.S. - Hauppauge Location</strong>
                     <span>521 Route 111, Suite 200, Hauppauge, NY 11788</span>
                     <a href="https://www.google.com/maps/dir/?api=1&destination=521+Route+111+Suite+200+Hauppauge+NY+11788" 
-                       target="_blank" 
-                       class="tp-directions">
+                       target="_blank" class="tp-directions">
                         Get Directions <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
             </div>
         </div>
-
-        <!-- Pride Flag Background Element -->
-        <div class="pride-background" data-aos="fade" data-aos-delay="200"></div>
     </div>
-</section>
+</div>
     
 <!-- FAQ Section - Replace Approach Section -->
 <section class="faq-section" id="faq">
