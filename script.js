@@ -1031,6 +1031,7 @@ class TherapyPlusModal {
         this.closeBtn = document.getElementById('tpModalClose');
         this.overlay = document.getElementById('tpModalOverlay');
         this.scrollPosition = 0;
+        this.isOpen = false;
 
         if (this.modal && this.trigger) this.init();
     }
@@ -1039,8 +1040,9 @@ class TherapyPlusModal {
         this.trigger.addEventListener('click', () => this.open());
         this.closeBtn?.addEventListener('click', () => this.close());
         this.overlay?.addEventListener('click', () => this.close());
+
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this.modal.classList.contains('active')) this.close();
+            if (e.key === 'Escape' && this.isOpen) this.close();
         });
 
         // Close modal & scroll to contact when CTA clicked
@@ -1053,15 +1055,35 @@ class TherapyPlusModal {
                 }, 400);
             });
         });
+
+        // Prevent clicks inside container from closing
+        const container = this.modal.querySelector('.tp-modal-container');
+        if (container) {
+            container.addEventListener('click', (e) => e.stopPropagation());
+        }
     }
 
     open() {
         this.scrollPosition = window.pageYOffset;
         document.body.style.cssText = `overflow:hidden;position:fixed;top:-${this.scrollPosition}px;width:100%`;
         this.modal.classList.add('active');
+        this.isOpen = true;
+
+        // Animate sections in
+        const sections = this.modal.querySelectorAll('.tp-modal-section, .tp-modal-quote');
+        sections.forEach((section, index) => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(24px)';
+            setTimeout(() => {
+                section.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+                section.style.opacity = '1';
+                section.style.transform = 'translateY(0)';
+            }, 100 + (index * 80));
+        });
     }
 
     close() {
+        this.isOpen = false;
         this.modal.classList.remove('active');
         document.body.style.cssText = '';
         window.scrollTo(0, this.scrollPosition);
