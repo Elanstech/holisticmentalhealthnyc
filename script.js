@@ -1091,6 +1091,75 @@ class TherapyPlusModal {
 }
 
 // =========================
+// NEUROFEEDBACK MODAL
+// =========================
+class NeurofeedbackModal {
+    constructor() {
+        this.modal = document.getElementById('nf-detail-modal');
+        this.trigger = document.getElementById('nf-open-modal');
+        this.closeBtn = this.modal ? this.modal.querySelector('.nf-modal-close-btn') : null;
+        this.overlay = this.modal ? this.modal.querySelector('.modal-overlay') : null;
+        this.scrollPosition = 0;
+        this.isOpen = false;
+
+        if (this.modal && this.trigger) this.init();
+    }
+
+    init() {
+        this.trigger.addEventListener('click', () => this.open());
+        this.closeBtn?.addEventListener('click', () => this.close());
+        this.overlay?.addEventListener('click', () => this.close());
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.isOpen) this.close();
+        });
+
+        // Close modal & scroll to contact when CTA clicked
+        this.modal.querySelectorAll('.nf-modal-contact-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.close();
+                setTimeout(() => {
+                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                }, 400);
+            });
+        });
+
+        // Prevent clicks inside container from closing
+        const container = this.modal.querySelector('.nf-modal-container');
+        if (container) {
+            container.addEventListener('click', (e) => e.stopPropagation());
+        }
+    }
+
+    open() {
+        this.scrollPosition = window.pageYOffset;
+        document.body.style.cssText = `overflow:hidden;position:fixed;top:-${this.scrollPosition}px;width:100%`;
+        this.modal.classList.add('active');
+        this.isOpen = true;
+
+        // Animate sections in
+        const sections = this.modal.querySelectorAll('.nf-modal-section, .nf-modal-steps, .nf-modal-conditions, .nf-modal-cta');
+        sections.forEach((section, index) => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(24px)';
+            setTimeout(() => {
+                section.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+                section.style.opacity = '1';
+                section.style.transform = 'translateY(0)';
+            }, 100 + (index * 80));
+        });
+    }
+
+    close() {
+        this.isOpen = false;
+        this.modal.classList.remove('active');
+        document.body.style.cssText = '';
+        window.scrollTo(0, this.scrollPosition);
+    }
+}
+
+// =========================
 // 9. CONTACT FORM HANDLER
 // =========================
 class ContactFormHandler {
@@ -1400,6 +1469,7 @@ document.addEventListener('DOMContentLoaded', () => {
         teamCarousel: new TeamCarousel(),
         testimonialsSlider: new TestimonialsSlider(),
         therapyPlusModal: new TherapyPlusModal(),
+        neurofeedbackModal: new NeurofeedbackModal(),
         contactForm: new ContactFormHandler(),
         floatingButtons: new FloatingButtons()
     };
