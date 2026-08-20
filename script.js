@@ -330,44 +330,81 @@ class Carousel {
   constructor(root) {
     this.root = root;
     this.viewport = root.querySelector('.carousel-viewport');
+    this.track = root.querySelector('.carousel-track');
     this.prev = root.querySelector('[data-dir="prev"]');
     this.next = root.querySelector('[data-dir="next"]');
     this.dotsBox = root.querySelector('.carousel-dots');
-    if (!this.viewport) return;
+    if (!this.viewport || !this.track) return;
+    this.targets = [0];
     this.init();
   }
 
   init() {
+    this.measure();
     this.buildDots();
     if (this.prev) this.prev.addEventListener('click', () => this.step(-1));
     if (this.next) this.next.addEventListener('click', () => this.step(1));
     this.viewport.addEventListener('scroll', () => this.onScroll(), { passive: true });
-    window.addEventListener('resize', () => { this.buildDots(); this.sync(); });
+
+    window.addEventListener('resize', () => {
+      clearTimeout(this.resizeTimer);
+      this.resizeTimer = setTimeout(() => { this.measure(); this.buildDots(); this.sync(); }, 150);
+    });
+
+    // card widths depend on fonts and images, so re-measure once settled
+    window.addEventListener('load', () => { this.measure(); this.buildDots(); this.sync(); });
+
     this.sync();
   }
 
-  get pages() {
-    return Math.max(1, Math.round(this.viewport.scrollWidth / this.viewport.clientWidth));
+  /* Snap targets come from the cards themselves rather than from the
+     viewport width — the viewport carries horizontal padding, so using
+     clientWidth as a page size overshoots by the gutter on every step. */
+  measure() {
+    const cards = Array.from(this.track.children);
+    if (!cards.length) { this.targets = [0]; return; }
+
+    const base = cards[0].offsetLeft;
+    const cardWidth = cards[0].getBoundingClientRect().width;
+    const trackStyles = getComputedStyle(this.track);
+    const gap = parseFloat(trackStyles.columnGap || trackStyles.gap) || 0;
+
+    const viewStyles = getComputedStyle(this.viewport);
+    const inner = this.viewport.clientWidth
+      - (parseFloat(viewStyles.paddingLeft) || 0)
+      - (parseFloat(viewStyles.paddingRight) || 0);
+
+    const perView = Math.max(1, Math.round((inner + gap) / (cardWidth + gap)));
+    const maxScroll = Math.max(0, this.viewport.scrollWidth - this.viewport.clientWidth);
+
+    this.targets = [];
+    for (let i = 0; i < cards.length; i += perView) {
+      this.targets.push(Math.min(cards[i].offsetLeft - base, maxScroll));
+    }
+    // drop duplicate end positions so the last dot isn't a dead stop
+    this.targets = this.targets.filter((v, i, arr) => i === 0 || v > arr[i - 1] + 1);
   }
 
   buildDots() {
     if (!this.dotsBox) return;
-    const count = this.pages;
+    const count = this.targets.length;
     if (this.dotsBox.childElementCount === count) return;
     this.dotsBox.innerHTML = '';
-    for (let i = 0; i < count; i++) {
+    this.targets.forEach((left, i) => {
       const dot = document.createElement('button');
       dot.type = 'button';
       dot.setAttribute('aria-label', `Go to page ${i + 1}`);
-      dot.addEventListener('click', () => {
-        this.viewport.scrollTo({ left: i * this.viewport.clientWidth, behavior: 'smooth' });
-      });
+      dot.addEventListener('click', () => this.viewport.scrollTo({ left, behavior: 'smooth' }));
       this.dotsBox.appendChild(dot);
-    }
+    });
   }
 
   step(dir) {
-    this.viewport.scrollBy({ left: dir * this.viewport.clientWidth, behavior: 'smooth' });
+    const current = this.viewport.scrollLeft;
+    const target = dir > 0
+      ? this.targets.find(t => t > current + 4)
+      : [...this.targets].reverse().find(t => t < current - 4);
+    this.viewport.scrollTo({ left: target !== undefined ? target : (dir > 0 ? this.targets[this.targets.length - 1] : 0), behavior: 'smooth' });
   }
 
   onScroll() {
@@ -377,10 +414,17 @@ class Carousel {
 
   sync() {
     const { scrollLeft, clientWidth, scrollWidth } = this.viewport;
-    const index = Math.round(scrollLeft / clientWidth);
+
     if (this.dotsBox) {
-      Array.from(this.dotsBox.children).forEach((dot, i) => dot.classList.toggle('is-active', i === index));
+      let nearest = 0;
+      let best = Infinity;
+      this.targets.forEach((t, i) => {
+        const d = Math.abs(t - scrollLeft);
+        if (d < best) { best = d; nearest = i; }
+      });
+      Array.from(this.dotsBox.children).forEach((dot, i) => dot.classList.toggle('is-active', i === nearest));
     }
+
     if (this.prev) this.prev.disabled = scrollLeft < 8;
     if (this.next) this.next.disabled = scrollLeft + clientWidth >= scrollWidth - 8;
   }
