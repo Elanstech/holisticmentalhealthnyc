@@ -6,25 +6,23 @@ Allow: /
 Disallow: /admin/
 Disallow: /private/
 Disallow: /temp/
-Disallow: /*.pdf$
-
-# Sitemap Location
-Sitemap: https://www.holisticmentalhealthny.com/sitemap.xml
-
-# Crawl-delay (be nice to smaller bots)
-Crawl-delay: 1
 
 # Google-specific
+# Note: a bot with its own group ignores "User-agent: *" entirely,
+# so any future rule added above must be repeated here to apply to Google.
 User-agent: Googlebot
 Allow: /
 Disallow: /admin/
 
-# Bing-specific  
+# Bing-specific
 User-agent: Bingbot
 Allow: /
 Disallow: /admin/
+Crawl-delay: 1
 
-# Block bad bots (optional - remove if causing issues)
+# Blocked crawlers
+# Heads-up: these also block your own Ahrefs / Semrush site audits
+# for this domain. Remove a group if you start using that tool.
 User-agent: AhrefsBot
 Disallow: /
 
@@ -33,3 +31,6 @@ Disallow: /
 
 User-agent: MJ12bot
 Disallow: /
+
+# Sitemap location
+Sitemap: https://www.holisticmentalhealthny.com/sitemap.xml
