@@ -15,12 +15,11 @@
    10  Modals (shared)
    11  Therapy P.L.U.S.
    12  Neurofeedback
-   13  Virtual group
-   14  FAQ
-   15  Team
-   16  Client stories
-   17  Contact + locations
-   18  Footer + floating actions
+   13  FAQ
+   14  Team
+   15  Client stories
+   16  Contact + locations
+   17  Footer + floating actions
    ============================================================ */
 
 
@@ -200,8 +199,12 @@ body.is-locked{ overflow:hidden; }
 .promo-bar-close:hover{ color:#fff; }
 
 @media (max-width:640px){
+  .promo-tag,
   .promo-bar-copy span{ display:none; }
-  .promo-bar-inner{ gap:.6rem; }
+  .promo-bar-inner{ gap:.75rem; flex-wrap:nowrap; padding-block:.5rem; }
+  .promo-bar-copy{ min-width:0; }
+  .promo-bar-copy strong{ font-size:.98rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .promo-bar-link{ font-size:.82rem; }
 }
 
 
@@ -253,11 +256,11 @@ body.is-locked{ overflow:hidden; }
 .drawer-scrim.is-open{ opacity:1; }
 .drawer{
   position:fixed; top:0; right:0; bottom:0; width:min(360px,86vw); z-index:1200;
-  background:var(--paper); box-shadow:-24px 0 60px rgba(22,35,42,.2);
-  transform:translateX(102%); transition:transform .4s var(--ease);
+  background:var(--paper);
+  transform:translateX(102%); visibility:hidden; transition:transform .4s var(--ease), visibility 0s linear .4s;
   display:flex; flex-direction:column; overflow-y:auto;
 }
-.drawer.is-open{ transform:none; }
+.drawer.is-open{ transform:none; visibility:visible; box-shadow:-24px 0 60px rgba(22,35,42,.2); transition:transform .4s var(--ease); }
 .drawer-head{ display:flex; align-items:center; justify-content:space-between; padding:1.1rem 1.4rem; border-bottom:1px solid var(--line-soft); }
 .drawer-close{ width:42px; height:42px; border:1.5px solid var(--line); border-radius:12px; background:var(--paper); cursor:pointer; }
 .drawer-nav{ display:flex; flex-direction:column; padding:.7rem .6rem; flex:1; }
@@ -415,7 +418,8 @@ body.is-locked{ overflow:hidden; }
 @media (max-width:900px){
   .founder-top{ flex-direction:column; text-align:center; }
   .founder-creds{ justify-content:center; }
-  .founder-role{ justify-content:center; }
+  .founder-role{ display:block; }
+  .founder-role i{ margin-right:.4rem; }
   .spec-grid{ grid-template-columns:1fr 1fr; }
   .values{ grid-template-columns:1fr; }
   .stats{ grid-template-columns:1fr 1fr; gap:1.75rem 1rem; }
@@ -611,37 +615,7 @@ body.is-locked{ overflow:hidden; }
 
 
 /* ============================================================
-   13  VIRTUAL GROUP
-   ============================================================ */
-
-.group-section{ padding-block:var(--block); background:var(--paper); }
-.group-card{ display:grid; grid-template-columns:1.55fr 1fr; max-width:1080px; margin-inline:auto; border:1px solid var(--line); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-md); }
-.group-main{ padding:clamp(1.75rem,4vw,3rem); }
-.group-badge{ display:inline-flex; align-items:center; gap:.45rem; padding:.4rem .9rem; border-radius:99px; background:var(--teal-tint); color:var(--teal); font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; margin-bottom:1rem; }
-.group-main h2{ font-size:clamp(1.5rem,3vw,2.1rem); margin-bottom:.75rem; }
-.group-main > p{ color:var(--ink-soft); }
-.group-details{ display:grid; grid-template-columns:1fr 1fr; gap:.85rem; margin:1.75rem 0; }
-.group-details > div{ padding:.9rem 1.05rem; background:var(--shell); border:1px solid var(--line-soft); border-radius:12px; }
-.group-details dt{ display:flex; align-items:center; gap:.4rem; font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); font-weight:700; }
-.group-details dt i{ color:var(--teal-mid); }
-.group-details dd{ font-size:.95rem; font-weight:600; margin-top:.2rem; }
-.group-people{ padding-top:1.25rem; border-top:1px solid var(--line-soft); }
-.group-people p{ font-size:.87rem; color:var(--ink-soft); }
-.group-people strong{ color:var(--ink); }
-
-.group-cta{ background:linear-gradient(150deg,var(--teal),var(--peri)); color:#fff; padding:clamp(1.75rem,4vw,3rem); display:flex; flex-direction:column; justify-content:center; text-align:center; }
-.group-cta > i{ font-size:1.9rem; margin-bottom:.9rem; }
-.group-cta h3{ margin-bottom:.4rem; }
-.group-cta > p{ color:rgba(255,255,255,.88); font-size:.92rem; margin-bottom:1.25rem; }
-.group-email{ display:block; margin-top:.75rem; font-size:.8rem; color:rgba(255,255,255,.85); word-break:break-all; }
-.group-phone{ display:inline-flex; align-items:center; gap:.45rem; margin-top:.85rem; font-size:.88rem; font-weight:600; text-decoration:none; border-bottom:1px solid rgba(255,255,255,.45); padding-bottom:2px; }
-
-@media (max-width:900px){ .group-card{ grid-template-columns:1fr; } }
-@media (max-width:560px){ .group-details{ grid-template-columns:1fr; } }
-
-
-/* ============================================================
-   14  FAQ
+   13  FAQ
    ============================================================ */
 
 .faq-section{ padding-block:var(--block); background:var(--shell); }
@@ -693,7 +667,7 @@ body.is-locked{ overflow:hidden; }
 
 
 /* ============================================================
-   15  TEAM
+   14  TEAM
    ============================================================ */
 
 .team-section{ padding-block:var(--block); background:var(--paper); }
@@ -719,7 +693,7 @@ body.is-locked{ overflow:hidden; }
 
 
 /* ============================================================
-   16  CLIENT STORIES
+   15  CLIENT STORIES
    ============================================================ */
 
 .stories-section{ padding-block:var(--block); background:var(--sand); }
@@ -735,7 +709,7 @@ body.is-locked{ overflow:hidden; }
 
 
 /* ============================================================
-   17  CONTACT + LOCATIONS
+   16  CONTACT + LOCATIONS
    ============================================================ */
 
 .contact-section{ padding-block:var(--block); background:var(--paper); }
@@ -797,7 +771,7 @@ body.is-locked{ overflow:hidden; }
 
 
 /* ============================================================
-   18  FOOTER + FLOATING ACTIONS
+   17  FOOTER + FLOATING ACTIONS
    ============================================================ */
 
 .footer{ background:linear-gradient(150deg,#132A31,#0E1B24); color:rgba(255,255,255,.72); padding-top:clamp(3rem,6vw,4.5rem); }
