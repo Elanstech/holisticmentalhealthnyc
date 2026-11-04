@@ -102,6 +102,7 @@
     {"@type":"City","name":"Forest Hills","containedInPlace":{"@type":"State","name":"New York"}},
     {"@type":"City","name":"Patchogue","containedInPlace":{"@type":"State","name":"New York"}},
     {"@type":"City","name":"Mineola","containedInPlace":{"@type":"State","name":"New York"}},
+    {"@type":"City","name":"Manhattan","containedInPlace":{"@type":"State","name":"New York"}},
     {"@type":"State","name":"New York"}
   ],
   "address": {"@type":"PostalAddress","streetAddress":"521 Route 111, Suite 200","addressLocality":"Hauppauge","addressRegion":"NY","postalCode":"11788","addressCountry":"US"},
@@ -147,7 +148,8 @@
     {"@type":"MedicalClinic","name":"Holistic Mental Health Services — Hauppauge","address":{"@type":"PostalAddress","streetAddress":"521 Route 111, Suite 200","addressLocality":"Hauppauge","addressRegion":"NY","postalCode":"11788","addressCountry":"US"},"geo":{"@type":"GeoCoordinates","latitude":"40.825378","longitude":"-73.202641"},"telephone":"+1-631-265-9850","url":"https://www.holisticmentalhealthny.com","openingHoursSpecification":{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],"opens":"09:00","closes":"21:00"}},
     {"@type":"MedicalClinic","name":"Holistic Mental Health Services — Forest Hills","address":{"@type":"PostalAddress","streetAddress":"102-30 Queens Blvd, Suite LC","addressLocality":"Forest Hills","addressRegion":"NY","postalCode":"11375","addressCountry":"US"},"telephone":"+1-631-265-9850","url":"https://www.holisticmentalhealthny.com"},
     {"@type":"MedicalClinic","name":"Holistic Mental Health Services — Patchogue","address":{"@type":"PostalAddress","streetAddress":"124 Medford Ave","addressLocality":"Patchogue","addressRegion":"NY","postalCode":"11772","addressCountry":"US"},"telephone":"+1-631-265-9850","url":"https://www.holisticmentalhealthny.com"},
-    {"@type":"MedicalClinic","name":"Holistic Mental Health Services — Mineola","address":{"@type":"PostalAddress","streetAddress":"166 E Jericho Turnpike, Suite 10","addressLocality":"Mineola","addressRegion":"NY","postalCode":"11501","addressCountry":"US"},"telephone":"+1-631-265-9850","url":"https://www.holisticmentalhealthny.com"}
+    {"@type":"MedicalClinic","name":"Holistic Mental Health Services — Mineola","address":{"@type":"PostalAddress","streetAddress":"166 E Jericho Turnpike, Suite 10","addressLocality":"Mineola","addressRegion":"NY","postalCode":"11501","addressCountry":"US"},"telephone":"+1-631-265-9850","url":"https://www.holisticmentalhealthny.com"},
+    {"@type":"MedicalClinic","name":"Holistic Mental Health Services — Manhattan","address":{"@type":"PostalAddress","streetAddress":"16 Madison Square Plaza","addressLocality":"New York","addressRegion":"NY","postalCode":"10010","addressCountry":"US"},"telephone":"+1-631-265-9850","url":"https://www.holisticmentalhealthny.com"}
   ]
 }
 </script>
@@ -184,7 +186,7 @@
     {"@type":"Question","name":"Do you accept insurance?","acceptedAnswer":{"@type":"Answer","text":"Yes, we accept most major insurance plans including Blue Cross Blue Shield, Aetna, Cigna, United Healthcare, and more. We recommend calling us to verify your specific insurance coverage."}},
     {"@type":"Question","name":"Do you offer telehealth or online therapy?","acceptedAnswer":{"@type":"Answer","text":"Yes, we offer secure telehealth therapy sessions for all our services. You can receive quality mental health care from the comfort of your home anywhere in New York State."}},
     {"@type":"Question","name":"What types of therapy do you provide?","acceptedAnswer":{"@type":"Answer","text":"We provide individual therapy, couples counseling, family therapy, EMDR therapy, cognitive behavioral therapy (CBT), mindfulness-based therapy, neurofeedback, and group therapy for concerns including anxiety, depression, trauma, and relationship issues."}},
-    {"@type":"Question","name":"Where are your office locations?","acceptedAnswer":{"@type":"Answer","text":"We have four locations across Long Island and Queens: Hauppauge (main office), Forest Hills, Patchogue, and Mineola."}},
+    {"@type":"Question","name":"Where are your office locations?","acceptedAnswer":{"@type":"Answer","text":"We have five locations across Long Island, Queens, and Manhattan: Hauppauge (main office), Forest Hills, Patchogue, Mineola, and Manhattan (16 Madison Square Plaza)."}},
     {"@type":"Question","name":"How do I schedule an appointment?","acceptedAnswer":{"@type":"Answer","text":"You can schedule a free 15-minute consultation by calling us at (631) 265-9850 or by filling out our contact form. We'll help match you with the right therapist and schedule your first appointment."}},
     {"@type":"Question","name":"What are your office hours?","acceptedAnswer":{"@type":"Answer","text":"We offer flexible scheduling Monday through Sunday, 9:00 AM to 9:00 PM, including evening and weekend appointments."}},
     {"@type":"Question","name":"What is the $80 session offer?","acceptedAnswer":{"@type":"Answer","text":"Self-pay clients can book a full 50-minute in-person therapy session for $80 when the session starts between 9:00 AM and 2:00 PM at any of our four offices. The rate is for self-pay clients only and cannot be combined with insurance. Spots are limited."}}
@@ -1014,12 +1016,13 @@
       <details class="faq-item" data-category="appointment">
         <summary>Where are your office locations?</summary>
         <div class="faq-answer">
-          <p>We have four convenient locations across Long Island and Queens to serve you:</p>
+          <p>We have five convenient locations across Long Island, Queens, and Manhattan to serve you:</p>
           <ul class="loc-list">
             <li><strong>Hauppauge (main office)</strong><span>521 Route 111, Suite 200, Hauppauge, NY 11788</span></li>
             <li><strong>Forest Hills</strong><span>102-30 Queens Blvd, Suite LC, Forest Hills, NY 11375</span></li>
             <li><strong>Patchogue</strong><span>124 Medford Ave, Patchogue, NY 11772</span></li>
             <li><strong>Mineola</strong><span>166 E Jericho Turnpike, Suite 10, Mineola, NY 11501</span></li>
+            <li><strong>Manhattan</strong><span>16 Madison Square Plaza, New York, NY 10010</span></li>
           </ul>
         </div>
       </details>
@@ -1087,15 +1090,6 @@
     <div class="carousel" data-carousel="team">
       <div class="carousel-viewport">
         <div class="carousel-track">
-
-          <article class="team-card">
-            <div class="team-photo"><img src="images/Katherine.jpeg" alt="Katherine Kruser, LMHC" width="400" height="500" loading="lazy" decoding="async"></div>
-            <div class="team-body">
-              <h3>Katherine Kruser</h3><span class="team-role">LMHC</span>
-              <p>Providing compassionate support for individuals navigating anxiety, depression, and life transitions.</p>
-              <ul class="team-tags"><li>Anxiety</li><li>Depression</li><li>Life Transitions</li></ul>
-            </div>
-          </article>
 
           <article class="team-card">
             <div class="team-photo"><img src="https://photos.psychologytoday.com/aa87cdcf-e3d4-4713-8b99-260a5f77231c/1/320x400.jpeg" alt="Ami Clarke, LMHC" width="400" height="500" loading="lazy" decoding="async"></div>
@@ -1196,6 +1190,24 @@
               <h3>Beatrice Jean-Mary</h3><span class="team-role">Therapist</span>
               <p>Serves toddlers through adolescents, families, and couples from a client-centered, humanistic mindset, specializing in child and adolescent play interventions, disabilities, maternal care, grief, and trauma.</p>
               <ul class="team-tags"><li>Children &amp; Teens</li><li>Play Interventions</li><li>Grief &amp; Trauma</li></ul>
+            </div>
+          </article>
+
+          <article class="team-card">
+            <div class="team-photo"><img src="https://photos.psychologytoday.com/1fc5aa2f-b2f6-46ad-93f0-d302602f28ed/1/320x400.png" alt="Jame Krauter, pre-licensed professional" width="400" height="500" loading="lazy" decoding="async"></div>
+            <div class="team-body">
+              <h3>Jame Krauter</h3><span class="team-role">Pre-Licensed Professional</span>
+              <p>Works with children, adolescents, and adults navigating anxiety, behavioral concerns, family conflict, relationship difficulties, and life transitions, drawing from family systems, CBT, Solution-Focused, and Emotionally Focused Therapy.</p>
+              <ul class="team-tags"><li>Children &amp; Teens</li><li>Anxiety</li><li>CBT &amp; EFT</li></ul>
+            </div>
+          </article>
+
+          <article class="team-card">
+            <div class="team-photo team-initials"><span>TV</span></div>
+            <div class="team-body">
+              <h3>Tamara Viaud Ryjacek</h3><span class="team-role">OTR/L, MHC-LP</span>
+              <p>Trilingual (English, French, Creole) mental health counselor and licensed occupational therapist, bringing a whole-person, mind-and-body perspective to supporting clients with culturally responsive care.</p>
+              <ul class="team-tags"><li>Multilingual</li><li>Occupational Therapy</li><li>Mind &amp; Body</li></ul>
             </div>
           </article>
 
@@ -1332,7 +1344,7 @@
     <div class="locations reveal">
       <header class="locations-head">
         <h3><i class="fas fa-map-marked-alt" aria-hidden="true"></i> Our locations</h3>
-        <p>Convenient offices across Long Island &amp; Queens</p>
+        <p>Convenient offices across Long Island, Queens &amp; Manhattan</p>
       </header>
 
       <div class="loc-grid">
@@ -1362,6 +1374,13 @@
           <h4>Mineola</h4>
           <address>166 E Jericho Turnpike, Suite 10<br>Mineola, NY 11501</address>
           <a href="https://www.google.com/maps/dir/?api=1&destination=166+E+Jericho+Turnpike+Suite+10+Mineola+NY+11501" target="_blank" rel="noopener" class="btn btn-primary btn-sm"><i class="fas fa-directions" aria-hidden="true"></i> Directions</a>
+          <a href="tel:+16312659850" class="btn btn-outline btn-sm">(631) 265-9850</a>
+        </article>
+
+        <article class="loc-card">
+          <h4>Manhattan</h4>
+          <address>16 Madison Square Plaza<br>New York, NY 10010</address>
+          <a href="https://www.google.com/maps/dir/?api=1&destination=16+Madison+Square+Plaza+New+York+NY+10010" target="_blank" rel="noopener" class="btn btn-primary btn-sm"><i class="fas fa-directions" aria-hidden="true"></i> Directions</a>
           <a href="tel:+16312659850" class="btn btn-outline btn-sm">(631) 265-9850</a>
         </article>
       </div>
