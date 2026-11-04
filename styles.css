@@ -756,7 +756,7 @@ body.is-locked{ overflow:hidden; }
 .locations-head h3{ display:flex; align-items:center; justify-content:center; gap:.6rem; }
 .locations-head h3 i{ color:var(--teal-mid); }
 .locations-head p{ color:var(--ink-soft); font-size:.95rem; margin-top:.3rem; }
-.loc-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:1.15rem; }
+.loc-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1.15rem; }
 .loc-card{ position:relative; background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); padding:1.6rem 1.4rem; display:grid; gap:.55rem; align-content:start; transition:transform .3s var(--ease), box-shadow .3s var(--ease), border-color .3s var(--ease); }
 .loc-card:hover{ transform:translateY(-5px); box-shadow:var(--shadow-md); border-color:var(--teal-tint); }
 .loc-card.is-main{ border-color:var(--teal-tint); background:linear-gradient(180deg,var(--teal-tint),var(--paper) 40%); }
