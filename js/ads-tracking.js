@@ -1,6 +1,6 @@
 // Google Ads conversion events for holisticmentalhealthny.com
 // Needs the Google tag (AW-17896700019) that is already loaded in <head>.
-// 1) "Site call click"   - a tap/click on the practice number (631) 265-9850 (never 911 / 988)
+// 1) "Site call click"   - a tap/click on the new-intake line (234) 421-1372 or the main office (631) 265-9850 (never 911 / 988)
 // 2) "Website lead form" - the Elfsight contact form shows its "sent" message
 // No personal data is sent: only the event name and the Google conversion label.
 (function () {
@@ -16,7 +16,7 @@
   var callSent = false;
   document.addEventListener('click', function (ev) {
     var a = ev.target && ev.target.closest ? ev.target.closest('a[href^="tel:"]') : null;
-    if (!a || callSent || !/6312659850/.test(a.getAttribute('href') || '')) return;
+    if (!a || callSent || !/2344211372|6312659850/.test(a.getAttribute('href') || '')) return;
     callSent = true;
     report(CALL_LABEL);
   }, true);

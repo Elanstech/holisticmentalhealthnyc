@@ -790,6 +790,9 @@ body.is-locked{ overflow:hidden; }
 .footer-locations strong{ display:block; color:#fff; font-size:.88rem; }
 .footer-phone{ display:inline-block; margin-top:.9rem; font-family:var(--display); font-size:1.15rem; color:#fff; text-decoration:none; }
 .footer-phone:hover{ color:var(--teal-light); }
+.footer-phone-note{ margin-top:.3rem; font-size:.8rem; color:rgba(255,255,255,.72); }
+.footer-phone-note a{ color:#fff; text-decoration:none; border-bottom:1px solid rgba(255,255,255,.35); }
+.footer-phone-note a:hover{ color:var(--teal-light); }
 
 .footer-crisis{ display:flex; gap:.85rem; align-items:flex-start; margin-top:1.75rem; padding:1.1rem 1.35rem; background:rgba(196,69,92,.14); border:1px solid rgba(196,69,92,.35); border-radius:14px; }
 .footer-crisis i{ color:#F2A0AE; margin-top:.2rem; }
